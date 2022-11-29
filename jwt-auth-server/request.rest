@@ -1,0 +1,29 @@
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "username": "Maksym",
+    "password": "1111"
+}
+###
+GET http://localhost:4000/check
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFrc3ltIiwicGFzc3dvcmQiOiIxMTExIiwiaWF0IjoxNjY5NzM5NjQ2LCJleHAiOjE2Njk3NDE0NDZ9.9cTfoVvEfYOr-7J4rNijbmEtVC5QGpQ-T4O_Z--9bx8
+
+###
+
+POST http://localhost:4000/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFrc3ltIiwicGFzc3dvcmQiOiIxMTExIiwiaWF0IjoxNjY5NzM1MDA2fQ.trEiGtQ30uDa_H9EN-ee4IYraM3bMx7dT9mdW28E-88"
+}
+
+###
+POST http://localhost:4000/register
+Content-Type: application/json
+
+{
+    "username": "Maksym",
+    "password": "1111"
+}
