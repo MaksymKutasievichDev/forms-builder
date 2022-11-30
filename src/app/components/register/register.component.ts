@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {reloadPage} from "../../_helpers/helpers";
 import {AuthService} from "../../services/auth.service";
 import {TokenStorageService} from "../../services/token-storage.service";
 import {Router} from "@angular/router";
@@ -25,18 +26,25 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('submit clicked')
     this.authService.register(this.form).subscribe(
       data => {
       console.log(data);
-      this.isSuccessful = true;
-      this.isSignUpFailed = false;
-      this.tokenStorage.saveToken(data.accessToken)
+      if('error' in data){
+        this.isSignUpFailed = true;
+        this.errorMessage = data.error
+      } else {
+        this.isSuccessful = true;
+        this.isSignUpFailed = false;
+        this.tokenStorage.saveToken(data.accessToken)
         this.tokenStorage.saveUser(this.form.username);
-        this.reloadPage();
+        reloadPage()
+      }
     })
   }
 
-  reloadPage():void {
-    window.location.reload()
+  clearError():void{
+    this.isSignUpFailed = false;
+    this.errorMessage = ''
   }
 }

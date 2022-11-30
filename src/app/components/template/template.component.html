@@ -1,0 +1,4 @@
+
+<div *ngFor="let element of formTemplateElements" class="form_template__element" cdkDrag>
+  <div [innerHTML]="element | parseHtml"></div>
+</div>

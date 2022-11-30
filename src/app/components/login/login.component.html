@@ -3,18 +3,17 @@
   <form *ngIf="!isLoggedIn"
         name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate
   >
+    <div style="{{isLoginFailed ? 'max-height: 40px; opacity: 1;' : ''}}" class="error_container">
+      {{errorMessage}}
+    </div>
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input name="username" [(ngModel)]="form.username" required #username="ngModel" matInput>
+      <input (keydown)="clearError()" name="username" [(ngModel)]="form.username" required #username="ngModel" matInput>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
+      <input (keydown)="clearError()" name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
     </mat-form-field>
-    <button (click)="onSubmit()" mat-raised-button color="primary">Log in</button>
+    <button mat-raised-button color="primary">Log in</button>
   </form>
-
-  <div class="alert alert-success" *ngIf="isLoggedIn">
-    Logged in as 'name'
-  </div>
 </div>

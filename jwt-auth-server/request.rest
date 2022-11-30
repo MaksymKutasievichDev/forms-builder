@@ -2,7 +2,7 @@ POST http://localhost:4000/login
 Content-Type: application/json
 
 {
-    "username": "Maksym",
+    "username": "Maksymkaaaa",
     "password": "1111"
 }
 ###
@@ -24,6 +24,6 @@ POST http://localhost:4000/register
 Content-Type: application/json
 
 {
-    "username": "Maksym",
+    "username": "Maksymko",
     "password": "1111"
 }

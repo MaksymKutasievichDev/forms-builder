@@ -1,0 +1,25 @@
+.form_builder{
+  display: flex;
+  gap: 2rem;
+  padding-top: 2rem;
+  align-items: flex-start;
+  & > *{
+    flex: 1;
+    border-radius: 5px;
+    border: 2px solid #c2d6e1;
+  }
+}
+.form_template{
+  padding: 1rem;
+  &>p{
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .form_template__elements{
+    min-height: 100px;
+    border-bottom: 2px solid black;
+    display: block;
+  }
+}
+

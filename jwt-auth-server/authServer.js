@@ -60,16 +60,15 @@ app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const user = { name: username, password: password };
+  console.log(user);
 
-  let checker = false;
+  let loginExist = false;
+  let passExist = false;
 
   for (let i = 0; i < logs.length; i++) {
-    if (Object.values(logs[i]).indexOf(user.name) > -1) {
-      if (
-        logs[Object.values(logs[i]).indexOf(user.name)].password ===
-        user.password
-      ) {
-        checker = true;
+    if (logs[i].username == user.name) {
+      loginExist = true;
+      if (logs[i].password === user.password) {
         const accessToken = generateAccessToken(user);
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
         refreshTokens.push(refreshToken);
@@ -78,6 +77,10 @@ app.post("/login", (req, res) => {
       break;
     }
   }
+  !loginExist
+    ? res.json({ success: false, error: "The user does not exist" })
+    : "";
+  !passExist ? res.json({ success: false, error: "Wrong password" }) : "";
 });
 
 app.post("/register", (req, res) => {
@@ -88,7 +91,7 @@ app.post("/register", (req, res) => {
 
   for (let i = 0; i < logs.length; i++) {
     if (Object.values(logs[i]).indexOf(user.name) > -1) {
-      return res.sendStatus(403);
+      res.json({ success: false, error: "The user was already registered" });
     }
   }
 
@@ -106,7 +109,7 @@ app.post("/register", (req, res) => {
 });
 
 function generateAccessToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "30m" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "60m" });
 }
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

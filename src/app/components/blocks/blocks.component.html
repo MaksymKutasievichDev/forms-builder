@@ -1,0 +1,10 @@
+
+  <div
+    class="form_element"
+    *ngFor="let element of formElementsList"
+    cdkDrag
+    [cdkDragData]="element"
+  >
+    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+    {{element}}
+  </div>

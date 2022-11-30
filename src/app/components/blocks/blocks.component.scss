@@ -1,0 +1,12 @@
+.form_element{
+  padding: 1rem 1.2rem;
+  border-bottom: 2px solid #c2d6e1;
+  cursor: move;
+  background: white;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  &:last-child{
+    border-bottom: none;
+  }
+}

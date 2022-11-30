@@ -1,3 +1,25 @@
-<div class="">
-  HELLO IT'S WORKING ^_^
+<div class="form_builder" cdkDropListGroup>
+  <div class="styles">
+    styles section
+  </div>
+  <div class="form_template">
+    <p>Form Label</p>
+    <app-template
+      class="form_template__elements"
+      cdkDropList
+      [cdkDropListData]="formTemplateElements"
+      (cdkDropListDropped)="drop($event)"
+      [formTemplateElements]="formTemplateElements"
+      #template="cdkDropList"
+    ></app-template>
+  </div>
+  <app-blocks
+    cdkDropList
+    [cdkDropListData]="formElementsList"
+    [formElementsList]="formElementsList"
+    (cdkDropListExited)="exited($event)"
+    (cdkDropListEntered)="entered($event)"
+    (cdkDropListDropped)="drop($event)"
+    #blocks="cdkDropList"
+  ></app-blocks>
 </div>

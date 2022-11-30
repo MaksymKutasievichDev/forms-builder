@@ -1,5 +1,8 @@
 <div class="form_wrapp">
   <p>Registration Form</p>
+  <div style="{{isSignUpFailed ? 'max-height: 40px; opacity: 1;' : ''}}" class="error_container">
+    {{errorMessage}}
+  </div>
   <form *ngIf="!isSuccessful"
     name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate
   >
@@ -11,7 +14,7 @@
       <mat-label>Password</mat-label>
       <input name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
     </mat-form-field>
-    <button (click)="onSubmit()" mat-raised-button color="primary">Sign Up</button>
+    <button mat-raised-button color="primary">Sign Up</button>
   </form>
 
   <div class="alert alert-success" *ngIf="isSuccessful">

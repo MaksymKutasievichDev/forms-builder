@@ -1,4 +1,6 @@
 .form_wrapp{
+  width: 300px;
+  margin: 100px auto;
   p{
     font-size: 2rem;
     font-weight: bold;
@@ -8,6 +10,6 @@
   form{
     display: flex;
     flex-direction: column;
-    gap: 0rem
+    gap: 0
   }
 }
