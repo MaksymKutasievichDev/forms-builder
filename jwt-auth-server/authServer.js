@@ -34,7 +34,7 @@ app.use(function (req, res, next) {
   // Request headers you wish to allow
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type,authorization"
+    "X-Requested-With,content-type,authorization,x-access-token"
   );
 
   // Set to true if you need the website to include cookies in the requests sent
@@ -56,11 +56,27 @@ app.get("/check", authenticateToken, (req, res) => {
   res.json(logs.filter((log) => log.username === req.user.name));
 });
 
+app.post("/save_template", authenticateToken, (req, res) => {
+  for (let i = 0; i < logs.length; i++) {
+    if (logs[i].username == req.user.name) {
+      logs[i].templatemap = req.body.templatemap;
+      console.log("save_template");
+      console.log(logs);
+      res.json({ success: true });
+      return true;
+    }
+  }
+  res.json({ success: false, error: "Template wasn't saved" });
+});
+
+app.get("/get_user_data", authenticateToken, (req, res) => {
+  res.json(logs.filter((log) => log.username === req.user.name));
+});
+
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const user = { name: username, password: password };
-  console.log(user);
 
   let loginExist = false;
   let passExist = false;
@@ -73,6 +89,7 @@ app.post("/login", (req, res) => {
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
         refreshTokens.push(refreshToken);
         res.json({ accessToken: accessToken, refreshToken: refreshToken });
+        return true;
       }
       break;
     }
@@ -99,7 +116,7 @@ app.post("/register", (req, res) => {
     username: user.name,
     password: user.password,
   });
-
+  console.log("register");
   console.log(logs);
 
   const accessToken = generateAccessToken(user);

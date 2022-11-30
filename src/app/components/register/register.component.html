@@ -8,11 +8,11 @@
   >
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input name="username" [(ngModel)]="form.username" required #username="ngModel" matInput>
+      <input (keydown)="clearError()" name="username" [(ngModel)]="form.username" required #username="ngModel" matInput>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
+      <input (keydown)="clearError()" name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
     </mat-form-field>
     <button mat-raised-button color="primary">Sign Up</button>
   </form>

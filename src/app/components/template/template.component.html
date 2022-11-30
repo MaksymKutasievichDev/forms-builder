@@ -1,4 +1,11 @@
 
 <div *ngFor="let element of formTemplateElements" class="form_template__element" cdkDrag>
-  <div [innerHTML]="element | parseHtml"></div>
+  <button class="isFullWidth" *ngIf="element === 'Button'">Button</button>
+  <textarea class="isFullWidth" *ngIf="element === 'Textarea'" placeholder="Your textarea"></textarea>
+  <input class="isFullWidth" *ngIf="element === 'Input'" placeholder="Your input">
+  <select class="isFullWidth" *ngIf="element === 'Select'">
+    <option value="">Option 1</option>
+    <option value="">Option 2</option>
+  </select>
+  <input type="checkbox" *ngIf="element === 'Checkbox'">
 </div>

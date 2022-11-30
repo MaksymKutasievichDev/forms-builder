@@ -2,13 +2,26 @@ POST http://localhost:4000/login
 Content-Type: application/json
 
 {
-    "username": "Maksymkaaaa",
+    "username": "Maksym",
     "password": "1111"
 }
 ###
-GET http://localhost:4000/check
+POST http://localhost:4000/save_template
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFrc3ltIiwicGFzc3dvcmQiOiIxMTExIiwiaWF0IjoxNjY5NzM5NjQ2LCJleHAiOjE2Njk3NDE0NDZ9.9cTfoVvEfYOr-7J4rNijbmEtVC5QGpQ-T4O_Z--9bx8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMTEiLCJwYXNzd29yZCI6IjEyMzExMzMiLCJpYXQiOjE2Njk4MjYyNzAsImV4cCI6MTY2OTgyOTg3MH0.oDbeey5OpNjEJi8dg5HNo0VnFe8v_bZP-WsTmArBJb0
+
+{
+    "templatemap": ["Hello", "Button", "Dumb Textt"]
+}
+
+###
+GET http://localhost:4000/get_user_data
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiMTEiLCJwYXNzd29yZCI6IjEyMzExMzMiLCJpYXQiOjE2Njk4MjY5NjMsImV4cCI6MTY2OTgzMDU2M30.HLtyw02jcyn0OvEnWhYZDfT6nz9ALMhc6JpB2TKPcJw
+
+{
+    "templatemap": ["Hello", "Button", "Dumb Text"]
+}
 
 ###
 
@@ -24,6 +37,6 @@ POST http://localhost:4000/register
 Content-Type: application/json
 
 {
-    "username": "Maksymko",
-    "password": "1111"
+    "username": "11",
+    "password": "1231133"
 }

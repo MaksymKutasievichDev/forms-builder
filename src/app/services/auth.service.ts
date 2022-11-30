@@ -32,4 +32,24 @@ export class AuthService {
       })
     })
   }
+
+  saveTemplateMap(templateMap:string[], token:any):Observable<any>{
+    return this.http.post('http://localhost:4000/save_template',{
+      templatemap: templateMap
+    }, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`
+      })
+    })
+  }
+
+  getUserDataByToken(token:any):Observable<any>{
+    return this.http.get('http://localhost:4000/get_user_data', {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`
+      })
+    })
+  }
 }

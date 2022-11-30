@@ -29,7 +29,6 @@ export class TokenStorageService {
   }
 
   public getUser(): any{
-    console.log(sessionStorage.getItem(USER_KEY))
     return sessionStorage.getItem(USER_KEY)
   }
 }
