@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, Input, Output, ViewEncapsulation, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-template',
@@ -10,9 +10,14 @@ export class TemplateComponent implements OnInit {
 
   @Input() formTemplateElements:string[]
 
+  @Output() clickedElementIndex = new EventEmitter<number>()
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  getFormElementIndex(event:any):void{
+    this.clickedElementIndex.emit(event.target.dataset.index)
+  }
 }

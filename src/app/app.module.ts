@@ -29,6 +29,10 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import { BlocksComponent } from './components/blocks/blocks.component';
 import { TemplateComponent } from './components/template/template.component';
 import {MatSelectModule} from "@angular/material/select";
+import {MatExpansionModule} from "@angular/material/expansion";
+import {CdkAccordionModule} from "@angular/cdk/accordion";
+import { FormStylesComponent } from './components/form-styles/form-styles.component';
+import { FieldStylesComponent } from './components/field-styles/field-styles.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +45,9 @@ import {MatSelectModule} from "@angular/material/select";
     InputMaterialComponent,
     TextareaMaterialComponent,
     ButtonMaterialComponent,
-    SelectMaterialComponent
+    SelectMaterialComponent,
+    FormStylesComponent,
+    FieldStylesComponent
   ],
   imports: [
     BrowserModule,
@@ -54,9 +60,12 @@ import {MatSelectModule} from "@angular/material/select";
     MatButtonModule,
     MatIconModule,
     DragDropModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule,
+    CdkAccordionModule
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

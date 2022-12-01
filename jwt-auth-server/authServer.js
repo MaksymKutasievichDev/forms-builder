@@ -60,6 +60,7 @@ app.post("/save_template", authenticateToken, (req, res) => {
   for (let i = 0; i < logs.length; i++) {
     if (logs[i].username == req.user.name) {
       logs[i].templatemap = req.body.templatemap;
+      logs[i].formstyles = req.body.formstyles;
       console.log("save_template");
       console.log(logs);
       res.json({ success: true });

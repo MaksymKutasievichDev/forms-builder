@@ -1,11 +1,11 @@
 
-<div *ngFor="let element of formTemplateElements" class="form_template__element" cdkDrag>
-  <button class="isFullWidth" *ngIf="element === 'Button'">Button</button>
-  <textarea class="isFullWidth" *ngIf="element === 'Textarea'" placeholder="Your textarea"></textarea>
-  <input class="isFullWidth" *ngIf="element === 'Input'" placeholder="Your input">
-  <select class="isFullWidth" *ngIf="element === 'Select'">
+<div *ngFor="let element of formTemplateElements; let index = index" (click)="getFormElementIndex($event)" class="form_template__element" [attr.data-index]="index" cdkDrag>
+  <button [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Button'">Button</button>
+  <textarea [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Textarea'" placeholder="Your textarea"></textarea>
+  <input [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Input'" placeholder="Your input">
+  <select [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Select'">
     <option value="">Option 1</option>
     <option value="">Option 2</option>
   </select>
-  <input type="checkbox" *ngIf="element === 'Checkbox'">
+  <input [attr.data-index]="index" type="checkbox" *ngIf="element === 'Checkbox'">
 </div>

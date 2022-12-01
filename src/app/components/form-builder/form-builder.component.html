@@ -1,9 +1,13 @@
 <div class="form_builder" cdkDropListGroup>
-  <div class="styles">
-    styles section
+  <div class="styles_settings">
+    <mat-accordion>
+      <app-form-styles (formStyles)="updateFormStyles($event)"></app-form-styles>
+    </mat-accordion>
+
   </div>
-  <div class="form_template">
-    <p>Form Label</p>
+  <div class="form_template"
+       [ngStyle]="formStyles">
+    <p>{{formStyles.hasOwnProperty('label') ? formStyles.label : 'Form label'}}</p>
     <app-template
       class="form_template__elements"
       cdkDropList
@@ -11,6 +15,7 @@
       (cdkDropListDropped)="drop($event)"
       [formTemplateElements]="formTemplateElements"
       #template="cdkDropList"
+      (clickedElementIndex)="getClickedElementIndex($event)"
     ></app-template>
     <button (click)="saveMap()" disabled="{{templateWasChanged ? 'false' : 'true'}}" class="isFullWidth" style="margin-top: 20px" mat-raised-button color="primary">Save</button>
   </div>

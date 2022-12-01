@@ -1,0 +1,55 @@
+<mat-expansion-panel (opened)="panelOpenState = true"
+                     (closed)="panelOpenState = false" [hideToggle]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Form General Styling
+    </mat-panel-title>
+    <mat-panel-description>
+      {{panelOpenState ? 'close' : 'open'}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <form (ngSubmit)="outputFormStyles()">
+    <div class="input_group">
+      <mat-form-field class="isFullWidth" appearance="fill">
+        <mat-label>Form Label</mat-label>
+        <input name="form_label" [(ngModel)]="form.label" matInput>
+      </mat-form-field>
+    </div>
+
+    <div class="input_group isFlex" style="gap: 1rem">
+      <mat-form-field class="flex-1" appearance="fill">
+        <mat-label>Text Color</mat-label>
+        <input name="text_color" [(ngModel)]="form.color" matInput>
+        <div class="mat_input_desc" matSuffix>RGB</div>
+      </mat-form-field>
+      <mat-form-field class="flex-1" appearance="fill">
+        <mat-label>Background</mat-label>
+        <input name="background" [(ngModel)]="form.background" matInput>
+        <div class="mat_input_desc" matSuffix>RGB</div>
+      </mat-form-field>
+    </div>
+
+    <div class="input_group isFlex" style="gap: 1rem">
+      <mat-form-field class="flex-1" appearance="fill">
+        <mat-label>Border type</mat-label>
+        <mat-select name="border_type" [(ngModel)]="form.borderStyle">
+          <mat-option value="dotted">Dotted</mat-option>
+          <mat-option value="dashed">Dashed</mat-option>
+          <mat-option value="solid">Solid</mat-option>
+          <mat-option value="double">Double</mat-option>
+          <mat-option value="groove">Groove</mat-option>
+          <mat-option value="ridge">Ridge</mat-option>
+          <mat-option value="none">None</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="flex-1" appearance="fill">
+        <mat-label>Border Color</mat-label>
+        <input name="border_color" [(ngModel)]="form.borderColor" matInput>
+        <div class="mat_input_desc" matSuffix>RGB</div>
+      </mat-form-field>
+    </div>
+    <div class="input_group isFullWidth isFlex flex-center">
+      <button mat-raised-button color="primary">Apply</button>
+    </div>
+  </form>
+</mat-expansion-panel>

@@ -13,12 +13,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .isFullWidth{
   width: 100%;
 }
-.form_builder input, select, textarea{
+.isFlex{
+  display: flex;
+  align-items: center;
+  .flex-1{
+    flex: 1;
+  }
+}
+.flex-center{
+  justify-content: center;
+}
+.form_template input, select, textarea{
   padding: .5rem;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 0.8rem;
 }
-.form_builder input, select{
+.form_template input, select{
   height: 40px;
 }
 

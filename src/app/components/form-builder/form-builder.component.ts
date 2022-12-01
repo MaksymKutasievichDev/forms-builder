@@ -20,9 +20,14 @@ export class FormBuilderComponent implements OnInit {
   ];
 
   formTemplateElements:string[] = [];
+  formTemplateElementsStyles:any = [];
 
-  backupformTemplateElements:string[] =[]
+  backupformTemplateElements:any =[]
   templateWasChanged: boolean = false;
+  savedSuccess: boolean = false;
+
+  formStyles:any = {}
+  clickedElementIndex:number
 
   constructor(private router: Router, private token: TokenStorageService, private authService: AuthService) {
   }
@@ -39,15 +44,31 @@ export class FormBuilderComponent implements OnInit {
         if('templatemap' in data[0]){
           this.formTemplateElements = data[0].templatemap
         }
+        if('formstyles' in data[0]){
+          this.formStyles = data[0].formstyles
+        }
       }
     )
+  }
+
+  /*Get form styles from output*/
+  updateFormStyles(formStyles:object){
+    this.formStyles = formStyles
+    console.log(this.formStyles)
+  }
+
+  /*GET INDEX OF CLICKED ELEMENT*/
+  getClickedElementIndex(event:any){
+    this.clickedElementIndex = event
+    console.log(this.clickedElementIndex)
+    console.log(this.formTemplateElements)
   }
 
   /*TEMPLATE API CALLS*/
   //SAVE TEMPLATE MAP
   saveMap():void{
     console.log(this.token.getToken())
-    this.authService.saveTemplateMap(this.backupformTemplateElements, this.token.getToken()).subscribe(
+    this.authService.saveTemplateMap(this.backupformTemplateElements, this.formStyles, this.token.getToken()).subscribe(
       data => {
         console.log(data)
       }
