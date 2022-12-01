@@ -1,22 +1,33 @@
 <div class="form_builder" cdkDropListGroup>
   <div class="styles_settings">
     <mat-accordion>
-      <app-form-styles (formStyles)="updateFormStyles($event)"></app-form-styles>
+      <app-form-styles [startFormStyles]="formStyles" (formStyles)="updateFormStyles($event)"></app-form-styles>
+      <app-field-styles
+        [fieldsStyles]="fieldsStyles"
+        (fieldStyles)="updateFieldsStyles($event)"
+        (deleteCall)="DeleteElement($event)"
+        [elementTag]="formTemplateElements[clickedElementIndex]"
+        [elementIndex]="clickedElementIndex"
+      >
+      </app-field-styles>
     </mat-accordion>
-
   </div>
-  <div class="form_template"
-       [ngStyle]="formStyles">
-    <p>{{formStyles.hasOwnProperty('label') ? formStyles.label : 'Form label'}}</p>
-    <app-template
-      class="form_template__elements"
-      cdkDropList
-      [cdkDropListData]="formTemplateElements"
-      (cdkDropListDropped)="drop($event)"
-      [formTemplateElements]="formTemplateElements"
-      #template="cdkDropList"
-      (clickedElementIndex)="getClickedElementIndex($event)"
-    ></app-template>
+  <div class="form_template__wrapper">
+    <div class="form_template"
+         [ngStyle]="formStyles">
+      <p>{{formStyles.hasOwnProperty('label') ? formStyles.label : 'Form label'}}</p>
+      <app-template
+        class="form_template__elements"
+        cdkDropList
+        [cdkDropListData]="formTemplateElements"
+        (cdkDropListDropped)="drop($event)"
+        [formTemplateElements]="formTemplateElements"
+        #template="cdkDropList"
+        (clickedElementIndex)="getClickedElementIndex($event)"
+        [activeElementIndex]="clickedElementIndex"
+        [fieldsStyles]="fieldsStyles"
+      ></app-template>
+    </div>
     <button (click)="saveMap()" disabled="{{templateWasChanged ? 'false' : 'true'}}" class="isFullWidth" style="margin-top: 20px" mat-raised-button color="primary">Save</button>
   </div>
   <app-blocks
@@ -28,4 +39,8 @@
     (cdkDropListDropped)="drop($event)"
     #blocks="cdkDropList"
   ></app-blocks>
+
+  <div *ngIf="savedSuccess" class="saved_success_notification">
+    Saved Successfully
+  </div>
 </div>

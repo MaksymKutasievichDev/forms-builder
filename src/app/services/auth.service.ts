@@ -33,10 +33,11 @@ export class AuthService {
     })
   }
 
-  saveTemplateMap(templateMap:string[], formstyles:any, token:any):Observable<any>{
+  saveTemplateMap(templateMap:string[], formstyles:any, elementstyles:any,token:any):Observable<any>{
     return this.http.post('http://localhost:4000/save_template',{
       templatemap: templateMap,
-      formstyles: formstyles
+      formstyles: formstyles,
+      elementstyles: elementstyles
     }, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

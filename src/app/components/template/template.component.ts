@@ -1,14 +1,21 @@
-import {Component, OnInit, Input, Output, ViewEncapsulation, EventEmitter} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 
 @Component({
   selector: 'app-template',
   templateUrl: './template.component.html',
-  styleUrls: ['./template.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./template.component.scss']
 })
 export class TemplateComponent implements OnInit {
 
+  @Input() activeElementIndex: number;
   @Input() formTemplateElements:string[]
+  @Input() fieldsStyles:any = {}
 
   @Output() clickedElementIndex = new EventEmitter<number>()
 

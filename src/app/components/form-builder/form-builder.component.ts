@@ -3,6 +3,7 @@ import {TokenStorageService} from "../../services/token-storage.service";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {array_move} from "../../_helpers/helpers";
 
 @Component({
   selector: 'app-form-builder',
@@ -27,6 +28,7 @@ export class FormBuilderComponent implements OnInit {
   savedSuccess: boolean = false;
 
   formStyles:any = {}
+  fieldsStyles: any = []
   clickedElementIndex:number
 
   constructor(private router: Router, private token: TokenStorageService, private authService: AuthService) {
@@ -47,6 +49,10 @@ export class FormBuilderComponent implements OnInit {
         if('formstyles' in data[0]){
           this.formStyles = data[0].formstyles
         }
+        if('elementstyles' in data[0]){
+          this.fieldsStyles = JSON.parse(data[0].elementstyles)
+          console.log(this.fieldsStyles)
+        }
       }
     )
   }
@@ -54,23 +60,40 @@ export class FormBuilderComponent implements OnInit {
   /*Get form styles from output*/
   updateFormStyles(formStyles:object){
     this.formStyles = formStyles
-    console.log(this.formStyles)
+  }
+  /*Get field styles from output*/
+  updateFieldsStyles(fieldStyles:object){
+    this.fieldsStyles[this.clickedElementIndex] = fieldStyles
+  }
+  /*Delete active element when called*/
+  DeleteElement(event:boolean):void{
+    if(event === true){
+      this.formTemplateElements.splice(this.clickedElementIndex,1)
+      this.backupformTemplateElements = this.formTemplateElements
+      this.fieldsStyles.splice(this.clickedElementIndex,1)
+      this.clickedElementIndex = -1
+    }
   }
 
   /*GET INDEX OF CLICKED ELEMENT*/
   getClickedElementIndex(event:any){
     this.clickedElementIndex = event
-    console.log(this.clickedElementIndex)
-    console.log(this.formTemplateElements)
   }
 
   /*TEMPLATE API CALLS*/
   //SAVE TEMPLATE MAP
   saveMap():void{
-    console.log(this.token.getToken())
-    this.authService.saveTemplateMap(this.backupformTemplateElements, this.formStyles, this.token.getToken()).subscribe(
+    console.log(this.fieldsStyles)
+    console.log(this.formStyles)
+    console.log(JSON.stringify(this.fieldsStyles))
+    this.authService.saveTemplateMap(this.backupformTemplateElements, this.formStyles, JSON.stringify(this.fieldsStyles), this.token.getToken()).subscribe(
       data => {
-        console.log(data)
+        if(data.success == true){
+          this.savedSuccess = true
+          setTimeout(()=>{
+            this.savedSuccess = false
+          }, 3100)
+        }
       }
     )
   }
@@ -88,18 +111,31 @@ export class FormBuilderComponent implements OnInit {
       );
       this.backupformTemplateElements = event.container.data
       this.templateWasChanged = true
+      this.fieldsStyles.splice(event.currentIndex, 0, null)
       console.log(this.backupformTemplateElements)
+      if(event.item.data=="Select"){
+        if(event.currentIndex > this.fieldsStyles.length){
+          while(event.currentIndex > this.fieldsStyles.length){
+            this.fieldsStyles.push(undefined)
+          }
+        }
+        this.fieldsStyles.splice(event.currentIndex, 0, {options:['option1', 'option2']})
+      }
+      console.log(this.fieldsStyles)
     } else {
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
+      if(event.container.id=='cdk-drop-list-0'){
+        array_move(this.fieldsStyles, event.previousIndex, event.currentIndex)
+        this.clickedElementIndex = event.currentIndex
+      }
     }
   }
   exited(event: any) {
     console.log('exited')
-    console.log(event)
     const currentIdx = event.container.data.findIndex(
       (f: any) => f === event.item.data
     );

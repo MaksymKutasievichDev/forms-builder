@@ -1,0 +1,7 @@
+.input_group.isFlex{
+  flex-wrap: wrap;
+  column-gap: 2rem;
+  mat-form-field{
+    flex: 1;
+  }
+}

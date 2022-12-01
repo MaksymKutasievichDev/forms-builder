@@ -32,6 +32,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   height: 40px;
 }
 
+.active_check{
+  transition: all 0.4s ease;
+  opacity: 1;
+  pointer-events: all;
+}
+.is_active_false{
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .error_container{
   color: #f44336;
   background: #fadbd9;

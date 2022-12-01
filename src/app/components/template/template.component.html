@@ -1,11 +1,55 @@
 
-<div *ngFor="let element of formTemplateElements; let index = index" (click)="getFormElementIndex($event)" class="form_template__element" [attr.data-index]="index" cdkDrag>
-  <button [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Button'">Button</button>
-  <textarea [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Textarea'" placeholder="Your textarea"></textarea>
-  <input [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Input'" placeholder="Your input">
-  <select [attr.data-index]="index" class="isFullWidth" *ngIf="element === 'Select'">
-    <option value="">Option 1</option>
-    <option value="">Option 2</option>
-  </select>
+<div
+  *ngFor="let element of formTemplateElements; let index = index"
+  (click)="getFormElementIndex($event)"
+  [ngClass]="activeElementIndex == index ? 'active' : ''"
+  class="form_template__element"
+  [attr.data-index]="index"
+  cdkDrag
+>
+  <div
+    class="input_group"
+    *ngIf="element === 'Textarea'"
+  >
+    <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
+    <textarea
+      [attr.data-index]="index"
+      [ngStyle]="fieldsStyles[index]"
+      class="isFullWidth"
+      placeholder="{{fieldsStyles[index]?.hasOwnProperty('placeholder') ? fieldsStyles[index].placeholder : 'Your textarea'}}"></textarea>
+  </div>
+  <div
+    class="input_group"
+    *ngIf="element === 'Input'"
+  >
+    <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
+    <input
+      [attr.data-index]="index"
+      [ngStyle]="fieldsStyles[index]"
+      placeholder="{{fieldsStyles[index]?.hasOwnProperty('placeholder') ? fieldsStyles[index].placeholder : 'Your input'}}"
+      class="isFullWidth"
+    >
+  </div>
+  <div
+    class="input_group"
+    *ngIf="element === 'Select'"
+  >
+    <select
+      [attr.data-index]="index"
+      class="isFullWidth"
+      [ngStyle]="fieldsStyles[index]"
+    >
+      <option value="{{option}}" *ngFor="let option of fieldsStyles[index].options">{{option}}</option>
+    </select>
+  </div>
   <input [attr.data-index]="index" type="checkbox" *ngIf="element === 'Checkbox'">
+  <div
+    class="input_group"
+  >
+    <button
+      [attr.data-index]="index"
+      *ngIf="element === 'Button'"
+      [ngStyle]="fieldsStyles[index]"
+    >{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : 'Button'}}</button>
+  </div>
 </div>
