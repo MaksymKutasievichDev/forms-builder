@@ -1,16 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {TokenStorageService} from "../../services/token-storage.service";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {array_move} from "../../_helpers/helpers";
+import {SnackBar} from "../../classes/snackBar";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-form-builder',
   templateUrl: './form-builder.component.html',
   styleUrls: ['./form-builder.component.scss']
 })
-export class FormBuilderComponent implements OnInit {
+export class FormBuilderComponent extends SnackBar implements OnInit {
 
   formElementsList:string[] = [
     'Input',
@@ -22,24 +26,23 @@ export class FormBuilderComponent implements OnInit {
 
   formTemplateElements:string[] = [];
 
-  backupformTemplateElements:any =[]
   templateWasChanged: boolean = false;
-
-  savedSuccess: boolean = false
 
   formStyles:any = {}
   fieldsStyles: any = []
   clickedElementIndex:number
 
-  constructor(private router: Router, private token: TokenStorageService, private authService: AuthService) {
+  dataRecieved$ : Subject<boolean> = new Subject<boolean>();
+  dataSaved$ : Subject<boolean> = new Subject<boolean>();
+
+
+  constructor(private router: Router, private token: TokenStorageService, private authService: AuthService, snackBar: MatSnackBar) {
+    super(snackBar)
   }
 
   ngOnInit(): void {
-    if(!this.token.getToken() || this.token.getToken() == "undefined" ){
-      this.router.navigate(['login'])
-    }
     //LOAD SAVE IF EXIST
-    this.authService.getUserDataByToken(this.token.getToken()).subscribe(
+    this.authService.getUserDataByToken(this.token.getToken()).pipe(takeUntil(this.dataRecieved$)).subscribe(
       data => {
         console.log(data[0])
         if('templatemap' in data[0]){
@@ -52,6 +55,8 @@ export class FormBuilderComponent implements OnInit {
           this.fieldsStyles = JSON.parse(data[0].elementstyles)
           console.log(this.fieldsStyles)
         }
+        this.dataRecieved$.next(true)
+        this.dataRecieved$.unsubscribe()
       }
     )
   }
@@ -68,10 +73,10 @@ export class FormBuilderComponent implements OnInit {
   DeleteElement(event:boolean):void{
     if(event){
       this.formTemplateElements.splice(this.clickedElementIndex,1)
-      this.backupformTemplateElements = this.formTemplateElements
       this.fieldsStyles.splice(this.clickedElementIndex,1)
       this.clickedElementIndex = -1
       this.templateWasChanged = true
+      this.successShow('Element deleted')
     }
   }
 
@@ -82,14 +87,13 @@ export class FormBuilderComponent implements OnInit {
 
   //Save form template*/
   saveMap():void{
-    this.authService.saveTemplateMap(this.backupformTemplateElements, this.formStyles, JSON.stringify(this.fieldsStyles), this.token.getToken()).subscribe(
+    this.authService.saveTemplateMap(this.formTemplateElements, this.formStyles, JSON.stringify(this.fieldsStyles), this.token.getToken()).pipe(takeUntil(this.dataSaved$)).subscribe(
       data => {
         if(data.success == true){
-          this.savedSuccess = true
+          this.successShow('Form saved')
           this.templateWasChanged = false
-          setTimeout(()=>{
-            this.savedSuccess = false
-          }, 3100)
+        } else {
+          this.errorShow('Something is wrong :(')
         }
       }
     )
@@ -105,9 +109,7 @@ export class FormBuilderComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
-      this.backupformTemplateElements = event.container.data
       this.templateWasChanged = true
-      this.fieldsStyles.splice(event.currentIndex, 0, null)
       /*Add additional options on select field created*/
       if(event.item.data=="Select"){
         if(event.currentIndex > this.fieldsStyles.length){
@@ -116,6 +118,8 @@ export class FormBuilderComponent implements OnInit {
           }
         }
         this.fieldsStyles.splice(event.currentIndex, 0, {options:['option1', 'option2']})
+      } else {
+        this.fieldsStyles.splice(event.currentIndex, 0, null)
       }
     } else {
       /*On item move in same container*/
@@ -126,7 +130,7 @@ export class FormBuilderComponent implements OnInit {
       );
       /*Change styles array indexes when new element added to template*/
       if(event.container.id=='cdk-drop-list-0'){
-        array_move(this.fieldsStyles, event.previousIndex, event.currentIndex)
+        this.fieldsStyles = array_move(this.fieldsStyles, event.previousIndex, event.currentIndex)
         this.clickedElementIndex = event.currentIndex
       }
     }
@@ -148,5 +152,11 @@ export class FormBuilderComponent implements OnInit {
   /*Block drop functionality for elements div*/
   block(){
     return false;
+  }
+
+  ngOnDestroy() {
+    /*Unsubscribing from saving subscription :)*/
+    this.dataSaved$.next(true);
+    this.dataSaved$.unsubscribe();
   }
 }

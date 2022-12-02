@@ -15,10 +15,6 @@ export class AuthService {
     return this.http.post('http://localhost:4000/login',{
       username: user.username,
       password: user.password
-    }, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
     })
   }
 
@@ -26,10 +22,6 @@ export class AuthService {
     return this.http.post('http://localhost:4000/register',{
       username: user.username,
       password: user.password
-    }, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
     })
   }
 
@@ -40,7 +32,6 @@ export class AuthService {
       elementstyles: elementstyles
     }, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'authorization': `Bearer ${token}`
       })
     })
@@ -49,7 +40,6 @@ export class AuthService {
   getUserDataByToken(token:any):Observable<any>{
     return this.http.get('http://localhost:4000/get_user_data', {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json',
         'authorization': `Bearer ${token}`
       })
     })

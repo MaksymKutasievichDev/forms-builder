@@ -1,7 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+$success_color: #28a745;
+$error_color: #f44336;
+$font_helvetica: Roboto, "Helvetica Neue", sans-serif;
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: $font_helvetica }
 *{
   box-sizing: border-box
 }
@@ -26,9 +29,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .text_center{
   text-align: center;
 }
+
 .form_template input, select, textarea{
   padding: .5rem;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: $font_helvetica;
   font-size: 0.8rem;
 }
 .form_template input[type="text"], select{
@@ -44,26 +48,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   opacity: 0.5;
   pointer-events: none;
 }
+
 .mat-form-field-infix{
   width: unset !important;
 }
 app-field-styles .input_group > *{
   flex: 40% !important;
 }
-.error_container{
-  color: #f44336;
-  background: #fadbd9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  border-bottom: 3px solid #f44336;
-  height: 40px;
-  max-height: 0;
-  opacity: 0;
-  transition: all 0.3s ease;
+.mat-snack-bar-container{
+  &.error{
+    background: $error_color
+  }
+  &.success{
+    background: $success_color;
+    color: white;
+  }
 }
-
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;

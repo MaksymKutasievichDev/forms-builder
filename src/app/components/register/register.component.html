@@ -1,23 +1,17 @@
 <div class="form_wrapp">
   <p>Registration Form</p>
-  <div style="{{isSignUpFailed ? 'max-height: 40px; opacity: 1;' : ''}}" class="error_container">
-    {{errorMessage}}
-  </div>
   <form *ngIf="!isSuccessful"
     name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate
   >
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input (keydown)="clearError()" name="username" [(ngModel)]="form.username" required #username="ngModel" matInput>
+      <input name="username" [(ngModel)]="form.username" required #username="ngModel" matInput>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input (keydown)="clearError()" name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
+      <input name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
     </mat-form-field>
     <button mat-raised-button color="primary">Sign Up</button>
   </form>
 
-  <div class="alert alert-success" *ngIf="isSuccessful">
-    Your registration is successful!
-  </div>
 </div>

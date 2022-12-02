@@ -7,12 +7,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 
+import { RemoveQuotationMarksPipe } from './pipes/remove-quotation-marks.pipe';
 import {authInterceptorProviders} from "./_helpers/auth.interceptor";
 
 /*Components*/
 import { LoginComponent } from './components/login/login.component';
 import { FormBuilderComponent } from './components/form-builder/form-builder.component';
 import { RegisterComponent } from './components/register/register.component';
+import { FormStylesComponent } from './components/form-styles/form-styles.component';
+import { FieldStylesComponent } from './components/field-styles/field-styles.component';
+import { BlocksComponent } from './components/blocks/blocks.component';
+import { TemplateComponent } from './components/template/template.component';
 
 /*Angular Materials Components*/
 import { InputMaterialComponent } from './components/angularMaterials/input/input.component';
@@ -26,13 +31,10 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {DragDropModule} from "@angular/cdk/drag-drop";
-import { BlocksComponent } from './components/blocks/blocks.component';
-import { TemplateComponent } from './components/template/template.component';
 import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkAccordionModule} from "@angular/cdk/accordion";
-import { FormStylesComponent } from './components/form-styles/form-styles.component';
-import { FieldStylesComponent } from './components/field-styles/field-styles.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { FieldStylesComponent } from './components/field-styles/field-styles.com
     ButtonMaterialComponent,
     SelectMaterialComponent,
     FormStylesComponent,
-    FieldStylesComponent
+    FieldStylesComponent,
+    RemoveQuotationMarksPipe
   ],
   imports: [
     BrowserModule,
@@ -62,7 +65,8 @@ import { FieldStylesComponent } from './components/field-styles/field-styles.com
     DragDropModule,
     MatSelectModule,
     MatExpansionModule,
-    CdkAccordionModule
+    CdkAccordionModule,
+    MatSnackBarModule
   ],
   providers: [authInterceptorProviders
   ],

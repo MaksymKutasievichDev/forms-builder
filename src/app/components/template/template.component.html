@@ -36,6 +36,7 @@
     class="input_group"
     *ngIf="element === 'Select'"
   >
+    <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
     <select
       [attr.data-index]="index"
       class="isFullWidth"

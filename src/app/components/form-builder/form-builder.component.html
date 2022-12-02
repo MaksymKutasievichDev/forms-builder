@@ -23,10 +23,10 @@
         [cdkDropListData]="formTemplateElements"
         (cdkDropListDropped)="drop($event)"
         [formTemplateElements]="formTemplateElements"
-        #template="cdkDropList"
         (clickedElementIndex)="getClickedElementIndex($event)"
         [activeElementIndex]="clickedElementIndex"
         [fieldsStyles]="fieldsStyles"
+        [id]="'cdk-drop-list-0'"
       ></app-template>
     </div>
     <button (click)="saveMap()" class="isFullWidth" style="margin-top: 20px" mat-raised-button color="primary">Save</button>
@@ -39,10 +39,6 @@
     (cdkDropListEntered)="entered($event)"
     [cdkDropListEnterPredicate]="block"
     (cdkDropListDropped)="drop($event)"
-    #blocks="cdkDropList"
+    [id]="'cdk-drop-list-1'"
   ></app-blocks>
-
-  <div *ngIf="savedSuccess" class="saved_success_notification">
-    Saved Successfully
-  </div>
 </div>

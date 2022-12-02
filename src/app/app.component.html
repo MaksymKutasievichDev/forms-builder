@@ -1,16 +1,16 @@
 <div id="app">
   <nav>
     <div class="container">
-      <div *ngIf="isLoggedIn" class="">
-        Hi, {{username}}
+      <div *ngIf="checkIfLoggedIn()" class="">
+        Hi, {{username | removeQuotationMarks}}
       </div>
       <div class="">
         Form Builder
       </div>
-      <div (click)="logout()" *ngIf="isLoggedIn" class="exit_ico">
+      <div (click)="logout()" *ngIf="checkIfLoggedIn()" class="exit_ico">
         <mat-icon>exit_to_app</mat-icon>
       </div>
-      <div class="" *ngIf="!isLoggedIn">
+      <div class="" *ngIf="!checkIfLoggedIn()">
         <ul>
           <li>
             <a href="/login" routerLink="login">Login</a>

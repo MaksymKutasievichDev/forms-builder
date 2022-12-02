@@ -1,11 +1,13 @@
 import {Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges} from '@angular/core';
+import {SnackBar} from "../../classes/snackBar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-field-styles',
   templateUrl: './field-styles.component.html',
-  styleUrls: ['./field-styles.component.scss']
+  styleUrls: ['./field-styles.component.scss'],
 })
-export class FieldStylesComponent implements OnInit {
+export class FieldStylesComponent extends SnackBar implements OnInit {
 
   form:any = {};
   panelOpenState:boolean = false;
@@ -22,7 +24,9 @@ export class FieldStylesComponent implements OnInit {
 
   isActive:boolean = false
 
-  constructor() { }
+  constructor(snackBar: MatSnackBar) {
+    super(snackBar)
+  }
 
   ngOnInit(): void {
   }
@@ -50,19 +54,23 @@ export class FieldStylesComponent implements OnInit {
       this.form.options = this.options
     }
     this.fieldStyles.emit(this.form)
+    this.successShow('Styles added successfully')
   }
 
   sendDeleteCall(){
     this.deleteCall.emit(true)
+    this.successShow('Element deleted successfully')
   }
 
   addOption(){
     this.fieldsStyles[this.elementIndex].options.push(this.addOptionText)
     this.addOptionText=''
     this.options = this.fieldsStyles[this.elementIndex].options
+    this.successShow('Option added')
   }
   removeOption(index:number){
     this.fieldsStyles[this.elementIndex].options.splice(index, 1)
     this.options = this.fieldsStyles[this.elementIndex].options
+    this.successShow('Option removed')
   }
 }

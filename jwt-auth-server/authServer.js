@@ -110,7 +110,8 @@ app.post("/register", (req, res) => {
 
   for (let i = 0; i < logs.length; i++) {
     if (Object.values(logs[i]).indexOf(user.name) > -1) {
-      res.json({ success: false, error: "The user was already registered" });
+      res.json({ success: false, error: "The user is already registered" });
+      return true;
     }
   }
 
@@ -118,7 +119,6 @@ app.post("/register", (req, res) => {
     username: user.name,
     password: user.password,
   });
-  console.log("register");
   console.log(logs);
 
   const accessToken = generateAccessToken(user);
