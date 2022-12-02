@@ -10,6 +10,7 @@ export class FormStylesComponent implements OnInit {
   form:any = {};
   panelOpenState:boolean = false;
 
+  /*Loaded from server styles*/
   @Input() startFormStyles:any
 
   @Output() formStyles = new EventEmitter<object>()

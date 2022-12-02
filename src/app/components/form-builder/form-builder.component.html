@@ -14,6 +14,7 @@
   </div>
   <div class="form_template__wrapper">
     <div class="form_template"
+         style="border-radius: 5px"
          [ngStyle]="formStyles">
       <p>{{formStyles.hasOwnProperty('label') ? formStyles.label : 'Form label'}}</p>
       <app-template
@@ -28,7 +29,7 @@
         [fieldsStyles]="fieldsStyles"
       ></app-template>
     </div>
-    <button (click)="saveMap()" disabled="{{templateWasChanged ? 'false' : 'true'}}" class="isFullWidth" style="margin-top: 20px" mat-raised-button color="primary">Save</button>
+    <button (click)="saveMap()" class="isFullWidth" style="margin-top: 20px" mat-raised-button color="primary">Save</button>
   </div>
   <app-blocks
     cdkDropList
@@ -36,6 +37,7 @@
     [formElementsList]="formElementsList"
     (cdkDropListExited)="exited($event)"
     (cdkDropListEntered)="entered($event)"
+    [cdkDropListEnterPredicate]="block"
     (cdkDropListDropped)="drop($event)"
     #blocks="cdkDropList"
   ></app-blocks>

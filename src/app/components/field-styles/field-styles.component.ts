@@ -28,6 +28,7 @@ export class FieldStylesComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
+    /*Update styles for field when clicked element is changed*/
     if (typeof changes['elementTag'] != 'undefined') {
       if(this.elementTag ) this.isActive = true
       if(this.elementTag == 'Select'){
@@ -45,6 +46,7 @@ export class FieldStylesComponent implements OnInit {
 
   outputFieldStyles(){
     if(this.elementTag == 'Select'){
+      /*Add option to form object before sending to the form (only if select)*/
       this.form.options = this.options
     }
     this.fieldStyles.emit(this.form)

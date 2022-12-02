@@ -5,6 +5,7 @@
   [ngClass]="activeElementIndex == index ? 'active' : ''"
   class="form_template__element"
   [attr.data-index]="index"
+  [cdkDragData]="element"
   cdkDrag
 >
   <div
@@ -25,6 +26,7 @@
     <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
     <input
       [attr.data-index]="index"
+      type="text"
       [ngStyle]="fieldsStyles[index]"
       placeholder="{{fieldsStyles[index]?.hasOwnProperty('placeholder') ? fieldsStyles[index].placeholder : 'Your input'}}"
       class="isFullWidth"
@@ -42,13 +44,40 @@
       <option value="{{option}}" *ngFor="let option of fieldsStyles[index].options">{{option}}</option>
     </select>
   </div>
-  <input [attr.data-index]="index" type="checkbox" *ngIf="element === 'Checkbox'">
   <div
     class="input_group"
+    *ngIf="element === 'Checkbox'"
+  >
+    <p class="text_center"
+       style="
+        {{fieldsStyles[index]?.hasOwnProperty('title') ? '' : 'display: none;'}}
+        {{fieldsStyles[index]?.hasOwnProperty('color') ? 'color: ' + fieldsStyles[index].color + ';' : ''}}
+        {{fieldsStyles[index]?.hasOwnProperty('fontSize') ? 'font-size: ' + fieldsStyles[index].fontSize + ';' : ''}}
+        {{fieldsStyles[index]?.hasOwnProperty('fontWeight') ? 'font-weight: ' + fieldsStyles[index].fontWeight + ';' : ''}}
+       "
+    >{{fieldsStyles[index]?.hasOwnProperty('title') ? fieldsStyles[index].title : ''}}</p>
+    <input
+      name="checkbox_{{index}}"
+      [attr.data-index]="index"
+      type="checkbox"
+      [ngStyle]="fieldsStyles[index]"
+    >
+    <label
+      class="checkbox_label"
+      for="checkbox_{{index}}"
+      style="
+        {{fieldsStyles[index]?.hasOwnProperty('color') ? 'color: ' + fieldsStyles[index].color + ';' : ''}}
+        {{fieldsStyles[index]?.hasOwnProperty('fontSize') ? 'font-size: ' + fieldsStyles[index].fontSize + ';' : ''}}
+        {{fieldsStyles[index]?.hasOwnProperty('fontWeight') ? 'font-weight: ' + fieldsStyles[index].fontWeight + ';' : ''}}
+       "
+    >{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : 'checkbox label'}}</label>
+  </div>
+  <div
+    class="input_group isFlex flex-center"
+    *ngIf="element === 'Button'"
   >
     <button
       [attr.data-index]="index"
-      *ngIf="element === 'Button'"
       [ngStyle]="fieldsStyles[index]"
     >{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : 'Button'}}</button>
   </div>

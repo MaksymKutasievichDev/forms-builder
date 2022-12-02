@@ -21,11 +21,11 @@ export class FormBuilderComponent implements OnInit {
   ];
 
   formTemplateElements:string[] = [];
-  formTemplateElementsStyles:any = [];
 
   backupformTemplateElements:any =[]
   templateWasChanged: boolean = false;
-  savedSuccess: boolean = false;
+
+  savedSuccess: boolean = false
 
   formStyles:any = {}
   fieldsStyles: any = []
@@ -35,7 +35,6 @@ export class FormBuilderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.token.getToken())
     if(!this.token.getToken() || this.token.getToken() == "undefined" ){
       this.router.navigate(['login'])
     }
@@ -67,11 +66,12 @@ export class FormBuilderComponent implements OnInit {
   }
   /*Delete active element when called*/
   DeleteElement(event:boolean):void{
-    if(event === true){
+    if(event){
       this.formTemplateElements.splice(this.clickedElementIndex,1)
       this.backupformTemplateElements = this.formTemplateElements
       this.fieldsStyles.splice(this.clickedElementIndex,1)
       this.clickedElementIndex = -1
+      this.templateWasChanged = true
     }
   }
 
@@ -80,16 +80,13 @@ export class FormBuilderComponent implements OnInit {
     this.clickedElementIndex = event
   }
 
-  /*TEMPLATE API CALLS*/
-  //SAVE TEMPLATE MAP
+  //Save form template*/
   saveMap():void{
-    console.log(this.fieldsStyles)
-    console.log(this.formStyles)
-    console.log(JSON.stringify(this.fieldsStyles))
     this.authService.saveTemplateMap(this.backupformTemplateElements, this.formStyles, JSON.stringify(this.fieldsStyles), this.token.getToken()).subscribe(
       data => {
         if(data.success == true){
           this.savedSuccess = true
+          this.templateWasChanged = false
           setTimeout(()=>{
             this.savedSuccess = false
           }, 3100)
@@ -100,9 +97,8 @@ export class FormBuilderComponent implements OnInit {
 
   /*DRAG&DROP*/
   drop(event: any) {
-    console.log('drop')
-    console.log(event)
     if (event.previousContainer !== event.container && event.previousContainer.id === 'cdk-drop-list-1') {
+      /*On item move from elements to template*/
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -112,7 +108,7 @@ export class FormBuilderComponent implements OnInit {
       this.backupformTemplateElements = event.container.data
       this.templateWasChanged = true
       this.fieldsStyles.splice(event.currentIndex, 0, null)
-      console.log(this.backupformTemplateElements)
+      /*Add additional options on select field created*/
       if(event.item.data=="Select"){
         if(event.currentIndex > this.fieldsStyles.length){
           while(event.currentIndex > this.fieldsStyles.length){
@@ -121,13 +117,14 @@ export class FormBuilderComponent implements OnInit {
         }
         this.fieldsStyles.splice(event.currentIndex, 0, {options:['option1', 'option2']})
       }
-      console.log(this.fieldsStyles)
     } else {
+      /*On item move in same container*/
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
+      /*Change styles array indexes when new element added to template*/
       if(event.container.id=='cdk-drop-list-0'){
         array_move(this.fieldsStyles, event.previousIndex, event.currentIndex)
         this.clickedElementIndex = event.currentIndex
@@ -135,16 +132,21 @@ export class FormBuilderComponent implements OnInit {
     }
   }
   exited(event: any) {
-    console.log('exited')
+    /*Create duplicate of element on leave (only for elements container) */
     const currentIdx = event.container.data.findIndex(
       (f: any) => f === event.item.data
     );
     this.formElementsList.splice(currentIdx + 1, 0, event.item.data)
   }
   entered(event: any) {
+    /*Delete item with same data on container enetered (only for elements container) */
     const currentIdx = event.container.data.findIndex(
       (f: any) => f === event.item.data
     );
     this.formElementsList.splice(currentIdx + 1, 1)
+  }
+  /*Block drop functionality for elements div*/
+  block(){
+    return false;
   }
 }

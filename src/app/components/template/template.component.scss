@@ -1,6 +1,6 @@
 .form_template__element{
   padding: 1rem 1rem;
-  *{
+  input[type="text"], select, textarea, button{
     display: block;
   }
   textarea{

@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private tokenStorage:TokenStorageService) {}
 
   ngOnInit(): void {
+    /*Redirect if logged in*/
     if(this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.router.navigate(['home'])
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit():void {
-    console.log(this.form)
+    /*Login user*/
     this.authService.login(this.form).subscribe(
       data => {
         console.log(data);

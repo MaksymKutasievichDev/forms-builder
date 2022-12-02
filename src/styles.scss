@@ -14,21 +14,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   width: 100%;
 }
 .isFlex{
-  display: flex;
+  display: flex !important;
   align-items: center;
   .flex-1{
     flex: 1;
   }
+  &.flex-center{
+    justify-content: center;
+  }
 }
-.flex-center{
-  justify-content: center;
+.text_center{
+  text-align: center;
 }
 .form_template input, select, textarea{
   padding: .5rem;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 0.8rem;
 }
-.form_template input, select{
+.form_template input[type="text"], select{
   height: 40px;
 }
 
@@ -41,7 +44,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   opacity: 0.5;
   pointer-events: none;
 }
-
+.mat-form-field-infix{
+  width: unset !important;
+}
+app-field-styles .input_group > *{
+  flex: 40% !important;
+}
 .error_container{
   color: #f44336;
   background: #fadbd9;

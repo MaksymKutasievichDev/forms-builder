@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
+    /*Register user*/
     this.authService.register(this.form).subscribe(
       data => {
       if('error' in data){
@@ -41,6 +42,7 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+  /*Clear error on input change*/
   clearError():void{
     this.isSignUpFailed = false;
     this.errorMessage = ''

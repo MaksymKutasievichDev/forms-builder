@@ -24,6 +24,28 @@
     display: block;
   }
 }
+
+.styles_settings{
+  overflow: hidden;
+  .mat-accordion .mat-expansion-panel{
+    border-radius: 0 !important;
+  }
+  .mat-expansion-panel-header-description{
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-right: 0;
+  }
+  #mat-expansion-table{
+    box-shadow: none;
+  }
+  .mat-expansion-panel-spacing{
+    margin: 0;
+  }
+  app-form-styles .mat-expansion-panel{
+    border-bottom: 2px solid #c2d6e1;
+  }
+}
+
 .saved_success_notification{
   position: fixed;
   bottom: 0;
