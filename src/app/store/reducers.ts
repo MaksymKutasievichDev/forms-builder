@@ -46,5 +46,15 @@ export const reducers = createReducer(
       ...state.form,
       elementStyles: elementsStyles
     }
+  })),
+  on(FormDataActions.deleteDataFromState, (state) => ({
+    isLoading: true,
+    form:{
+      templateMap: [],
+      formStyles: {},
+      elementStyles:'',
+      token:''
+    },
+    error: null
   }))
 )
