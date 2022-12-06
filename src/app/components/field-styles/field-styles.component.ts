@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, OnChanges, Output, EventEmitter, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -6,6 +6,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
   selector: 'app-field-styles',
   templateUrl: './field-styles.component.html',
   styleUrls: ['./field-styles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FieldStylesComponent extends SnackBar implements OnInit {
 
@@ -32,6 +33,7 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
+    console.log('Changes in fields-styles.ts detected')
     /*Update styles for field when clicked element is changed*/
     if (typeof changes['elementTag'] != 'undefined') {
       if(this.elementTag ) this.isActive = true
@@ -72,5 +74,10 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
     this.fieldsStyles[this.elementIndex].options.splice(index, 1)
     this.options = this.fieldsStyles[this.elementIndex].options
     this.successShow('Option removed')
+  }
+
+
+  componentCreated():void{
+    //console.log('Field styles component created')
   }
 }

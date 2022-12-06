@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "../../services/token-storage.service";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
@@ -6,8 +6,13 @@ import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {array_move} from "../../_helpers/helpers";
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {IAllFormData} from "../../services/IFieldsStyles";
+import {select, Store} from "@ngrx/store";
+import {updateFormMapData, updateFormStyles, updateToken} from "../../store/actions";
+import {formElementsSelector, formElementsStyles, formStylesSelector, isLoadingSelector} from "../../store/selectors";
+import {AppStateInterface} from "../../services/appState.interface";
 
 @Component({
   selector: 'app-form-builder',
@@ -24,46 +29,70 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     'Select'
   ];
 
-  formTemplateElements:string[] = [];
-
   templateWasChanged: boolean = false;
 
-  formStyles:any = {}
   fieldsStyles: any = []
   clickedElementIndex:number
+
+  allFormData: IAllFormData = {
+    templateMap: [],
+    formStyles: {},
+    token:''
+  }
 
   dataRecieved$ : Subject<boolean> = new Subject<boolean>();
   dataSaved$ : Subject<boolean> = new Subject<boolean>();
 
+  /*clicks = fromEvent(document, 'click')
+  clicksOnDivs = this.clicks.pipe(filter(ev => (<HTMLElement>ev.target).closest('.form_template__element') !== null))*/
 
-  constructor(private router: Router, private token: TokenStorageService, private authService: AuthService, snackBar: MatSnackBar) {
+  //formData$: Observable<IAllFormData> = this.store.select(state => state.formData)
+  formStylesSelect$ : Observable<any>
+  formTemplateMap$: Observable<any>
+  formElementsStyles$: Observable<any>
+
+  constructor(
+    private router: Router,
+    private token: TokenStorageService,
+    private authService: AuthService,
+    snackBar: MatSnackBar,
+    private store: Store<AppStateInterface>
+  ) {
     super(snackBar)
+    this.formStylesSelect$ = this.store.pipe(select(formStylesSelector))
+    this.formTemplateMap$ = this.store.pipe(select(formElementsSelector))
+    this.formElementsStyles$ = this.store.pipe(select(formElementsStyles))
   }
 
   ngOnInit(): void {
+    this.store.dispatch({type: '[FormData] Get Form Data'})
+    console.log("dispatched")
     //LOAD SAVE IF EXIST
     this.authService.getUserDataByToken(this.token.getToken()).pipe(takeUntil(this.dataRecieved$)).subscribe(
       data => {
-        console.log(data[0])
-        if('templatemap' in data[0]){
-          this.formTemplateElements = data[0].templatemap
+        if('templatemap' in data[0]) {
+          this.allFormData.templateMap = data[0].templatemap
         }
         if('formstyles' in data[0]){
-          this.formStyles = data[0].formstyles
+          this.allFormData.formStyles = data[0].formstyles
         }
-        if('elementstyles' in data[0]){
-          this.fieldsStyles = JSON.parse(data[0].elementstyles)
-          console.log(this.fieldsStyles)
-        }
+        if('elementstyles' in data[0]) this.fieldsStyles = JSON.parse(data[0].elementstyles)
         this.dataRecieved$.next(true)
         this.dataRecieved$.unsubscribe()
       }
     )
+    this.allFormData.token = this.token.getToken()
+    //this.token.getToken() ? this.store.dispatch(updateToken({token: this.token.getToken()})) : ''
+
+    /*this.clicksOnDivs.subscribe(x=>{
+      console.log(x)
+    })*/
   }
 
   /*Get form styles from output*/
   updateFormStyles(formStyles:object){
-    this.formStyles = formStyles
+    //this.allFormData.formStyles = formStyles
+    //this.store.dispatch(updateFormStyles({formStyles: formStyles}))
   }
   /*Get field styles from output*/
   updateFieldsStyles(fieldStyles:object){
@@ -72,7 +101,7 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
   /*Delete active element when called*/
   DeleteElement(event:boolean):void{
     if(event){
-      this.formTemplateElements.splice(this.clickedElementIndex,1)
+      this.allFormData.templateMap.splice(this.clickedElementIndex, 1)
       this.fieldsStyles.splice(this.clickedElementIndex,1)
       this.clickedElementIndex = -1
       this.templateWasChanged = true
@@ -85,9 +114,10 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     this.clickedElementIndex = event
   }
 
-  //Save form template*/
+  /*Save form template*/
   saveMap():void{
-    this.authService.saveTemplateMap(this.formTemplateElements, this.formStyles, JSON.stringify(this.fieldsStyles), this.token.getToken()).pipe(takeUntil(this.dataSaved$)).subscribe(
+    this.allFormData.elementStyles = JSON.stringify((this.fieldsStyles))
+    this.authService.saveTemplateMap(this.allFormData).pipe(takeUntil(this.dataSaved$)).subscribe(
       data => {
         if(data.success == true){
           this.successShow('Form saved')

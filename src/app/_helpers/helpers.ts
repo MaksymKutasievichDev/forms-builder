@@ -1,5 +1,3 @@
-import {IFieldsStyles} from "../services/IFieldsStyles";
-
 export const reloadPage = ():void => {
   window.location.reload()
 }

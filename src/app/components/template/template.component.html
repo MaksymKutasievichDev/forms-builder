@@ -11,6 +11,7 @@
   <div
     class="input_group"
     *ngIf="element === 'Textarea'"
+    [attr.data-index]="index"
   >
     <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
     <textarea
@@ -22,6 +23,7 @@
   <div
     class="input_group"
     *ngIf="element === 'Input'"
+    [attr.data-index]="index"
   >
     <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
     <input
@@ -35,6 +37,7 @@
   <div
     class="input_group"
     *ngIf="element === 'Select'"
+    [attr.data-index]="index"
   >
     <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
     <select
@@ -48,6 +51,7 @@
   <div
     class="input_group"
     *ngIf="element === 'Checkbox'"
+    [attr.data-index]="index"
   >
     <p class="text_center"
        style="
@@ -76,10 +80,14 @@
   <div
     class="input_group isFlex flex-center"
     *ngIf="element === 'Button'"
+    [attr.data-index]="index"
   >
     <button
       [attr.data-index]="index"
       [ngStyle]="fieldsStyles[index]"
     >{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : 'Button'}}</button>
   </div>
+
+  <div>{{componentCreated()}}</div>
+
 </div>

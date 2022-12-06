@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import { HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {IAllFormData} from "./IFieldsStyles";
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +26,14 @@ export class AuthService {
     })
   }
 
-  saveTemplateMap(templateMap:string[], formstyles:any, elementstyles:any,token:any):Observable<any>{
+  saveTemplateMap(formData: IAllFormData):Observable<any>{
     return this.http.post('http://localhost:4000/save_template',{
-      templatemap: templateMap,
-      formstyles: formstyles,
-      elementstyles: elementstyles
+      templatemap: formData.templateMap,
+      formstyles: formData.formStyles,
+      elementstyles: formData.elementStyles
     }, {
       headers: new HttpHeaders({
-        'authorization': `Bearer ${token}`
+        'authorization': `Bearer ${formData.token}`
       })
     })
   }

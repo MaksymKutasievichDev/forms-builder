@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,6 +35,11 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkAccordionModule} from "@angular/cdk/accordion";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import {reducers} from "./store/reducers";
+import {FormDataEffects} from "./services/formData.effects";
 
 @NgModule({
   declarations: [
@@ -66,7 +71,10 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatSelectModule,
     MatExpansionModule,
     CdkAccordionModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    StoreModule.forRoot({formState: reducers}),
+    EffectsModule.forRoot([FormDataEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [authInterceptorProviders
   ],

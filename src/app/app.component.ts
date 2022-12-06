@@ -23,6 +23,7 @@ export class AppComponent implements OnInit{
     }
   }
 
+
   checkIfLoggedIn():boolean{
     if(!!this.tokenStorageService.getToken()){
       this.username = this.tokenStorageService.getUser();

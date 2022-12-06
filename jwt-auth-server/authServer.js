@@ -49,6 +49,16 @@ const logs = [
   {
     username: "Maksym",
     password: "1111",
+    templatemap: ["Input", "Input", "Checkbox", "Button"],
+    formstyles: {
+      label: "My Form",
+      color: "Green",
+      background: "LightCoral",
+      borderStyle: "dashed",
+      borderColor: "White",
+    },
+    elementstyles:
+      '[{"label":"Lable"},{"label":"Label","placeholder":"New plchldr"},null,{"label":"Login"}]',
   },
 ];
 
@@ -118,6 +128,9 @@ app.post("/register", (req, res) => {
   logs.push({
     username: user.name,
     password: user.password,
+    templatemap: [],
+    formstyles: {},
+    elementstyles: "[]",
   });
   console.log(logs);
 

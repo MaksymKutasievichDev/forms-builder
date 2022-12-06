@@ -1,12 +1,12 @@
 <div class="form_builder" cdkDropListGroup>
   <div class="styles_settings">
     <mat-accordion>
-      <app-form-styles [startFormStyles]="formStyles" (formStyles)="updateFormStyles($event)"></app-form-styles>
+      <app-form-styles [startFormStyles]="allFormData.formStyles" (formStyles)="updateFormStyles($event)"></app-form-styles>
       <app-field-styles
         [fieldsStyles]="fieldsStyles"
         (fieldStyles)="updateFieldsStyles($event)"
         (deleteCall)="DeleteElement($event)"
-        [elementTag]="formTemplateElements[clickedElementIndex]"
+        [elementTag]="allFormData.templateMap[clickedElementIndex]"
         [elementIndex]="clickedElementIndex"
       >
       </app-field-styles>
@@ -15,14 +15,14 @@
   <div class="form_template__wrapper">
     <div class="form_template"
          style="border-radius: 5px"
-         [ngStyle]="formStyles">
-      <p>{{formStyles.hasOwnProperty('label') ? formStyles.label : 'Form label'}}</p>
+         [ngStyle]="formStylesSelect$ | async">
+      <p>{{allFormData.formStyles.hasOwnProperty('label') ? allFormData.formStyles.label : 'Form label'}}</p>
       <app-template
         class="form_template__elements"
         cdkDropList
-        [cdkDropListData]="formTemplateElements"
+        [cdkDropListData]="formTemplateMap$ | async"
         (cdkDropListDropped)="drop($event)"
-        [formTemplateElements]="formTemplateElements"
+        [formTemplateElements]="formTemplateMap$ | async"
         (clickedElementIndex)="getClickedElementIndex($event)"
         [activeElementIndex]="clickedElementIndex"
         [fieldsStyles]="fieldsStyles"
