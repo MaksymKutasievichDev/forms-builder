@@ -67,7 +67,7 @@
       <div *ngIf="elementTag=='Select'" class="select_options isFullWidth">
         <div
           *ngFor="let option of this.formElementsStyles[this.elementIndex]['options'];let index = index;"
-          class="select_option isFlex"
+          class="select_option isFlex gap"
         >
           <mat-form-field class="flex-1" appearance="fill" style="pointer-events: none">
             <mat-label>Remove field</mat-label>
@@ -75,7 +75,7 @@
           </mat-form-field>
           <button (click)="removeOption(index)" mat-raised-button color="warn">Remove</button>
         </div>
-        <div class="select_option isFlex">
+        <div class="select_option isFlex gap">
           <mat-form-field class="flex-1" appearance="fill">
             <mat-label>Add field</mat-label>
             <input [(ngModel)]="addOptionText" [ngModelOptions]="{standalone: true}" #additionalOption matInput>

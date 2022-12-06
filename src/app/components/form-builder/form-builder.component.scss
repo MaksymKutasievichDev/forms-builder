@@ -20,11 +20,13 @@
     margin-bottom: 1rem;
   }
   .form_template__elements{
-    min-height: 100px;
+    min-height: 50px;
     display: block;
   }
 }
-
+.form_template{
+  border: 2px solid #C2D6E1;
+}
 .styles_settings{
   overflow: hidden;
   .mat-accordion .mat-expansion-panel{
