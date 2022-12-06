@@ -2,11 +2,14 @@
 $success_color: #28a745;
 $error_color: #f44336;
 $font_helvetica: Roboto, "Helvetica Neue", sans-serif;
+$font_montserat: 'Montserrat', sans-serif;
 
 html, body { height: 100%; }
-body { margin: 0; font-family: $font_helvetica }
+body { margin: 0; font-family: $font_montserat }
 *{
-  box-sizing: border-box
+  box-sizing: border-box;
+  font-family: $font_montserat;
+  font-weight: 400;
 }
 
 #app{
@@ -15,6 +18,9 @@ body { margin: 0; font-family: $font_helvetica }
 }
 .isFullWidth{
   width: 100%;
+}
+.mw-full{
+  max-width: 100%
 }
 .isFlex{
   display: flex !important;
@@ -68,9 +74,19 @@ app-field-styles .input_group > *{
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
+  background: rgba(161, 157, 143, 1) !important;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
   0 8px 10px 1px rgba(0, 0, 0, 0.14),
   0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  input, select, textarea{
+    padding: .5rem;
+    font-family: $font_helvetica;
+    font-size: 0.8rem;
+    outline: none !important;
+  }
+  input[type="text"], select{
+    height: 40px;
+  }
 }
 
 .cdk-drag-animating {
