@@ -1,12 +1,10 @@
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnInit,
   Output,
-  OnChanges, SimpleChanges
 } from '@angular/core';
 
 @Component({
@@ -26,17 +24,9 @@ export class TemplateComponent implements OnInit {
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    //setInterval(()=>{
-    //  /*this.changeDetectionRef.detectChanges()*/
-    //  console.log('check tick')
-    //  console.log(this.fieldsStyles)
-    //}, 3000)
   }
 
   getFormElementIndex(event:any):void{
     this.clickedElementIndex.emit(event.target.dataset.index)
-  }
-  componentCreated(){
-    //console.log('template component created')
   }
 }

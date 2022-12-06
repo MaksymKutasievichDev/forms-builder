@@ -10,23 +10,23 @@
       {{panelOpenState ? 'close' : 'open'}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <form (ngSubmit)="outputFormStyles()">
+  <form (ngSubmit)="submitFormStyles()">
     <div class="input_group">
       <mat-form-field class="isFullWidth" appearance="fill">
         <mat-label>Form Label</mat-label>
-        <input name="form_label" [(ngModel)]="form.label" matInput>
+        <input id="label" [formControl]="label" matInput>
       </mat-form-field>
     </div>
 
     <div class="input_group isFlex" style="gap: 1rem">
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Text Color</mat-label>
-        <input name="text_color" [(ngModel)]="form.color" matInput>
+        <input name="text_color" [formControl]="color" id="color" matInput>
         <div class="mat_input_desc" matSuffix>RGB</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Background</mat-label>
-        <input name="background" [(ngModel)]="form.background" matInput>
+        <input name="background" [formControl]="background" id="background" matInput>
         <div class="mat_input_desc" matSuffix>RGB</div>
       </mat-form-field>
     </div>
@@ -34,7 +34,7 @@
     <div class="input_group isFlex" style="gap: 1rem">
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Border type</mat-label>
-        <mat-select name="border_type" [(ngModel)]="form.borderStyle">
+        <mat-select [formControl]="borderStyle" id="borderStyle">
           <mat-option value="dotted">Dotted</mat-option>
           <mat-option value="dashed">Dashed</mat-option>
           <mat-option value="solid">Solid</mat-option>
@@ -46,7 +46,7 @@
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Border Color</mat-label>
-        <input name="border_color" [(ngModel)]="form.borderColor" matInput>
+        <input name="border_color" [formControl]="borderColor" id="borderColor" matInput>
         <div class="mat_input_desc" matSuffix>RGB</div>
       </mat-form-field>
     </div>

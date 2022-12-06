@@ -1,83 +1,124 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Observable} from "rxjs";
+import {select, Store} from "@ngrx/store";
+import {formElementsSelector, formElementsStyles} from "../../store/selectors";
+import {AppStateInterface} from "../../services/appState.interface";
+import {FormControl} from "@angular/forms";
+import {updateFormStyles, updateElementsStyles, updateFormMapData} from "../../store/actions";
+import {IFormStyles} from "../../services/IFieldsStyles";
 
 @Component({
   selector: 'app-field-styles',
   templateUrl: './field-styles.component.html',
   styleUrls: ['./field-styles.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FieldStylesComponent extends SnackBar implements OnInit {
 
-  form:any = {};
   panelOpenState:boolean = false;
 
-  @Input() elementTag:string ='';
-  @Input() elementIndex:number;
-  @Input() fieldsStyles:any;
+  title = new FormControl('')
+  label = new FormControl('')
+  placeholder = new FormControl('')
+  width = new FormControl('')
+  height = new FormControl('')
+  fontSize = new FormControl('')
+  fontWeight = new FormControl('')
+  color = new FormControl('')
+  borderColor = new FormControl('')
+  borderStyle = new FormControl('')
 
-  options: string[]
+  elementTag:string | null;
+  @Input() elementIndex:number = 0;
+
   addOptionText: string
-
-  @Output() fieldStyles = new EventEmitter<object>()
-  @Output() deleteCall = new EventEmitter<boolean>()
 
   isActive:boolean = false
 
-  constructor(snackBar: MatSnackBar) {
+  formElementsStyles$: Observable<any>
+  formElementsStyles: [{
+    [key: string]: string
+  }]
+
+  formTemplateMap$: Observable<any>
+  formTemplateMapSelector: string[] | undefined = [];
+
+  constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>) {
     super(snackBar)
+    this.formElementsStyles$ = this.store.pipe(select(formElementsStyles))
+    this.formTemplateMap$ = this.store.pipe(select(formElementsSelector))
   }
 
   ngOnInit(): void {
+    this.formElementsStyles$.subscribe(
+      data => {
+        this.formElementsStyles = data ? JSON.parse(data) : ''
+      }
+    )
+    this.formTemplateMap$.subscribe(data => this.formTemplateMapSelector = data)
   }
 
   ngOnChanges(changes: SimpleChanges){
-    console.log('Changes in fields-styles.ts detected')
-    /*Update styles for field when clicked element is changed*/
-    if (typeof changes['elementTag'] != 'undefined') {
-      if(this.elementTag ) this.isActive = true
-      if(this.elementTag == 'Select'){
-        this.options = this.fieldsStyles[this.elementIndex].options
-      }
-    }
     if (typeof changes['elementIndex'] != 'undefined') {
-      if(this.fieldsStyles[this.elementIndex]!=undefined && typeof this.fieldsStyles[this.elementIndex] != undefined){
-        this.form = this.fieldsStyles[this.elementIndex]
-      } else {
-        this.form = {}
+      this.isActive = true
+      this.elementTag = this.formTemplateMapSelector ? this.formTemplateMapSelector[this.elementIndex] : '';
+      if(this.elementIndex && this.formElementsStyles[this.elementIndex] != null){
+        console.log(this.formElementsStyles[this.elementIndex])
+        this.label.setValue(this.formElementsStyles[this.elementIndex]['label'] ? this.formElementsStyles[this.elementIndex]['label'] : '')
+        this.title.setValue(this.formElementsStyles[this.elementIndex]['title'] ? this.formElementsStyles[this.elementIndex]['title'] : '')
+        this.placeholder.setValue(this.formElementsStyles[this.elementIndex]['placeholder'] ? this.formElementsStyles[this.elementIndex]['placeholder'] : '')
+        this.width.setValue(this.formElementsStyles[this.elementIndex]['width'] ? this.formElementsStyles[this.elementIndex]['width'] : '')
+        this.height.setValue(this.formElementsStyles[this.elementIndex]['height'] ? this.formElementsStyles[this.elementIndex]['height'] : '')
+        this.fontSize.setValue(this.formElementsStyles[this.elementIndex]['fontSize'] ? this.formElementsStyles[this.elementIndex]['fontSize'] : '')
+        this.fontWeight.setValue(this.formElementsStyles[this.elementIndex]['fontWeight'] ? this.formElementsStyles[this.elementIndex]['fontWeight'] : '')
+        this.color.setValue(this.formElementsStyles[this.elementIndex]['color'] ? this.formElementsStyles[this.elementIndex]['color'] : '')
+        this.borderColor.setValue(this.formElementsStyles[this.elementIndex]['borderColor'] ? this.formElementsStyles[this.elementIndex]['borderColor'] : '')
+        this.borderStyle.setValue(this.formElementsStyles[this.elementIndex]['borderStyle'] ? this.formElementsStyles[this.elementIndex]['borderStyle'] : '')
       }
     }
   }
 
-  outputFieldStyles(){
-    if(this.elementTag == 'Select'){
-      /*Add option to form object before sending to the form (only if select)*/
-      this.form.options = this.options
-    }
-    this.fieldStyles.emit(this.form)
+  saveFieldStyles(){
+    let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
+    formElementStylesCopy[this.elementIndex].title = this.title.value
+    formElementStylesCopy[this.elementIndex].label = this.label.value
+    formElementStylesCopy[this.elementIndex].placeholder = this.placeholder.value
+    formElementStylesCopy[this.elementIndex].width = this.width.value + 'px'
+    formElementStylesCopy[this.elementIndex].height = this.height.value + 'px'
+    formElementStylesCopy[this.elementIndex].fontSize = this.fontSize.value + 'px'
+    formElementStylesCopy[this.elementIndex].fontWeight = this.fontWeight.value
+    formElementStylesCopy[this.elementIndex].color = this.color.value
+    formElementStylesCopy[this.elementIndex].borderColor = this.borderColor.value
+    formElementStylesCopy[this.elementIndex].borderStyle = this.borderStyle.value
+    this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Styles added successfully')
   }
 
   sendDeleteCall(){
-    this.deleteCall.emit(true)
+    /*DELETE FROM ELEMENTS*/
+    let formTemplateMapSelectorCopy = JSON.parse(JSON.stringify(this.formTemplateMapSelector));
+    formTemplateMapSelectorCopy.splice(this.elementIndex,1)
+    this.store.dispatch(updateFormMapData({mapData: formTemplateMapSelectorCopy}))
+    /*DELETE FROM STYLES*/
+    let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
+    formElementStylesCopy.splice(this.elementIndex, 1)
+    this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
+    /*SUCCESS MESSAGE*/
     this.successShow('Element deleted successfully')
   }
 
   addOption(){
-    this.fieldsStyles[this.elementIndex].options.push(this.addOptionText)
-    this.addOptionText=''
-    this.options = this.fieldsStyles[this.elementIndex].options
+    let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
+    formElementStylesCopy[this.elementIndex].options.push(this.addOptionText)
+    this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
+    this.addOptionText = ''
     this.successShow('Option added')
   }
   removeOption(index:number){
-    this.fieldsStyles[this.elementIndex].options.splice(index, 1)
-    this.options = this.fieldsStyles[this.elementIndex].options
+    let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
+    formElementStylesCopy[this.elementIndex].options.splice(index,1)
+    this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Option removed')
-  }
-
-
-  componentCreated():void{
-    //console.log('Field styles component created')
   }
 }

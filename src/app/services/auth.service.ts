@@ -26,14 +26,14 @@ export class AuthService {
     })
   }
 
-  saveTemplateMap(formData: IAllFormData):Observable<any>{
+  saveTemplateMap(templateMap: string[] | undefined, formStyles: {}, elementStyles: string, token: string | null):Observable<any>{
     return this.http.post('http://localhost:4000/save_template',{
-      templatemap: formData.templateMap,
-      formstyles: formData.formStyles,
-      elementstyles: formData.elementStyles
+      templatemap: templateMap,
+      formstyles: formStyles,
+      elementstyles: elementStyles
     }, {
       headers: new HttpHeaders({
-        'authorization': `Bearer ${formData.token}`
+        'authorization': `Bearer ${token}`
       })
     })
   }

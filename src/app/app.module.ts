@@ -40,6 +40,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import {reducers} from "./store/reducers";
 import {FormDataEffects} from "./services/formData.effects";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import {FormDataEffects} from "./services/formData.effects";
     MatExpansionModule,
     CdkAccordionModule,
     MatSnackBarModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({formState: reducers}),
     EffectsModule.forRoot([FormDataEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),

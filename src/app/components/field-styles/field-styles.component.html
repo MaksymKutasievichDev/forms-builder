@@ -8,38 +8,38 @@
       {{panelOpenState ? 'close' : 'open'}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <form (ngSubmit)="outputFieldStyles()" class="active_check {{isActive ? '' : 'is_active_false'}}">
+  <form  class="active_check {{isActive ? '' : 'is_active_false'}}">
     <div class="input_group isFlex">
       <mat-form-field *ngIf="elementTag=='Checkbox'" class="isFullWidth" appearance="fill">
         <mat-label>Title</mat-label>
-        <input name="el_title" [(ngModel)]="form.title" matInput>
+        <input name="title" [formControl]="title" id="title" matInput>
       </mat-form-field>
       <mat-form-field class="isFullWidth" appearance="fill">
         <mat-label>Label</mat-label>
-        <input name="el_label" [(ngModel)]="form.label" matInput>
+        <input name="label" [formControl]="label" id="label" matInput>
       </mat-form-field>
       <mat-form-field *ngIf="elementTag=='Input' || elementTag=='Textarea'" class="isFullWidth" appearance="fill">
         <mat-label>Placeholder</mat-label>
-        <input name="el_placeholder" [(ngModel)]="form.placeholder" matInput>
+        <input name="placeholder" [formControl]="placeholder" id="placeholder" matInput>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Width</mat-label>
-        <input name="el_width" [(ngModel)]="form['width.px']" matInput>
+        <input name="width" [formControl]="width" id="width" matInput>
         <div class="mat_input_desc" matSuffix>px</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Height</mat-label>
-        <input name="el_height" [(ngModel)]="form['height.px']" matInput>
+        <input name="height" [formControl]="height" id="height" matInput>
         <div class="mat_input_desc" matSuffix>px</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Font size</mat-label>
-        <input name="el_fontSize" [(ngModel)]="form['fontSize.px']" matInput>
+        <input name="fontSize" [formControl]="fontSize" id="fontSize" matInput>
         <div class="mat_input_desc" matSuffix>px</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Font Weight</mat-label>
-        <mat-select name="el_fontWeight" [(ngModel)]="form.fontWeight">
+        <mat-select [formControl]="fontWeight" id="fontWeight">
           <mat-option value="light">Light</mat-option>
           <mat-option value="400">Normal</mat-option>
           <mat-option value="bold">Bold</mat-option>
@@ -47,17 +47,17 @@
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Colour</mat-label>
-        <input name="el_color" [(ngModel)]="form.color" matInput>
+        <input name="color" [formControl]="color" id="color" matInput>
         <div class="mat_input_desc" matSuffix>RGB</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill" *ngIf="elementTag!='Checkbox'">
         <mat-label>Border Colour</mat-label>
-        <input name="el_borderColor" [(ngModel)]="form.borderColor" matInput>
+        <input name="borderColor" [formControl]="borderColor" id="borderColor" matInput>
         <div class="mat_input_desc" matSuffix>RGB</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill" *ngIf="elementTag!='Checkbox'">
         <mat-label>Border type</mat-label>
-        <mat-select name="border_type" [(ngModel)]="form.borderStyle">
+        <mat-select [formControl]="borderStyle" id="borderStyle">
           <mat-option value="dotted">Dotted</mat-option>
           <mat-option value="dashed">Dashed</mat-option>
           <mat-option value="solid">Solid</mat-option>
@@ -66,7 +66,7 @@
 
       <div *ngIf="elementTag=='Select'" class="select_options isFullWidth">
         <div
-          *ngFor="let option of fieldsStyles[elementIndex].options;let index = index;"
+          *ngFor="let option of this.formElementsStyles[this.elementIndex]['options'];let index = index;"
           class="select_option isFlex"
         >
           <mat-form-field class="flex-1" appearance="fill" style="pointer-events: none">
@@ -85,10 +85,8 @@
       </div>
     </div>
     <div class="form_btns isFlex flex-center" style="gap: 2rem">
-      <button type="submit" mat-raised-button color="primary">Apply</button>
+      <button (click)="saveFieldStyles()" mat-raised-button color="primary">Apply</button>
       <button mat-raised-button (click)="sendDeleteCall()" color="warn">Delete</button>
     </div>
   </form>
-
-  <div>{{componentCreated()}}</div>
 </mat-expansion-panel>

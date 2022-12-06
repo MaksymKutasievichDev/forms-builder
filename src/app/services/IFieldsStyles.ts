@@ -28,3 +28,15 @@ export interface IFormStyles {
   borderStyle?: string
   borderColor?: string
 }
+export interface IFormElementsStyles {
+  title?: string
+  label?: string
+  placeholder?: string
+  width?: string
+  height?: string
+  fontSize?: string
+  fontWeight?: string
+  color?: string
+  borderColor?: string
+  borderStyle?: string
+}

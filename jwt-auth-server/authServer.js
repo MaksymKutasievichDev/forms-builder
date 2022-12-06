@@ -58,7 +58,7 @@ const logs = [
       borderColor: "White",
     },
     elementstyles:
-      '[{"label":"Lable"},{"label":"Label","placeholder":"New plchldr"},null,{"label":"Login"}]',
+      '[{"label":"Lable"},{"label":"Label","placeholder":"New plchldr"},{},{"label":"Login"}]',
   },
 ];
 
