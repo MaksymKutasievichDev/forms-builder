@@ -1,17 +1,15 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "../../services/token-storage.service";
 import {AuthService} from "../../services/auth.service";
-import {Router} from "@angular/router";
-import {moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
-import {array_move} from "../../_helpers/helpers";
+import {moveItemInArray} from "@angular/cdk/drag-drop";
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Observable, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {IAllFormData, IFormStyles} from "../../services/IFieldsStyles";
+import {IFormStyles} from "../../services/IFieldsStyles";
 import {select, Store} from "@ngrx/store";
-import {updateElementsStyles, updateFormMapData, updateFormStyles, updateToken} from "../../store/actions";
-import {formElementsSelector, formElementsStyles, formStylesSelector, isLoadingSelector} from "../../store/selectors";
+import {updateElementsStyles, updateFormMapData} from "../../store/actions";
+import {formElementsSelector, formElementsStyles, formStylesSelector} from "../../store/selectors";
 import {AppStateInterface} from "../../services/appState.interface";
 
 @Component({
@@ -33,12 +31,6 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
 
   clickedElementIndex:number
 
-  allFormData: IAllFormData = {
-    templateMap: [],
-    formStyles: {},
-    token:''
-  }
-
   dataRecieved$ : Subject<boolean> = new Subject<boolean>();
   dataSaved$ : Subject<boolean> = new Subject<boolean>();
 
@@ -52,7 +44,6 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
 
 
   constructor(
-    private router: Router,
     private token: TokenStorageService,
     private authService: AuthService,
     snackBar: MatSnackBar,
@@ -69,7 +60,6 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     this.formTemplateMap$.subscribe(data => this.formTemplateMapSelector = data)
     this.formElementsStyles$.subscribe(data => this.formElementsStylesSelector = data ? JSON.parse(data) : [])
     this.formStylesSelect$.subscribe(data => this.formStylesSelectorObs = data)
-    this.allFormData.token = this.token.getToken()
   }
 
   /*GET INDEX OF CLICKED ELEMENT*/

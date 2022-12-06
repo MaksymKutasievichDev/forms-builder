@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "./services/token-storage.service";
 import {Router} from "@angular/router";
 import {AppStateInterface} from "./services/appState.interface";
-import {Store, select} from "@ngrx/store";
+import {Store} from "@ngrx/store";
 import {deleteDataFromState} from "./store/actions";
 
 @Component({

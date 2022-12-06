@@ -1,5 +1,5 @@
 import {createAction, props} from "@ngrx/store";
-import {IFormStyles, IAllFormData, IFormDataResponse} from "../services/IFieldsStyles";
+import {IFormStyles} from "../services/IFieldsStyles";
 
 export const getFormData = createAction('[FormData] Get Form Data')
 export const setFormData = createAction('[FormData] Set Form Data after API call', props<{formData: any}>())

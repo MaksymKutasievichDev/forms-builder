@@ -1,7 +1,3 @@
-export const reloadPage = ():void => {
-  window.location.reload()
-}
-
 /*Pure function for move elements inside array*/
 export const array_move = (arr:any, old_index: number, new_index:number): any[] => {
   const array = [...arr];

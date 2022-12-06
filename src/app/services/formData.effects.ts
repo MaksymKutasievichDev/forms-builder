@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {EMPTY, mergeMap} from "rxjs";
-import {map, merge, catchError} from "rxjs";
+import {map, catchError} from "rxjs";
 import { AuthService } from "./auth.service";
 import {TokenStorageService} from "./token-storage.service";
 
@@ -19,6 +19,5 @@ export class FormDataEffects {
   ))
 
   constructor(private actions$: Actions, private authService: AuthService, private token: TokenStorageService) {
-    console.log('constructor done')
   }
 }

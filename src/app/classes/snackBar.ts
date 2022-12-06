@@ -1,9 +1,6 @@
-import {MatSnackBar,MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,} from "@angular/material/snack-bar";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 export abstract class SnackBar{
-  horizontalPosition: MatSnackBarHorizontalPosition = 'start';
-  verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   constructor(private snackBar: MatSnackBar) {
   }
 

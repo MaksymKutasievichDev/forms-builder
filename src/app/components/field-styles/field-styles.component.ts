@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Observable} from "rxjs";
@@ -6,8 +6,7 @@ import {select, Store} from "@ngrx/store";
 import {formElementsSelector, formElementsStyles} from "../../store/selectors";
 import {AppStateInterface} from "../../services/appState.interface";
 import {FormControl} from "@angular/forms";
-import {updateFormStyles, updateElementsStyles, updateFormMapData} from "../../store/actions";
-import {IFormStyles} from "../../services/IFieldsStyles";
+import {updateElementsStyles, updateFormMapData} from "../../store/actions";
 
 @Component({
   selector: 'app-field-styles',

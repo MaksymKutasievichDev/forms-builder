@@ -1,7 +1,6 @@
 import {formStateInterface} from "../services/formState.interface";
 import {createReducer, on} from "@ngrx/store";
 import * as FormDataActions from './actions'
-import {setFormData, updateElementsStyles, updateFormMapData, updateFormStyles} from "./actions";
 
 export const initialState: formStateInterface = {
   isLoading: true,
