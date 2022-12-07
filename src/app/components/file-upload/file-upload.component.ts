@@ -1,20 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, forwardRef} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppStateInterface} from "../../services/appState.interface";
 import {Store} from "@ngrx/store";
 import {updateElementsStyles, updateFormMapData, updateFormStyles} from "../../store/actions";
 import {Observable} from "rxjs";
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss']
+  styleUrls: ['./file-upload.component.scss'],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    multi: true,
+    useExisting: forwardRef(() => FileUploadComponent)
+  }]
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent implements ControlValueAccessor{
 
-  fileName: string | null = ''
+  fileName: string = ''
   btnDisable: boolean = true
   JsonData: any
+
+  onChange = (fileName:string) => {};
+  onTouched = () => {}
+  disabled:boolean = false
 
   constructor(
     private http: HttpClient,
@@ -23,8 +33,9 @@ export class FileUploadComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-
+  onClick(fileUpload: HTMLInputElement){
+    this.onTouched()
+    fileUpload.click()
   }
 
   fileReaderObs(event:any){
@@ -35,9 +46,6 @@ export class FileUploadComponent implements OnInit {
     reader.readAsText(file);
     return new Observable((subscriber: any)=>{
       reader.onload = function(event) {
-        console.log(event)
-        //@ts-ignore
-        console.log(event.target.result)
         //@ts-ignore
         let data = JSON.parse(event.target.result);
 
@@ -50,14 +58,26 @@ export class FileUploadComponent implements OnInit {
   onFileSelected(event:any){
     this.fileReaderObs(event).subscribe(result=>{
       this.JsonData = result
+      this.onChange(this.fileName)
     })
   }
 
   setDataFromJson(){
-    console.log(this.JsonData)
-    console.log(this.store)
     this.store.dispatch(updateElementsStyles({elementsStyles: this.JsonData.elementStyles}))
     this.store.dispatch(updateFormMapData({mapData: this.JsonData.templateMap}))
     this.store.dispatch(updateFormStyles({formStyles: this.JsonData.formStyles}))
+  }
+
+  writeValue(value: any) {
+    this.fileName = value
+  }
+  registerOnChange(onChange: any):void {
+    this.onChange = onChange
+  }
+  registerOnTouched(onTouched: any) {
+    this.onTouched = onTouched
+  }
+  setDisabledState(disabled: boolean) {
+    this.disabled = disabled
   }
 }

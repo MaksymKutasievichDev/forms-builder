@@ -42,8 +42,6 @@ export class FormStylesComponent extends SnackBar implements OnInit {
   }
 
   ngOnInit(): void {
-    this.background.valueChanges.pipe(pairwise())
-      .subscribe(([prev, next]: [any, any]) => {console.log(prev); console.log(next)} );
 
     this.formStylesSelect$
       .subscribe(
@@ -61,7 +59,6 @@ export class FormStylesComponent extends SnackBar implements OnInit {
     )
   }
   submitFormStyles():void{
-    console.log(this.background.value)
     this.store.dispatch(updateFormStyles({formStyles: {
         label: this.label.value ? this.label.value : '',
         color: this.color.value ? '#' + this.color.value.hex : '',

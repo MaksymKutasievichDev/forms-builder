@@ -39,9 +39,10 @@
         [href]="downloadJsonHref"
         download="MyForm.json"
       >Download</a>
-      <form class="isFullWidth load_data_form">
+      <form class="isFullWidth load_data_form" [formGroup]="fileUploadForm">
         <p class="text_center">Load form data</p>
-        <app-file-upload class="isFlex isFullWidth"></app-file-upload>
+        <p class="text_center">{{fileUploadForm.controls['fileUpload'].value}}</p>
+        <app-file-upload formControlName="fileUpload" class="isFlex isFullWidth"></app-file-upload>
       </form>
     </div>
   </div>

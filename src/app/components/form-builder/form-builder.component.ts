@@ -12,6 +12,7 @@ import {updateElementsStyles, updateFormMapData} from "../../store/actions";
 import {formDataForDownload, formElementsSelector, formElementsStyles, formStylesSelector} from "../../store/selectors";
 import {AppStateInterface} from "../../services/appState.interface";
 import {DomSanitizer} from "@angular/platform-browser";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-form-builder',
@@ -27,6 +28,8 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     'Checkbox',
     'Select'
   ];
+
+  fileUploadForm: FormGroup
 
   templateWasChanged: boolean = false;
 
@@ -55,10 +58,19 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     private sanitizer: DomSanitizer
   ) {
     super(snackBar)
+
+    this.fileUploadForm = new FormGroup({
+      fileUpload: new FormControl()
+    })
+
     this.formStylesSelect$ = this.store.pipe(select(formStylesSelector))
     this.formTemplateMap$ = this.store.pipe(select(formElementsSelector))
     this.formElementsStyles$ = this.store.pipe(select(formElementsStyles))
     this.formDataForDownload$ = this.store.pipe(select(formDataForDownload))
+  }
+
+  test(){
+    console.log(this.fileUploadForm.value)
   }
 
   ngOnInit(): void {
