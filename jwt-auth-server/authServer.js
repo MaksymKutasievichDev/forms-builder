@@ -53,7 +53,7 @@ const logs = [
     formstyles: {
       label: "My Form",
       color: "Green",
-      background: "LightCoral",
+      background: "1cce92",
       borderStyle: "dashed",
       borderColor: "White",
     },

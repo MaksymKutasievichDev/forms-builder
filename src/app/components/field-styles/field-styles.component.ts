@@ -7,6 +7,9 @@ import {formElementsSelector, formElementsStyles} from "../../store/selectors";
 import {AppStateInterface} from "../../services/appState.interface";
 import {FormControl} from "@angular/forms";
 import {updateElementsStyles, updateFormMapData} from "../../store/actions";
+import {ThemePalette} from "@angular/material/core";
+import {Color} from "@angular-material-components/color-picker";
+import {hexToRgb} from "../../_helpers/helpers";
 
 @Component({
   selector: 'app-field-styles',
@@ -14,6 +17,7 @@ import {updateElementsStyles, updateFormMapData} from "../../store/actions";
   styleUrls: ['./field-styles.component.scss'],
 })
 export class FieldStylesComponent extends SnackBar implements OnInit {
+  public colorPick: ThemePalette = 'primary';
 
   panelOpenState:boolean = false;
 
@@ -24,8 +28,8 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
   height = new FormControl('')
   fontSize = new FormControl('')
   fontWeight = new FormControl('')
-  color = new FormControl('')
-  borderColor = new FormControl('')
+  color = new FormControl()
+  borderColor = new FormControl()
   borderStyle = new FormControl('')
 
   elementTag:string | null;
@@ -71,8 +75,10 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
         this.height.setValue(this.formElementsStyles[this.elementIndex]['height'] ? this.formElementsStyles[this.elementIndex]['height'].replace(/\D/g, '') : '')
         this.fontSize.setValue(this.formElementsStyles[this.elementIndex]['fontSize'] ? this.formElementsStyles[this.elementIndex]['fontSize'].replace(/\D/g, '') : '')
         this.fontWeight.setValue(this.formElementsStyles[this.elementIndex]['fontWeight'] ? this.formElementsStyles[this.elementIndex]['fontWeight'] : '')
-        this.color.setValue(this.formElementsStyles[this.elementIndex]['color'] ? this.formElementsStyles[this.elementIndex]['color'] : '')
-        this.borderColor.setValue(this.formElementsStyles[this.elementIndex]['borderColor'] ? this.formElementsStyles[this.elementIndex]['borderColor'] : '')
+        let currentColor:any = hexToRgb(this.formElementsStyles[this.elementIndex]['color'])
+        this.color.setValue(currentColor ? new Color(currentColor.r, currentColor.g, currentColor.b, 1) : '')
+        let currentBorderColor:any = hexToRgb(this.formElementsStyles[this.elementIndex]['borderColor'])
+        this.borderColor.setValue(currentBorderColor ? new Color(currentBorderColor.r, currentBorderColor.g, currentBorderColor.b, 1) : '')
         this.borderStyle.setValue(this.formElementsStyles[this.elementIndex]['borderStyle'] ? this.formElementsStyles[this.elementIndex]['borderStyle'] : '')
       }
     }
@@ -80,16 +86,18 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
 
   saveFieldStyles(){
     let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
-    formElementStylesCopy[this.elementIndex].title = this.title.value
-    formElementStylesCopy[this.elementIndex].label = this.label.value
-    formElementStylesCopy[this.elementIndex].placeholder = this.placeholder.value
-    formElementStylesCopy[this.elementIndex].width = this.width.value + 'px'
-    formElementStylesCopy[this.elementIndex].height = this.height.value + 'px'
-    formElementStylesCopy[this.elementIndex].fontSize = this.fontSize.value + 'px'
-    formElementStylesCopy[this.elementIndex].fontWeight = this.fontWeight.value
-    formElementStylesCopy[this.elementIndex].color = this.color.value
-    formElementStylesCopy[this.elementIndex].borderColor = this.borderColor.value
-    formElementStylesCopy[this.elementIndex].borderStyle = this.borderStyle.value
+    this.title.value ? formElementStylesCopy[this.elementIndex].title = this.title.value : ''
+    this.label.value ? formElementStylesCopy[this.elementIndex].label = this.label.value : ''
+    this.placeholder.value ? formElementStylesCopy[this.elementIndex].placeholder = this.placeholder.value : ''
+    this.width.value ? formElementStylesCopy[this.elementIndex].width = this.width.value + 'px' : ''
+    this.height.value ? formElementStylesCopy[this.elementIndex].height = this.height.value + 'px' : ''
+    this.fontSize.value ? formElementStylesCopy[this.elementIndex].fontSize = this.fontSize.value + 'px' : ''
+    this.fontWeight.value ? formElementStylesCopy[this.elementIndex].fontWeight = this.fontWeight.value : ''
+    this.color.value.hex ? formElementStylesCopy[this.elementIndex].color = '#' + this.color.value.hex : ''
+    this.borderColor.value.hex ? formElementStylesCopy[this.elementIndex].borderColor = '#' + this.borderColor.value.hex : ''
+    this.borderStyle.value ? formElementStylesCopy[this.elementIndex].borderStyle = this.borderStyle.value : ''
+
+    console.log(formElementStylesCopy)
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Styles added successfully')
   }

@@ -25,6 +25,14 @@ import { TextareaMaterialComponent } from './components/angularMaterials/textare
 import { ButtonMaterialComponent } from './components/angularMaterials/button/button.component';
 import { SelectMaterialComponent } from './components/angularMaterials/select/select.component';
 
+/*NgRX store*/
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import {reducers} from "./store/reducers";
+import {FormDataEffects} from "./services/formData.effects";
+import {ReactiveFormsModule} from "@angular/forms";
+
 /*Angular Materials Modules*/
 import { MatFormFieldModule } from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -35,12 +43,8 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkAccordionModule} from "@angular/cdk/accordion";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import { EffectsModule } from '@ngrx/effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { StoreModule } from '@ngrx/store';
-import {reducers} from "./store/reducers";
-import {FormDataEffects} from "./services/formData.effects";
-import {ReactiveFormsModule} from "@angular/forms";
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+
 
 @NgModule({
   declarations: [
@@ -77,8 +81,11 @@ import {ReactiveFormsModule} from "@angular/forms";
     StoreModule.forRoot({formState: reducers}),
     EffectsModule.forRoot([FormDataEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    NgxMatColorPickerModule
   ],
-  providers: [authInterceptorProviders
+  providers: [
+    authInterceptorProviders,
+    { provide: MAT_COLOR_FORMATS, useValue: {display: { colorInput: 'hex'}} }
   ],
   bootstrap: [AppComponent]
 })
