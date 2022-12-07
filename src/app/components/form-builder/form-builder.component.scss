@@ -12,6 +12,16 @@
 .form_template__wrapper{
   border: none !important;
 }
+.load_data_form{
+  margin-top: 20px;
+  border: 2px solid #c2d6e1;
+  border-radius: 5px;
+  padding: 10px 20px;
+  p{
+    font-size: 20px;
+    color: #172933;
+  }
+}
 .form_template{
   padding-top: 1rem;
   &>p{

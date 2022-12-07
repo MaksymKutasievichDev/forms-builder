@@ -9,8 +9,9 @@ import {takeUntil} from "rxjs/operators";
 import {IFormStyles} from "../../services/IFieldsStyles";
 import {select, Store} from "@ngrx/store";
 import {updateElementsStyles, updateFormMapData} from "../../store/actions";
-import {formElementsSelector, formElementsStyles, formStylesSelector} from "../../store/selectors";
+import {formDataForDownload, formElementsSelector, formElementsStyles, formStylesSelector} from "../../store/selectors";
 import {AppStateInterface} from "../../services/appState.interface";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-form-builder',
@@ -37,22 +38,27 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
   formStylesSelect$ : Observable<any>
   formTemplateMap$: Observable<any>
   formElementsStyles$: Observable<any>
+  formDataForDownload$: Observable<any>
 
   formTemplateMapSelector: string[] | undefined = [];
   formStylesSelectorObs: IFormStyles
   formElementsStylesSelector: object[] = []
+  formDataForDownload: any
 
+  downloadJsonHref: any
 
   constructor(
     private token: TokenStorageService,
     private authService: AuthService,
     snackBar: MatSnackBar,
-    private store: Store<AppStateInterface>
+    private store: Store<AppStateInterface>,
+    private sanitizer: DomSanitizer
   ) {
     super(snackBar)
     this.formStylesSelect$ = this.store.pipe(select(formStylesSelector))
     this.formTemplateMap$ = this.store.pipe(select(formElementsSelector))
     this.formElementsStyles$ = this.store.pipe(select(formElementsStyles))
+    this.formDataForDownload$ = this.store.pipe(select(formDataForDownload))
   }
 
   ngOnInit(): void {
@@ -60,7 +66,14 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     this.formTemplateMap$.subscribe(data => this.formTemplateMapSelector = data)
     this.formElementsStyles$.subscribe(data => this.formElementsStylesSelector = data ? JSON.parse(data) : [])
     this.formStylesSelect$.subscribe(data => this.formStylesSelectorObs = data)
+
+    this.formDataForDownload$.subscribe(data => {
+      var theJSON = JSON.stringify(data);
+      var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
+      this.downloadJsonHref = uri;
+    })
   }
+
 
   /*GET INDEX OF CLICKED ELEMENT*/
   getClickedElementIndex(event:any){
@@ -147,6 +160,8 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
   block(){
     return false;
   }
+
+
 
   ngOnDestroy() {
     /*Unsubscribing from saving subscription :)*/

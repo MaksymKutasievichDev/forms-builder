@@ -12,7 +12,14 @@ $secondary_darkblue: #172933;
   form{
     display: flex;
     flex-direction: column;
-    gap: 0rem
+    gap: 0rem;
+    button{
+      margin-top: 0;
+      transition: all 0.5s ease;
+    }
+    .ng-dirty.ng-invalid.ng-touched + button{
+      margin-top: 20px;
+    }
   }
 }
 

@@ -44,6 +44,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkAccordionModule} from "@angular/cdk/accordion";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import {PasswordStrengthDirective} from "./directives/password-strength.directive";
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
 
 @NgModule({
@@ -60,7 +62,9 @@ import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } fro
     SelectMaterialComponent,
     FormStylesComponent,
     FieldStylesComponent,
-    RemoveQuotationMarksPipe
+    RemoveQuotationMarksPipe,
+    PasswordStrengthDirective,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule,

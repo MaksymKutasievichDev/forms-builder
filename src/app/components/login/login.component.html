@@ -11,6 +11,6 @@
       <mat-label>Password</mat-label>
       <input name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" matInput>
     </mat-form-field>
-    <button mat-raised-button color="primary">Log in</button>
+    <button mat-raised-button color="primary" [disabled]="!f.form.valid">Log in</button>
   </form>
 </div>
