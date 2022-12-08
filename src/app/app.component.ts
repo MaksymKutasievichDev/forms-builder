@@ -2,8 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {TokenStorageService} from "./services/token-storage.service";
 import {Router} from "@angular/router";
 import {AppStateInterface} from "./services/appState.interface";
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {deleteDataFromState} from "./store/actions";
+import {Observable} from "rxjs";
+import {changeIsLoading} from "./store/selectors";
 
 @Component({
   selector: 'app-root',
@@ -13,18 +15,22 @@ import {deleteDataFromState} from "./store/actions";
 export class AppComponent implements OnInit{
   username: string = '';
 
+  isLoading$: Observable<any>
+  isLoading: boolean
+
   constructor(
     private tokenStorageService: TokenStorageService,
     private router: Router,
     private store: Store<AppStateInterface>
   ) {
-
+    this.isLoading$ = this.store.pipe(select(changeIsLoading))
   }
 
   ngOnInit():void {
     if(!!this.tokenStorageService.getToken()) {
       this.username = this.tokenStorageService.getUser();
     }
+    this.isLoading$.subscribe(data => this.isLoading = data)
   }
 
 

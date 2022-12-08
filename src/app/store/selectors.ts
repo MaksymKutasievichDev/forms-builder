@@ -7,3 +7,4 @@ export const formStylesSelector = createSelector(selectForm,(state) => state.for
 export const formElementsStyles = createSelector(selectForm,(state) => state.form.elementStyles)
 export const isLoadingSelector = createSelector(selectForm, (state) => state.isLoading)
 export const formDataForDownload = createSelector(selectForm, (state) => state.form)
+export const changeIsLoading = createSelector(selectForm, (state => state.isLoading))

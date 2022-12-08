@@ -64,9 +64,10 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
 
   ngOnChanges(changes: SimpleChanges){
     if (typeof changes['elementIndex'] != 'undefined') {
-      this.isActive = true
       this.elementTag = this.formTemplateMapSelector ? this.formTemplateMapSelector[this.elementIndex] : '';
       if(this.elementIndex && this.formElementsStyles[this.elementIndex] != null){
+        this.isActive = true
+        this.panelOpenState = true
         this.label.setValue(this.formElementsStyles[this.elementIndex]['label'] ? this.formElementsStyles[this.elementIndex]['label'] : '')
         this.title.setValue(this.formElementsStyles[this.elementIndex]['title'] ? this.formElementsStyles[this.elementIndex]['title'] : '')
         this.placeholder.setValue(this.formElementsStyles[this.elementIndex]['placeholder'] ? this.formElementsStyles[this.elementIndex]['placeholder'] : '')

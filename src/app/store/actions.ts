@@ -9,3 +9,4 @@ export const updateFormStyles = createAction('[FormData] Update Form styles', pr
 export const updateToken = createAction('[FormData] Update token', props<{token: string | null}>())
 export const updateElementsStyles = createAction('[FormData] Update Form Elements Styles', props<{elementsStyles:string}>())
 export const deleteDataFromState = createAction('[FormData] Delete data on exit')
+export const changeLoadingState = createAction('[FormData] Change is loading state', props<{isLoading: boolean}>())

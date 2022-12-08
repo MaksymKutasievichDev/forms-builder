@@ -12,7 +12,7 @@ export class FormDataEffects {
     ofType('[FormData] Get Form Data'),
     mergeMap(() => this.authService.getUserDataByToken(this.token.getToken())
       .pipe(
-        map(data => ({type: '[FormData] Set Form Data after API call', formData: data[0]})),
+        map(data => ({type: '[FormData] Set Form Data after API call', formData: data})),
         catchError(() => EMPTY)
       )
     )

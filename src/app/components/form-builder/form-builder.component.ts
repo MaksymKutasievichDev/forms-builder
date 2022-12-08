@@ -5,7 +5,7 @@ import {moveItemInArray} from "@angular/cdk/drag-drop";
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Observable, Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
+import {takeUntil, map} from "rxjs/operators";
 import {IFormStyles} from "../../services/IFieldsStyles";
 import {select, Store} from "@ngrx/store";
 import {updateElementsStyles, updateFormMapData} from "../../store/actions";
@@ -13,6 +13,7 @@ import {formDataForDownload, formElementsSelector, formElementsStyles, formStyle
 import {AppStateInterface} from "../../services/appState.interface";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
+import {of} from 'rxjs'
 
 @Component({
   selector: 'app-form-builder',
@@ -28,6 +29,8 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     'Checkbox',
     'Select'
   ];
+
+  formDataIsLoading:boolean = false;
 
   fileUploadForm: FormGroup
 
@@ -75,6 +78,7 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch({type: '[FormData] Get Form Data'})
+    this.formDataIsLoading = true;
     this.formTemplateMap$.subscribe(data => this.formTemplateMapSelector = data)
     this.formElementsStyles$.subscribe(data => this.formElementsStylesSelector = data ? JSON.parse(data) : [])
     this.formStylesSelect$.subscribe(data => this.formStylesSelectorObs = data)

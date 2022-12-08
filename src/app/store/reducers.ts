@@ -4,7 +4,7 @@ import * as FormDataActions from './actions'
 import {getAllFormDataForSave} from "./actions";
 
 export const initialState: formStateInterface = {
-  isLoading: true,
+  isLoading: false,
   form:{
     templateMap: [],
     formStyles: {},
@@ -48,7 +48,7 @@ export const reducers = createReducer(
     }
   })),
   on(FormDataActions.deleteDataFromState, (state) => ({
-    isLoading: true,
+    isLoading: false,
     form:{
       templateMap: [],
       formStyles: {},
@@ -59,5 +59,9 @@ export const reducers = createReducer(
   })),
   on(FormDataActions.getAllFormDataForSave, (state) => ({
     ...state
+  })),
+  on(FormDataActions.changeLoadingState, (state, {isLoading}) => ({
+    ...state,
+    isLoading: isLoading
   }))
 )

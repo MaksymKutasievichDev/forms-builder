@@ -46,6 +46,7 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import {PasswordStrengthDirective} from "./directives/password-strength.directive";
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     FieldStylesComponent,
     RemoveQuotationMarksPipe,
     PasswordStrengthDirective,
-    FileUploadComponent
+    FileUploadComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

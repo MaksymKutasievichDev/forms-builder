@@ -1,3 +1,63 @@
+const { MongoClient } = require("mongodb");
+
+//MOONGO DB TEST
+const url =
+  "mongodb+srv://Mandarin753951a:Mandarin753951@formbuilder.84mwcbv.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(url);
+const database = client.db("FormBuilder");
+const haiku = database.collection("FormBuilderDb");
+
+async function registerUserMongoDb(doc) {
+  try {
+    const resutl = await haiku.insertOne(doc);
+  } finally {
+  }
+}
+
+async function findUserDataMongoDb(user) {
+  try {
+    const query = {
+      username: user.name,
+    };
+    const options = {
+      projection: {
+        _id: 0,
+        username: 1,
+        password: 1,
+        templatemap: 1,
+        formstyles: 1,
+        elementstyles: 1,
+      },
+    };
+
+    const result = await haiku.findOne(query, options);
+    return result;
+  } finally {
+  }
+}
+
+async function updateUserDataMongoDb(user, newData) {
+  try {
+    result = await haiku.findOneAndUpdate(
+      {
+        username: user,
+      },
+      {
+        $set: {
+          templatemap: newData.templatemap,
+          formstyles: newData.formstyles,
+          elementstyles: newData.elementstyles,
+        },
+      },
+      {
+        upsert: true,
+      }
+    );
+    return result;
+  } catch (error) {}
+}
+////
+
 require("dotenv").config();
 
 const express = require("express");
@@ -45,44 +105,32 @@ app.use(function (req, res, next) {
   next();
 });
 
-const logs = [
-  {
-    username: "Maksym",
-    password: "1111",
-    templatemap: ["Input", "Input", "Checkbox", "Button"],
-    formstyles: {
-      label: "My Form",
-      color: "Green",
-      background: "1cce92",
-      borderStyle: "dashed",
-      borderColor: "White",
-    },
-    elementstyles:
-      '[{"label":"Lable"},{"label":"Label","placeholder":"New plchldr"},{},{"label":"Login"}]',
-  },
-];
-
-app.get("/check", authenticateToken, (req, res) => {
-  res.json(logs.filter((log) => log.username === req.user.name));
-});
-
 app.post("/save_template", authenticateToken, (req, res) => {
-  for (let i = 0; i < logs.length; i++) {
-    if (logs[i].username == req.user.name) {
-      logs[i].templatemap = req.body.templatemap;
-      logs[i].formstyles = req.body.formstyles;
-      logs[i].elementstyles = req.body.elementstyles;
-      console.log("save_template");
-      console.log(logs);
+  const user = req.user.name;
+  const newData = {
+    templatemap: req.body.templatemap,
+    formstyles: req.body.formstyles,
+    elementstyles: req.body.elementstyles,
+  };
+  updateUserDataMongoDb(user, newData)
+    .catch(console.dir)
+    .then((dbResponse) => {
+      console.log(dbResponse);
       res.json({ success: true });
-      return true;
-    }
-  }
-  res.json({ success: false, error: "Template wasn't saved" });
+    });
 });
 
 app.get("/get_user_data", authenticateToken, (req, res) => {
-  res.json(logs.filter((log) => log.username === req.user.name));
+  const user = {
+    name: req.user.name,
+  };
+  findUserDataMongoDb(user)
+    .catch(console.dir)
+    .then((dbReq) => {
+      if (dbReq) {
+        res.json(dbReq);
+      }
+    });
 });
 
 app.post("/login", (req, res) => {
@@ -90,26 +138,23 @@ app.post("/login", (req, res) => {
   const password = req.body.password;
   const user = { name: username, password: password };
 
-  let loginExist = false;
-  let passExist = false;
-
-  for (let i = 0; i < logs.length; i++) {
-    if (logs[i].username == user.name) {
-      loginExist = true;
-      if (logs[i].password === user.password) {
-        const accessToken = generateAccessToken(user);
-        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-        refreshTokens.push(refreshToken);
-        res.json({ accessToken: accessToken, refreshToken: refreshToken });
-        return true;
+  findUserDataMongoDb(user)
+    .catch(console.dir)
+    .then((dbReq) => {
+      console.log(dbReq);
+      if (dbReq) {
+        if (dbReq.password == user.password) {
+          const accessToken = generateAccessToken(user);
+          const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+          refreshTokens.push(refreshToken);
+          res.json({ accessToken: accessToken, refreshToken: refreshToken });
+        } else {
+          res.json({ success: false, error: "Wrong password" });
+        }
+      } else {
+        res.json({ success: false, error: "The user does not exist." });
       }
-      break;
-    }
-  }
-  !loginExist
-    ? res.json({ success: false, error: "The user does not exist" })
-    : "";
-  !passExist ? res.json({ success: false, error: "Wrong password" }) : "";
+    });
 });
 
 app.post("/register", (req, res) => {
@@ -118,26 +163,27 @@ app.post("/register", (req, res) => {
   const password = req.body.password;
   const user = { name: username, password: password };
 
-  for (let i = 0; i < logs.length; i++) {
-    if (Object.values(logs[i]).indexOf(user.name) > -1) {
-      res.json({ success: false, error: "The user is already registered" });
-      return true;
-    }
-  }
-
-  logs.push({
+  const newUserData = {
     username: user.name,
     password: user.password,
     templatemap: [],
     formstyles: {},
     elementstyles: "[]",
-  });
-  console.log(logs);
+  };
 
-  const accessToken = generateAccessToken(user);
-  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-  refreshTokens.push(refreshToken);
-  res.json({ accessToken: accessToken, refreshToken: refreshToken });
+  findUserDataMongoDb(user)
+    .catch(console.dir)
+    .then((dbReq) => {
+      if (dbReq) {
+        res.json({ success: false, error: "The user is already registered" });
+      } else {
+        registerUserMongoDb(newUserData).catch(console.dir);
+        const accessToken = generateAccessToken(user);
+        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+        refreshTokens.push(refreshToken);
+        res.json({ accessToken: accessToken, refreshToken: refreshToken });
+      }
+    });
 });
 
 function generateAccessToken(user) {
