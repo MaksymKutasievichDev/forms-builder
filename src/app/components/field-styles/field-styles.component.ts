@@ -47,6 +47,8 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
   formTemplateMap$: Observable<any>
   formTemplateMapSelector: string[] | undefined = [];
 
+  innerWidth: any
+
   constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>) {
     super(snackBar)
     this.formElementsStyles$ = this.store.pipe(select(formElementsStyles))
@@ -60,6 +62,11 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
       }
     )
     this.formTemplateMap$.subscribe(data => this.formTemplateMapSelector = data)
+    this.innerWidth = window.innerWidth
+  }
+
+  closeModal(){
+    this.panelOpenState = false
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -97,7 +104,7 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
     this.borderColor.value.hex ? formElementStylesCopy[this.elementIndex].borderColor = '#' + this.borderColor.value.hex : ''
     this.borderStyle.value ? formElementStylesCopy[this.elementIndex].borderStyle = this.borderStyle.value : ''
 
-    console.log(formElementStylesCopy)
+    this.innerWidth <= 620 ? this.panelOpenState = false : ''
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Styles added successfully')
   }

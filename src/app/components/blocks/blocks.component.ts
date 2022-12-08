@@ -15,9 +15,15 @@ export class BlocksComponent implements OnInit {
     'Select'
   ];
 
+  openedOnSmallScreen: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  changeOpenOnSmallScreenStatus(){
+    this.openedOnSmallScreen = !this.openedOnSmallScreen
   }
 
 }

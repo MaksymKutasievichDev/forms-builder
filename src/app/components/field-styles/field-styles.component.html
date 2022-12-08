@@ -1,4 +1,4 @@
-<mat-expansion-panel (opened)="panelOpenState = true"
+<mat-expansion-panel class="expansion_model_element_styles" (opened)="panelOpenState = true"
                      (closed)="panelOpenState = false" [expanded]="panelOpenState" [hideToggle]="true" >
   <mat-expansion-panel-header>
     <mat-panel-title>
@@ -8,7 +8,10 @@
       {{panelOpenState ? 'close' : 'open'}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <form  class="active_check {{isActive ? '' : 'is_active_false'}}">
+  <form  class="fields_styles_form active_check {{isActive ? '' : 'is_active_false'}}">
+    <div class="close_modal" (click)="closeModal()">
+      <mat-icon>close</mat-icon>
+    </div>
     <div class="input_group isFlex">
       <mat-form-field *ngIf="elementTag=='Checkbox'" class="isFullWidth" appearance="fill">
         <mat-label>Title</mat-label>
@@ -92,3 +95,4 @@
     </div>
   </form>
 </mat-expansion-panel>
+<div class="modal_background" *ngIf="panelOpenState"></div>

@@ -13,9 +13,14 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 999;
+  background: white;
   .app_user{
     font-size: 1rem;
     color: $secondary_darkblue;
+    @media(max-width: 620px){
+      font-size: 0.8rem;
+    }
   }
   .exit_ico{
     cursor: pointer;
@@ -29,6 +34,9 @@ nav {
   .app_title{
     font-size: 36px;
     color: $secondary_darkblue;
+    @media(max-width: 620px){
+      font-size: 20px;
+    }
   }
   .container {
     display: flex;
@@ -40,6 +48,9 @@ nav {
     list-style: none;
     display: flex;
     gap: 4rem;
+    @media (max-width: 620px) {
+      gap: 1.5rem
+    }
     text-transform: uppercase;
     a{
       color: black;

@@ -1,6 +1,10 @@
 
-  <div
-    class="form_element"
+<div class="block_choose {{openedOnSmallScreen ? 'activeOnSmall' : ''}}">
+  <div class="block_choose__open" (click)="changeOpenOnSmallScreenStatus()">
+    <mat-icon>play_arrow</mat-icon>
+  </div>
+<div
+    class="form_element "
     *ngFor="let element of formElementsList"
     cdkDrag
     [cdkDragData]="element"
@@ -8,3 +12,4 @@
     <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
     {{element}}
   </div>
+</div>

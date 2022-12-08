@@ -12,4 +12,7 @@
 }
 .mat-expansion-panel{
   border-bottom: 2px solid #c2d6e1;
+  @media (max-width: 620px) {
+    border-bottom: none;
+  }
 }
