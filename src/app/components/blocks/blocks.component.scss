@@ -1,6 +1,8 @@
+@import "src/variables";
+
 .form_element{
   padding: 1rem 1.2rem;
-  border-bottom: 2px solid #c2d6e1;
+  border-bottom: 2px solid $main_lightblue;
   cursor: move;
   background: white;
   height: 60px;
@@ -16,7 +18,7 @@
 @media (max-width: 620px) {
   .block_choose{
     position: fixed;
-    border: 2px solid #c2d6e1;
+    border: 2px solid $main_lightblue;
     border-radius: 5px;
     top: 50%;
     right: 0;
@@ -46,7 +48,7 @@
       mat-icon{
         transform: rotate(180deg);
         transition: transform 0.2s ease;
-        color: #172933;
+        color: $secondary_darkblue;
       }
     }
     &.activeOnSmall .block_choose__open mat-icon{

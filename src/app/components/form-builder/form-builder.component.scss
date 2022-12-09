@@ -1,3 +1,5 @@
+@import "src/variables";
+
 .form_builder{
   display: flex;
   gap: 2rem;
@@ -6,7 +8,7 @@
   & > *{
     flex: 1;
     border-radius: 5px;
-    border: 2px solid #c2d6e1;
+    border: 2px solid $main_lightblue;
   }
   @media (max-width: 620px) {
     flex-direction: column;
@@ -27,12 +29,12 @@
 }
 .load_data_form{
   margin-top: 20px;
-  border: 2px solid #c2d6e1;
+  border: 2px solid $main_lightblue;
   border-radius: 5px;
   padding: 10px 20px;
   p{
     font-size: 20px;
-    color: #172933;
+    color: $secondary_darkblue;
   }
 }
 .form_template{
@@ -48,7 +50,7 @@
   }
 }
 .form_template{
-  border: 2px solid #C2D6E1;
+  border: 2px solid $main_lightblue;
 }
 .styles_settings{
   overflow: hidden;
@@ -67,6 +69,6 @@
     margin: 0;
   }
   app-form-styles .mat-expansion-panel{
-    border-bottom: 2px solid #c2d6e1;
+    border-bottom: 2px solid $main_lightblue;
   }
 }

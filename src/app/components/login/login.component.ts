@@ -4,7 +4,7 @@ import {TokenStorageService} from "../../services/token-storage.service";
 import {Router} from "@angular/router";
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Subject} from "rxjs";
+import {Subject, first} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {Store} from "@ngrx/store";
 import {AppStateInterface} from "../../services/appState.interface";
@@ -44,7 +44,7 @@ export class LoginComponent extends SnackBar implements OnInit {
     this.store.dispatch(changeLoadingState({isLoading: true}))
     /*Login user*/
     setTimeout(() => {
-      this.authService.login(this.form).pipe(takeUntil(this.isLoggedIn$)).subscribe(
+      this.authService.login(this.form).pipe(takeUntil(this.isLoggedIn$)).pipe(first()).subscribe(
         data => {
           if('error' in data){
             this.errorShow(data.error)

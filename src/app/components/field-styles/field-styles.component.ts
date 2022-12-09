@@ -104,7 +104,7 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
     this.borderColor.value.hex ? formElementStylesCopy[this.elementIndex].borderColor = '#' + this.borderColor.value.hex : ''
     this.borderStyle.value ? formElementStylesCopy[this.elementIndex].borderStyle = this.borderStyle.value : ''
 
-    this.innerWidth <= 620 ? this.panelOpenState = false : ''
+    this.innerWidth <= 768 ? this.panelOpenState = false : ''
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Styles added successfully')
   }

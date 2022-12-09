@@ -1,0 +1,23 @@
+$success_color: #28a745;
+$error_color: #f44336;
+$secondary_darkblue: #172933;
+$main_lightblue: #c2d6e1;
+$font_helvetica: Roboto, "Helvetica Neue", sans-serif;
+$font_montserat: 'Montserrat', sans-serif;
+
+@mixin login-register-form {
+  width: 400px;
+  max-width: 100%;
+  margin: 100px auto;
+  p{
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: $secondary_darkblue
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+}

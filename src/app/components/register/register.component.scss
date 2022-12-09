@@ -1,26 +1,13 @@
-$secondary_darkblue: #172933;
+@import "src/variables";
 
 .form_wrapp{
-  width: 400px;
-  margin: 100px auto;
-  max-width: 100%;
-  p{
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 2.5rem;
-    color: $secondary_darkblue
+  @include login-register-form();
+  button{
+    margin-top: 0;
+    transition: all 0.5s ease;
   }
-  form{
-    display: flex;
-    flex-direction: column;
-    gap: 0rem;
-    button{
-      margin-top: 0;
-      transition: all 0.5s ease;
-    }
-    .ng-dirty.ng-invalid.ng-touched + button{
-      margin-top: 20px;
-    }
+  .ng-dirty.ng-invalid.ng-touched + button{
+    margin-top: 20px;
   }
 }
 

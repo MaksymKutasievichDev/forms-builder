@@ -1,3 +1,5 @@
+@import "src/variables";
+
 .input_group.isFlex{
   flex-wrap: wrap;
   column-gap: 2rem;
@@ -63,7 +65,7 @@
     width: calc(100vw - 40px);
     transition: opacity 0.2s ease;
     opacity: 0;
-    border: 2px solid #c2d6e1;
+    border: 2px solid $main_lightblue;
     .mat-expanded &{
       opacity: 1;
     }

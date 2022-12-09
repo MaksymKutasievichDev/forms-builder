@@ -4,8 +4,8 @@ import {AuthService} from "../../services/auth.service";
 import {moveItemInArray} from "@angular/cdk/drag-drop";
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Observable, Subject} from "rxjs";
-import {takeUntil, map} from "rxjs/operators";
+import {Observable, Subject, forkJoin} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 import {IFormStyles} from "../../services/IFieldsStyles";
 import {select, Store} from "@ngrx/store";
 import {updateElementsStyles, updateFormMapData} from "../../store/actions";
@@ -13,7 +13,6 @@ import {formDataForDownload, formElementsSelector, formElementsStyles, formStyle
 import {AppStateInterface} from "../../services/appState.interface";
 import {DomSanitizer} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
-import {of} from 'rxjs'
 
 @Component({
   selector: 'app-form-builder',
@@ -84,8 +83,8 @@ export class FormBuilderComponent extends SnackBar implements OnInit {
     this.formStylesSelect$.subscribe(data => this.formStylesSelectorObs = data)
 
     this.formDataForDownload$.subscribe(data => {
-      var theJSON = JSON.stringify(data);
-      var uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
+      let theJSON = JSON.stringify(data);
+      let uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
       this.downloadJsonHref = uri;
     })
   }

@@ -1,18 +1,5 @@
-$secondary_darkblue: #172933;
+@import "src/variables";
 
 .form_wrapp{
-  width: 400px;
-  max-width: 100%;
-  margin: 100px auto;
-  p{
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 2.5rem;
-    color: $secondary_darkblue
-  }
-  form{
-    display: flex;
-    flex-direction: column;
-    gap: 0
-  }
+  @include login-register-form();
 }

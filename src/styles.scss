@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-$success_color: #28a745;
-$error_color: #f44336;
-$font_helvetica: Roboto, "Helvetica Neue", sans-serif;
-$font_montserat: 'Montserrat', sans-serif;
+@import "variables";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: $font_montserat }
