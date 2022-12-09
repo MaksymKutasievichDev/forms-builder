@@ -13,7 +13,8 @@ import {changeIsLoading} from "./store/selectors";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
-  username: string = '';
+  title="forms-builder"
+  username: string = 'default';
 
   isLoading$: Observable<any>
   isLoading: boolean

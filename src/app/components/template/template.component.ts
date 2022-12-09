@@ -21,7 +21,7 @@ export class TemplateComponent implements OnInit {
 
   @Output() clickedElementIndex = new EventEmitter<number>()
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

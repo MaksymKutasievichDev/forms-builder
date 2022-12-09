@@ -5,8 +5,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class RemoveQuotationMarksPipe implements PipeTransform {
 
-  transform(value: string): unknown {
-    return value.slice(1, -1);
+  transform(value: string): string {
+    if(value && value.length > 2) {
+        return value.slice(1, -1);
+    }
+    return value
   }
 
 }

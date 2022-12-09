@@ -20,6 +20,8 @@ export class RegisterComponent extends SnackBar implements OnInit {
   form: any = {}
   isSuccessful = false;
 
+  testMessage: string = "Hello world)))"
+
   isLoggedIn$ : Subject<boolean> = new Subject<boolean>();
 
   constructor(
