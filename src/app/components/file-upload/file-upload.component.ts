@@ -1,5 +1,4 @@
 import {Component, forwardRef} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {AppStateInterface} from "../../services/appState.interface";
 import {Store} from "@ngrx/store";
 import {updateElementsStyles, updateFormMapData, updateFormStyles} from "../../store/actions";
@@ -27,8 +26,7 @@ export class FileUploadComponent implements ControlValueAccessor{
   disabled:boolean = false
 
   constructor(
-    private http: HttpClient,
-    private store: Store<AppStateInterface>
+    public store: Store<AppStateInterface>
   ) {
 
   }

@@ -1,11 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Observable, pairwise} from "rxjs";
+import {Observable, pairwise, Subject, Subscription} from "rxjs";
 import {IFormStyles} from "../../services/IFieldsStyles";
 import {AppStateInterface} from "../../services/appState.interface";
 import {select, Store} from "@ngrx/store";
@@ -15,6 +16,7 @@ import {FormControl} from "@angular/forms";
 import {ThemePalette} from "@angular/material/core";
 import {Color} from "@angular-material-components/color-picker";
 import {hexToRgb} from "../../_helpers/helpers";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-form-styles',
@@ -22,9 +24,10 @@ import {hexToRgb} from "../../_helpers/helpers";
   styleUrls: ['./form-styles.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormStylesComponent extends SnackBar implements OnInit {
+export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
 
   public colorPick: ThemePalette = 'primary';
+  isDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   panelOpenState:boolean = false;
   label = new FormControl('')
@@ -36,6 +39,8 @@ export class FormStylesComponent extends SnackBar implements OnInit {
   formStylesSelect$: Observable<any>
   formStylesSelect: IFormStyles
 
+  subscription: Subscription
+
   constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>) {
     super(snackBar)
     this.formStylesSelect$ = this.store.pipe(select(formStylesSelector))
@@ -44,6 +49,7 @@ export class FormStylesComponent extends SnackBar implements OnInit {
   ngOnInit(): void {
 
     this.formStylesSelect$
+      .pipe(takeUntil(this.isDestroyed$))
       .subscribe(
       data => {
         this.formStylesSelect = data
@@ -67,4 +73,10 @@ export class FormStylesComponent extends SnackBar implements OnInit {
         borderColor: this.borderColor.value ? '#' + this.borderColor.value.hex: ''
     }}))
   }
+
+  ngOnDestroy() {
+    this.isDestroyed$.next(true)
+    this.isDestroyed$.unsubscribe()
+  }
+
 }

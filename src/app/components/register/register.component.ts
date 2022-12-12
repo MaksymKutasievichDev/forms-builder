@@ -9,6 +9,7 @@ import {takeUntil} from "rxjs/operators";
 import {Store} from "@ngrx/store";
 import {AppStateInterface} from "../../services/appState.interface";
 import {changeLoadingState} from "../../store/actions";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-register',
@@ -19,8 +20,7 @@ export class RegisterComponent extends SnackBar implements OnInit {
 
   form: any = {}
   isSuccessful = false;
-
-  testMessage: string = "Hello world)))"
+  appIsLoading:boolean = false
 
   isLoggedIn$ : Subject<boolean> = new Subject<boolean>();
 
@@ -36,26 +36,28 @@ export class RegisterComponent extends SnackBar implements OnInit {
 
   ngOnInit(): void {
     if(this.tokenStorage.getToken()){
-      this.isSuccessful = true
-      this.router.navigate(['home'])
+      this.isSuccessful = true;
+      this.router.navigate(['home']).then()
       this.infoShow('You are already logged in')
     }
   }
 
   onSubmit(): void {
     this.store.dispatch(changeLoadingState({isLoading: true}))
+    this.appIsLoading = true
     /*Register user*/
     setTimeout(() => {
-      this.authService.register(this.form).pipe(takeUntil(this.isLoggedIn$)).pipe(first()).subscribe(
+      this.authService.register(this.form).pipe(takeUntil(this.isLoggedIn$)).subscribe(
         data => {
         if('error' in data){
+          this.isSuccessful = false;
           this.errorShow(data.error)
           this.store.dispatch(changeLoadingState({isLoading: false}))
         } else {
           this.isSuccessful = true;
           this.tokenStorage.saveToken(data.accessToken)
           this.tokenStorage.saveUser(this.form.username);
-          this.router.navigate(['home'])
+          this.router.navigate(['home']).then()
           this.successShow('Registered successfully')
           this.isLoggedIn$.next(true)
           this.isLoggedIn$.unsubscribe()

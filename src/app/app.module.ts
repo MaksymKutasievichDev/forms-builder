@@ -47,7 +47,6 @@ import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } fro
 import {PasswordStrengthDirective} from "./directives/password-strength.directive";
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
 import { LoaderComponent } from './components/loader/loader.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 
 @NgModule({
@@ -88,8 +87,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
     StoreModule.forRoot({formState: reducers}),
     EffectsModule.forRoot([FormDataEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-    NgxMatColorPickerModule,
-    HttpClientTestingModule
+    NgxMatColorPickerModule
   ],
   providers: [
     authInterceptorProviders,

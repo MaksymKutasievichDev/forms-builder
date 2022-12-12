@@ -1,42 +1,97 @@
-/*import {async, ComponentFixture, TestBed, inject, tick, fakeAsync} from "@angular/core/testing";
-
-import {DebugElement} from "@angular/core";
-import {By} from "@angular/platform-browser";
-
 import {RegisterComponent} from "./register.component";
+import {AuthService} from "../../services/auth.service";
+import {TokenStorageService} from "../../services/token-storage.service";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from "@angular/core/testing";
+import {RouterTestingModule} from "@angular/router/testing";
+import {FormsModule} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {SnackBar} from "../../classes/snackBar";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MockStore, provideMockStore} from "@ngrx/store/testing";
+import {AppStateInterface} from "../../services/appState.interface";
+import {async} from "@angular/core/testing";
+import {of} from "rxjs";
+import {MatInputModule} from "@angular/material/input";
+
 
 describe('RegisterComponent', () => {
-  let component: RegisterComponent;
-  let fixture: ComponentFixture<RegisterComponent>;
-  let de: DebugElement
+  let component: RegisterComponent
+  let store: MockStore<AppStateInterface>
+  let authService: AuthService
+  let tokenStorage: TokenStorageService
+  let injector: TestBed
+  let fixture: ComponentFixture<RegisterComponent>
 
-  beforeEach(async(() => {
+  const initialState = {
+    isLoading: false,
+    form:{
+      templateMap: [],
+      formStyles: {},
+      elementStyles:'',
+      token:''
+    },
+    error: null
+  }
+
+  beforeEach(waitForAsync (() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule
+        RouterTestingModule,
+        HttpClientTestingModule,
+        MatSnackBarModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        RouterTestingModule.withRoutes(
+          [{path:'home',redirectTo:''}]
+        )
       ],
-      declarations: [RegisterComponent],
-      providers: [SnackBar]
-    })
-      .compileComponents()
+      declarations: [
+        RegisterComponent
+      ],
+      providers: [
+        AuthService,
+        {
+          provide: TokenStorageService,
+          useValue: {
+            signOut: () => window.sessionStorage.clear()
+          }
+        },
+        TokenStorageService,
+        provideMockStore({initialState})
+      ]
+    }).compileComponents()
+    store = TestBed.inject(MockStore)
+    authService = TestBed.inject(AuthService)
+    tokenStorage = TestBed.inject(TokenStorageService)
+    fixture = TestBed.createComponent(RegisterComponent)
+    component = fixture.componentInstance
   }))
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RegisterComponent);
-    component = fixture.componentInstance;
-    de = fixture.debugElement;
-
-    fixture.detectChanges()
-  })
 
   it('should create', () => {
     expect(component).toBeTruthy()
   })
 
-  it('should have a message with "world"', () => {
-    expect(component.testMessage).toContain('world')
-  })
+  it('should update loading status if response has not any errors', fakeAsync(() => {
+    tokenStorage.signOut();
+    const response:any = {}
+    spyOn(authService, 'register').and.returnValues(of(response))
+    component.onSubmit()
+    tick(2000)
+    expect(component.isSuccessful).toEqual(true)
+  }))
 
-})*/
+  it('should return error if response has error', fakeAsync(() => {
+    tokenStorage.signOut();
+    component.isSuccessful = false
+    const response:any = {
+      error: 'error'
+    }
+    spyOn(authService, 'register').and.returnValues(of(response))
+    component.onSubmit()
+    tick(2000)
+    expect(component.isSuccessful).toEqual(false)
+  }))
+})

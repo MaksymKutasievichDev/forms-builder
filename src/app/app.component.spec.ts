@@ -3,6 +3,8 @@ import { AppComponent } from './app.component';
 import {provideMockStore} from "@ngrx/store/testing";
 import {RemoveQuotationMarksPipe} from "./pipes/remove-quotation-marks.pipe";
 import {TokenStorageService} from "./services/token-storage.service";
+import {MatIconModule} from "@angular/material/icon";
+import {AppRoutingModule} from "./app-routing.module";
 import {AuthService} from "./services/auth.service";
 import {HttpTestingController} from "@angular/common/http/testing";
 
@@ -16,7 +18,11 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        RemoveQuotationMarksPipe
+        RemoveQuotationMarksPipe,
+      ],
+      imports: [
+        MatIconModule,
+        AppRoutingModule
       ],
       providers: [
         provideMockStore({}),

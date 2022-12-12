@@ -1,5 +1,7 @@
 import {ComponentFixture, getTestBed, TestBed} from "@angular/core/testing";
 import {BlocksComponent} from "./blocks.component";
+import {MatIconModule} from "@angular/material/icon";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 
 describe('BlocksComponent',() => {
@@ -12,6 +14,10 @@ describe('BlocksComponent',() => {
       declarations: [
         BlocksComponent
       ],
+      imports:[
+        MatIconModule,
+        DragDropModule
+      ]
     }).compileComponents()
     injector = getTestBed()
   })
