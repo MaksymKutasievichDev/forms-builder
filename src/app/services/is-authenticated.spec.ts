@@ -24,6 +24,6 @@ describe('IsAuthenticatedGuard', () => {
     tokenStorageService.signOut();
     // @ts-ignore
     guard.canActivate('home', '');
-    expect(router.navigate).toHaveBeenCalledWith(['login']);
+    expect(router.navigate).toHaveBeenCalledWith(['auth/login']);
   });
 })

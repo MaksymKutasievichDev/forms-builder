@@ -1,0 +1,13 @@
+@import "../../../../variables";
+
+.form_wrapp{
+  @include login-register-form();
+  button{
+    margin-top: 0;
+    transition: all 0.5s ease;
+  }
+  .ng-dirty.ng-invalid.ng-touched + button{
+    margin-top: 20px;
+  }
+}
+

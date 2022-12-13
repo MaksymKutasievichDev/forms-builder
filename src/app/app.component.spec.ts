@@ -7,6 +7,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {AppRoutingModule} from "./app-routing.module";
 import {AuthService} from "./services/auth.service";
 import {HttpTestingController} from "@angular/common/http/testing";
+import {RouterTestingModule} from "@angular/router/testing";
+import {of} from "rxjs";
 
 describe('AppComponent', () => {
   let injector: TestBed;
@@ -22,7 +24,10 @@ describe('AppComponent', () => {
       ],
       imports: [
         MatIconModule,
-        AppRoutingModule
+        AppRoutingModule,
+        RouterTestingModule.withRoutes(
+          [{path:'home',redirectTo:''}]
+        )
       ],
       providers: [
         provideMockStore({}),
@@ -50,5 +55,20 @@ describe('AppComponent', () => {
   it('Should return true if there is authKey', () => {
     tokenService.saveToken('dumbToken')
     expect(component.checkIfLoggedIn()).toBeTruthy()
+  })
+
+  it('should signOut', () => {
+    tokenService.saveToken('dumbToken')
+    component.logout()
+    expect(component.checkIfLoggedIn()).toBeFalsy()
+  })
+
+  it('should upgrade username onInit', () => {
+    spyOn(component.isLoading$, 'pipe').and.returnValue(of(false))
+    tokenService.saveToken('dumbToken')
+    tokenService.saveUser('dumbUser')
+    component.ngOnInit()
+    expect(component.username).toEqual('"dumbUser"')
+    expect(component.isLoading).toEqual(false)
   })
 });

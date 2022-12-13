@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {TokenStorageService} from "./services/token-storage.service";
-import {Router} from "@angular/router";
-import {AppStateInterface} from "./services/appState.interface";
 import {select, Store} from "@ngrx/store";
-import {deleteDataFromState} from "./store/actions";
+import {Router} from "@angular/router";
 import {Observable} from "rxjs";
+import {TokenStorageService} from "./services/token-storage.service";
+import {AppStateInterface} from "./interfaces/appState.interface";
+import {deleteDataFromState} from "./store/actions";
 import {changeIsLoading} from "./store/selectors";
 
 @Component({
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit{
     if(!!this.tokenStorageService.getToken()) {
       this.username = this.tokenStorageService.getUser();
     }
-    this.isLoading$.subscribe(data => this.isLoading = data)
+    this.isLoading$.pipe().subscribe(data => this.isLoading = data)
   }
 
 
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit{
 
   logout():void {
     this.tokenStorageService.signOut();
-    this.router.navigate(['login'])
+    this.router.navigate(['auth/login']).then()
     this.store.dispatch(deleteDataFromState())
   }
 }

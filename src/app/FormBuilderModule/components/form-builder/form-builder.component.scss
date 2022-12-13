@@ -1,0 +1,74 @@
+@import "../../../../variables";
+
+.form_builder{
+  display: flex;
+  gap: 2rem;
+  padding-top: 2rem;
+  align-items: flex-start;
+  & > *{
+    flex: 1;
+    border-radius: 5px;
+    border: 2px solid $main_lightblue;
+  }
+  @media (max-width: 620px) {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0;
+  }
+}
+@media (max-width: 768px) {
+  .form_builder {
+    gap: 10px;
+    & > .block_choose_wrapper {
+      flex: unset
+    }
+  }
+}
+.form_template__wrapper{
+  border: none !important;
+}
+.load_data_form{
+  margin-top: 20px;
+  border: 2px solid $main_lightblue;
+  border-radius: 5px;
+  padding: 10px 20px;
+  p{
+    font-size: 20px;
+    color: $secondary_darkblue;
+  }
+}
+.form_template{
+  padding-top: 1rem;
+  &>p{
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .form_template__elements{
+    min-height: 50px;
+    display: block;
+  }
+}
+.form_template{
+  border: 2px solid $main_lightblue;
+}
+.styles_settings{
+  overflow: hidden;
+  .mat-accordion .mat-expansion-panel{
+    border-radius: 0 !important;
+  }
+  .mat-expansion-panel-header-description{
+    display: flex !important;
+    justify-content: flex-end !important;
+    margin-right: 0;
+  }
+  #mat-expansion-table{
+    box-shadow: none;
+  }
+  .mat-expansion-panel-spacing{
+    margin: 0;
+  }
+  app-form-styles .mat-expansion-panel{
+    border-bottom: 2px solid $main_lightblue;
+  }
+}
