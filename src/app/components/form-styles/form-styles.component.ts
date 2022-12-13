@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import {SnackBar} from "../../classes/snackBar";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Observable, pairwise, Subject, Subscription} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {IFormStyles} from "../../services/IFieldsStyles";
 import {AppStateInterface} from "../../services/appState.interface";
 import {select, Store} from "@ngrx/store";
@@ -39,15 +39,12 @@ export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
   formStylesSelect$: Observable<any>
   formStylesSelect: IFormStyles
 
-  subscription: Subscription
-
   constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>) {
     super(snackBar)
     this.formStylesSelect$ = this.store.pipe(select(formStylesSelector))
   }
 
   ngOnInit(): void {
-
     this.formStylesSelect$
       .pipe(takeUntil(this.isDestroyed$))
       .subscribe(

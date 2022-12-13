@@ -56,12 +56,12 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formElementsStyles$.subscribe(
+    this.formElementsStyles$.pipe().subscribe(
       data => {
         this.formElementsStyles = data ? JSON.parse(data) : ''
       }
     )
-    this.formTemplateMap$.subscribe(data => this.formTemplateMapSelector = data)
+    this.formTemplateMap$.pipe().subscribe(data => this.formTemplateMapSelector = data)
     this.innerWidth = window.innerWidth
   }
 
