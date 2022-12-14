@@ -6,10 +6,10 @@ import {select, Store} from "@ngrx/store";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {SnackBar} from "../classes/snack-bar";
+import {SnackBar} from "../shared/directives/snack-bar";
 import {IFormStyles} from "../interfaces/fields-styles.interface";
 import {formDataForDownload} from "../store/selectors";
-import {AppStateInterface} from "../interfaces/appState.interface";
+import {AppStateInterface} from "../interfaces/app-state.interface";
 import {FormDataMutation} from "./services/form-data-mutations.service";
 
 @Component({

@@ -1,8 +1,3 @@
-import {FormStylesComponent} from "./form-styles.component";
-import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {ComponentFixture, fakeAsync, TestBed, waitForAsync} from "@angular/core/testing";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {of} from 'rxjs'
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -11,6 +6,11 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {MAT_COLOR_FORMATS, NgxMatColorPickerModule} from "@angular-material-components/color-picker";
 import {MatSelectModule} from "@angular/material/select";
+import {MockStore, provideMockStore} from "@ngrx/store/testing";
+import {ComponentFixture, fakeAsync, TestBed, waitForAsync} from "@angular/core/testing";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {of} from 'rxjs'
+import {FormStylesComponent} from "./form-styles.component";
 
 
 describe('FormStylesComponents', () => {
@@ -29,7 +29,7 @@ describe('FormStylesComponents', () => {
     error: null
   }
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports:[
         MatSnackBarModule,
@@ -55,7 +55,7 @@ describe('FormStylesComponents', () => {
     store = TestBed.inject(MockStore)
     fixture = TestBed.createComponent(FormStylesComponent)
     component = fixture.componentInstance
-  }))
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy()
@@ -69,8 +69,9 @@ describe('FormStylesComponents', () => {
       borderStyle: 'dashed',
       borderColor: '#000000'
     }
-    spyOn(component.formStylesSelect$, 'pipe').and.returnValue(of(response))
-    component.ngOnInit()
+    spyOn((component as any).store, 'pipe').and.returnValue(of(response))
+    fixture = TestBed.createComponent(FormStylesComponent)
+    component = fixture.componentInstance
     expect(component.label.value).toEqual('new')
     expect(component.color.value.hex).toEqual('000000')
     expect(component.background.value.hex).toEqual('000000')
@@ -102,8 +103,10 @@ describe('FormStylesComponents', () => {
       },
       error: null
     })
-    spyOn(component.formStylesSelect$, 'pipe').and.returnValue(of(response))
-    component.ngOnInit()
+    spyOn((component as any).store, 'pipe').and.returnValue(of(response))
+    store = TestBed.inject(MockStore)
+    fixture = TestBed.createComponent(FormStylesComponent)
+    component = fixture.componentInstance
     expect(component.label.value).toEqual('new')
     expect(component.color.value.hex).toEqual('000000')
     expect(component.background.value.hex).toEqual('000000')

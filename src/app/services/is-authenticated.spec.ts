@@ -1,6 +1,6 @@
+import {Router} from "@angular/router"
 import {IsAuthenticatedGuard} from "./is-authenticated";
 import {TokenStorageService} from "./token-storage.service";
-import {Router} from "@angular/router"
 
 
 describe('IsAuthenticatedGuard', () => {

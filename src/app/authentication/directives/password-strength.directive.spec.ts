@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {PasswordStrengthDirective} from "./password-strength.directive";
-import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {Component} from "@angular/core";
+import {PasswordStrengthDirective} from "./password-strength.directive";
 
 @Component({
   template: `

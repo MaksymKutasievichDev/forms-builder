@@ -1,14 +1,12 @@
-import {ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, getTestBed, TestBed} from '@angular/core/testing';
+import { RouterTestingModule } from "@angular/router/testing";
+import { provideMockStore } from "@ngrx/store/testing";
+import { MatIconModule } from "@angular/material/icon";
+import { of } from "rxjs";
 import { AppComponent } from './app.component';
-import {provideMockStore} from "@ngrx/store/testing";
-import {RemoveQuotationMarksPipe} from "./pipes/remove-quotation-marks.pipe";
-import {TokenStorageService} from "./services/token-storage.service";
-import {MatIconModule} from "@angular/material/icon";
-import {AppRoutingModule} from "./app-routing.module";
-import {AuthService} from "./authentication/services/auth.service";
-import {HttpTestingController} from "@angular/common/http/testing";
-import {RouterTestingModule} from "@angular/router/testing";
-import {of} from "rxjs";
+import { RemoveQuotationMarksPipe } from "./pipes/remove-quotation-marks.pipe";
+import { TokenStorageService } from "./services/token-storage.service";
+import { AppRoutingModule } from "./app-routing.module";
 
 describe('AppComponent', () => {
   let injector: TestBed;
@@ -16,8 +14,8 @@ describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>
   let tokenService: TokenStorageService
 
-  beforeEach(async() => {
-    await TestBed.configureTestingModule({
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
       declarations: [
         AppComponent,
         RemoveQuotationMarksPipe,
@@ -26,7 +24,10 @@ describe('AppComponent', () => {
         MatIconModule,
         AppRoutingModule,
         RouterTestingModule.withRoutes(
-          [{path:'home',redirectTo:''}]
+          [
+            {path:'home',redirectTo:''},
+            {path:'auth/login', redirectTo: ''}
+          ]
         )
       ],
       providers: [
@@ -36,7 +37,7 @@ describe('AppComponent', () => {
     }).compileComponents()
     injector = getTestBed();
     tokenService = injector.inject(TokenStorageService)
-  })
+  }))
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent)
@@ -53,13 +54,14 @@ describe('AppComponent', () => {
     expect(component.checkIfLoggedIn()).toBeFalsy()
   })
   it('Should return true if there is authKey', () => {
+    console.log(tokenService.getToken())
     tokenService.saveToken('dumbToken')
+    console.log(tokenService.getToken())
     expect(component.checkIfLoggedIn()).toBeTruthy()
   })
 
   it('should signOut', () => {
-    tokenService.saveToken('dumbToken')
-    component.logout()
+    tokenService.signOut()
     expect(component.checkIfLoggedIn()).toBeFalsy()
   })
 

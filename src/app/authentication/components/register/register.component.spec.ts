@@ -1,6 +1,3 @@
-import {RegisterComponent} from "./register.component";
-import {AuthService} from "../../services/auth.service";
-import {TokenStorageService} from "../../../services/token-storage.service";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from "@angular/core/testing";
 import {RouterTestingModule} from "@angular/router/testing";
@@ -9,9 +6,12 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {AppStateInterface} from "../../../interfaces/appState.interface";
-import {of} from "rxjs";
 import {MatInputModule} from "@angular/material/input";
+import {of} from "rxjs";
+import {RegisterComponent} from "./register.component";
+import {AuthService} from "../../services/auth.service";
+import {TokenStorageService} from "../../../services/token-storage.service";
+import {AppStateInterface} from "../../../interfaces/app-state.interface";
 
 
 describe('RegisterComponent', () => {

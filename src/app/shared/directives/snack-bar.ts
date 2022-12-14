@@ -1,7 +1,11 @@
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Directive} from "@angular/core";
 
+@Directive({
+  selector: '[snack-bar]'
+})
 export abstract class SnackBar{
-  constructor(private snackBar: MatSnackBar) {
+  protected constructor(private snackBar: MatSnackBar) {
   }
 
   successShow(msg:string){

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import {Store} from "@ngrx/store";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 import {AuthService} from "../../services/auth.service";
 import {TokenStorageService} from "../../../services/token-storage.service";
-import {Router} from "@angular/router";
-import {SnackBar} from "../../../classes/snack-bar";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {Subject, first} from "rxjs";
-import {takeUntil} from "rxjs/operators";
-import {Store} from "@ngrx/store";
-import {AppStateInterface} from "../../../interfaces/appState.interface";
+import {SnackBar} from "../../../shared/directives/snack-bar";
+import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {changeLoadingState} from "../../../store/actions";
 
 @Component({

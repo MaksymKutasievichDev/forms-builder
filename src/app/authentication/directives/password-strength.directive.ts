@@ -1,5 +1,5 @@
-import {Directive} from "@angular/core";
-import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator} from "@angular/forms";
+import { Directive } from "@angular/core";
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator } from "@angular/forms";
 import { createPasswordStrangeValidator } from "../validators/password-strange.validator";
 
 @Directive({

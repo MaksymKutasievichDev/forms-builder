@@ -1,9 +1,4 @@
-import {LoginComponent} from "./login.component";
-import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {AppStateInterface} from "../../../interfaces/appState.interface";
-import {AuthService} from "../../services/auth.service";
-import {TokenStorageService} from "../../../services/token-storage.service";
-import {async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from "@angular/core/testing";
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from "@angular/core/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
@@ -11,8 +6,12 @@ import {FormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {RegisterComponent} from "../register/register.component";
+import {MockStore, provideMockStore} from "@ngrx/store/testing";
 import {of} from "rxjs";
+import {LoginComponent} from "./login.component";
+import {AppStateInterface} from "../../../interfaces/app-state.interface";
+import {AuthService} from "../../services/auth.service";
+import {TokenStorageService} from "../../../services/token-storage.service";
 
 
 describe('LoginComponent', () => {

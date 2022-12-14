@@ -1,9 +1,9 @@
 import {Component, forwardRef} from '@angular/core';
-import {AppStateInterface} from "../../../interfaces/appState.interface";
 import {Store} from "@ngrx/store";
-import {updateElementsStyles, updateFormMapData, updateFormStyles} from "../../../store/actions";
-import {Observable} from "rxjs";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Observable} from "rxjs";
+import {AppStateInterface} from "../../../interfaces/app-state.interface";
+import {updateElementsStyles, updateFormMapData, updateFormStyles} from "../../../store/actions";
 
 @Component({
   selector: 'app-file-upload',

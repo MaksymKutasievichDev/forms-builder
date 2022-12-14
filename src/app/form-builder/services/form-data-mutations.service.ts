@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Store} from "@ngrx/store";
-import {AppStateInterface} from "../../interfaces/appState.interface";
+import {AppStateInterface} from "../../interfaces/app-state.interface";
 import {updateElementsStyles, updateFormMapData} from "../../store/actions";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TokenStorageService} from "../../services/token-storage.service";

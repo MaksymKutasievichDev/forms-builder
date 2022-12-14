@@ -1,4 +1,4 @@
-import {AppStateInterface} from "../interfaces/appState.interface";
+import {AppStateInterface} from "../interfaces/app-state.interface";
 import {createSelector} from "@ngrx/store";
 
 export const selectForm = (state: AppStateInterface) => state.formState

@@ -1,22 +1,17 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
-import {SnackBar} from "../../../classes/snack-bar";
+import {ChangeDetectionStrategy, Component, OnInit, OnDestroy} from '@angular/core';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {Observable, Subject} from "rxjs";
-import {IFormStyles} from "../../../interfaces/fields-styles.interface";
-import {AppStateInterface} from "../../../interfaces/appState.interface";
 import {select, Store} from "@ngrx/store";
-import {formStylesSelector} from "../../../store/selectors";
-import {updateFormStyles} from "../../../store/actions";
 import {FormControl} from "@angular/forms";
 import {ThemePalette} from "@angular/material/core";
 import {Color} from "@angular-material-components/color-picker";
-import {hexToRgb} from "../../../_helpers/helpers";
+import {Observable, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {SnackBar} from "../../../shared/directives/snack-bar";
+import {IFormStyles} from "../../../interfaces/fields-styles.interface";
+import {AppStateInterface} from "../../../interfaces/app-state.interface";
+import {formStylesSelector} from "../../../store/selectors";
+import {updateFormStyles} from "../../../store/actions";
+import {hexToRgb} from "../../../_helpers/helpers";
 
 @Component({
   selector: 'app-form-styles',

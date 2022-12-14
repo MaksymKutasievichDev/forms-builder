@@ -3,7 +3,7 @@ import {select, Store} from "@ngrx/store";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {TokenStorageService} from "./services/token-storage.service";
-import {AppStateInterface} from "./interfaces/appState.interface";
+import {AppStateInterface} from "./interfaces/app-state.interface";
 import {deleteDataFromState} from "./store/actions";
 import {changeIsLoading} from "./store/selectors";
 
@@ -44,7 +44,7 @@ export class AppComponent implements OnInit{
 
   logout():void {
     this.tokenStorageService.signOut();
-    this.router.navigate(['auth/login']).then()
+    this.router.navigate(['auth/login'])
     this.store.dispatch(deleteDataFromState())
   }
 }

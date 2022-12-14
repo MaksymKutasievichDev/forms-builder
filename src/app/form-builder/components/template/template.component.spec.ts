@@ -1,6 +1,6 @@
 import {ComponentFixture, getTestBed, TestBed} from "@angular/core/testing";
-import {TemplateComponent} from "./template.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {TemplateComponent} from "./template.component";
 
 
 describe('TemplateComponent',() => {

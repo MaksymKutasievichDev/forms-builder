@@ -1,8 +1,6 @@
-import {FieldStylesComponent} from "./field-styles.component";
 import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {ComponentFixture, fakeAsync, TestBed, waitForAsync} from "@angular/core/testing";
+import {ComponentFixture, fakeAsync, TestBed} from "@angular/core/testing";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
-import {of} from 'rxjs'
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -12,12 +10,19 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {MAT_COLOR_FORMATS, NgxMatColorPickerModule} from "@angular-material-components/color-picker";
 import {MatSelectModule} from "@angular/material/select";
 import {MatIconModule} from "@angular/material/icon";
+import {HttpClient, HttpHandler} from "@angular/common/http";
+import {of} from 'rxjs'
+import {FieldStylesComponent} from "./field-styles.component";
+import {FormDataMutation} from "../../services/form-data-mutations.service";
+import {TokenStorageService} from "../../../services/token-storage.service";
 
 
 describe('FieldStylesComponent', () => {
   let component: FieldStylesComponent
   let store: MockStore<any>
+  let formDataMutations: FormDataMutation
   let fixture: ComponentFixture<FieldStylesComponent>
+  let http: HttpClient
 
   const initialState = {
     isLoading: false,
@@ -30,7 +35,7 @@ describe('FieldStylesComponent', () => {
     error: null
   }
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports:[
         MatSnackBarModule,
@@ -50,24 +55,33 @@ describe('FieldStylesComponent', () => {
       ],
       providers: [
         provideMockStore({initialState}),
+        FormDataMutation,
+        TokenStorageService,
+        HttpClient,
+        HttpHandler,
         { provide: MAT_COLOR_FORMATS, useValue: {display: { colorInput: 'hex'}} }
       ]
     }).compileComponents()
 
     store = TestBed.inject(MockStore)
+    http = TestBed.inject(HttpClient)
+    formDataMutations = TestBed.inject(FormDataMutation)
     fixture = TestBed.createComponent(FieldStylesComponent)
     component = fixture.componentInstance
-  }))
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy()
   })
 
   it('should set data from store', fakeAsync(() => {
-    const response:any = "[{\"label\":\"Lable\"},{},{},{\"label\":\"Label\",\"placeholder\":\"New plchldr\",\"color\":\"#adaf2a\",\"borderColor\":\"#38e815\"},{\"label\":\"Login\",\"color\":\"#b926b7\",\"borderColor\":\"#00ddff\",\"borderStyle\":\"solid\"}]"
-    spyOn(component.formElementsStyles$, 'pipe').and.returnValue(of(response))
-    spyOn(component.formTemplateMap$, 'pipe').and.returnValue(of(['input', 'select']))
-    component.ngOnInit()
+    const response:any = {
+      elementStyles: "[{},{},{},{},{}]",
+      templateMap: ['input', 'select']
+    }
+    spyOn((component as any).store, 'pipe').and.returnValue(of(response))
+    fixture = TestBed.createComponent(FieldStylesComponent)
+    component = fixture.componentInstance
     // @ts-ignore
     expect(component.formElementsStyles.length).toEqual(5)
     expect(component.formTemplateMapSelector).toEqual(['input', 'select'])

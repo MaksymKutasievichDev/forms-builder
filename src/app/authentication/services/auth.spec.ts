@@ -63,22 +63,6 @@ describe('AuthService', () => {
     });
   });
 
-  describe('#templateMap', () => {
-    it('Should return saving confirmation', () => {
-      const dummyResponse = {
-        success: true
-      };
-
-      service.saveTemplateMap([],{},'', '').subscribe(data => {
-        expect(data).toEqual(dummyResponse);
-      });
-
-      const req = httpMock.expectOne("http://localhost:4000/save_template");
-      expect(req.request.method).toBe("POST");
-      req.flush(dummyResponse);
-    });
-  });
-
   describe('#getUserDataByToken', () => {
     it('Should return user data ', () => {
       const dummyResponse = {};
