@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {EMPTY, mergeMap} from "rxjs";
 import {map, catchError} from "rxjs";
-import { AuthService } from "../services/auth.service";
+import { AuthService } from "../authentication/services/auth.service";
 import {TokenStorageService} from "../services/token-storage.service";
 
 @Injectable()

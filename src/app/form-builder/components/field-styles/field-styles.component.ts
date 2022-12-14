@@ -1,15 +1,16 @@
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
-import {SnackBar} from "../../../classes/snack-bar";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {Observable} from "rxjs";
-import {select, Store} from "@ngrx/store";
-import {formElementsSelector, formElementsStyles} from "../../../store/selectors";
-import {AppStateInterface} from "../../../interfaces/appState.interface";
-import {FormControl} from "@angular/forms";
-import {updateElementsStyles, updateFormMapData} from "../../../store/actions";
 import {ThemePalette} from "@angular/material/core";
 import {Color} from "@angular-material-components/color-picker";
+import {select, Store} from "@ngrx/store";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Observable} from "rxjs";
+import {SnackBar} from "../../../classes/snack-bar";
+import {formDataForDownload, formElementsSelector, formElementsStyles} from "../../../store/selectors";
+import {AppStateInterface} from "../../../interfaces/appState.interface";
+import {FormControl} from "@angular/forms";
+import {updateElementsStyles} from "../../../store/actions";
 import {hexToRgb} from "../../../_helpers/helpers";
+import {FormDataMutation} from "../../services/form-data-mutations.service";
 
 @Component({
   selector: 'app-field-styles',
@@ -49,19 +50,17 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
 
   innerWidth: any
 
-  constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>) {
+  constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>, private dataMutation: FormDataMutation) {
     super(snackBar)
     this.formElementsStyles$ = this.store.pipe(select(formElementsStyles))
     this.formTemplateMap$ = this.store.pipe(select(formElementsSelector))
+    this.store.pipe(select(formDataForDownload)).subscribe(data => {
+      this.formElementsStyles = data.elementStyles ? JSON.parse(data.elementStyles) : ''
+      this.formTemplateMapSelector = data.templateMap
+    })
   }
 
   ngOnInit(): void {
-    this.formElementsStyles$.pipe().subscribe(
-      data => {
-        this.formElementsStyles = data ? JSON.parse(data) : ''
-      }
-    )
-    this.formTemplateMap$.pipe().subscribe(data => this.formTemplateMapSelector = data)
     this.innerWidth = window.innerWidth
   }
 
@@ -103,36 +102,23 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
     this.color.value.hex ? formElementStylesCopy[this.elementIndex].color = '#' + this.color.value.hex : ''
     this.borderColor.value.hex ? formElementStylesCopy[this.elementIndex].borderColor = '#' + this.borderColor.value.hex : ''
     this.borderStyle.value ? formElementStylesCopy[this.elementIndex].borderStyle = this.borderStyle.value : ''
-
     this.innerWidth <= 768 ? this.panelOpenState = false : ''
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Styles added successfully')
   }
 
   sendDeleteCall(){
-    /*DELETE FROM ELEMENTS*/
-    let formTemplateMapSelectorCopy = JSON.parse(JSON.stringify(this.formTemplateMapSelector));
-    formTemplateMapSelectorCopy.splice(this.elementIndex,1)
-    this.store.dispatch(updateFormMapData({mapData: formTemplateMapSelectorCopy}))
-    /*DELETE FROM STYLES*/
-    let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
-    formElementStylesCopy.splice(this.elementIndex, 1)
-    this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
-    /*SUCCESS MESSAGE*/
+    this.dataMutation.deleteElement(this.formTemplateMapSelector, this.formElementsStyles, this.elementIndex)
     this.successShow('Element deleted successfully')
   }
 
   addOption(){
-    let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
-    formElementStylesCopy[this.elementIndex].options.push(this.addOptionText)
-    this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
+    this.dataMutation.addOption(this.formElementsStyles, this.elementIndex, this.addOptionText)
     this.addOptionText = ''
     this.successShow('Option added')
   }
   removeOption(index:number){
-    let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
-    formElementStylesCopy[this.elementIndex].options.splice(index,1)
-    this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
+    this.dataMutation.removeOption(this.formElementsStyles, index, this.elementIndex)
     this.successShow('Option removed')
   }
 }

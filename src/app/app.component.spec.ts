@@ -5,7 +5,7 @@ import {RemoveQuotationMarksPipe} from "./pipes/remove-quotation-marks.pipe";
 import {TokenStorageService} from "./services/token-storage.service";
 import {MatIconModule} from "@angular/material/icon";
 import {AppRoutingModule} from "./app-routing.module";
-import {AuthService} from "./services/auth.service";
+import {AuthService} from "./authentication/services/auth.service";
 import {HttpTestingController} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {of} from "rxjs";

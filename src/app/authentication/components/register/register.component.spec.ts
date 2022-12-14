@@ -1,26 +1,25 @@
-import {LoginComponent} from "./login.component";
-import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {AppStateInterface} from "../../../interfaces/appState.interface";
-import {AuthService} from "../../../services/auth.service";
+import {RegisterComponent} from "./register.component";
+import {AuthService} from "../../services/auth.service";
 import {TokenStorageService} from "../../../services/token-storage.service";
-import {async, ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from "@angular/core/testing";
-import {RouterTestingModule} from "@angular/router/testing";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {ComponentFixture, fakeAsync, TestBed, tick, waitForAsync} from "@angular/core/testing";
+import {RouterTestingModule} from "@angular/router/testing";
 import {FormsModule} from "@angular/forms";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
-import {RegisterComponent} from "../register/register.component";
+import {MockStore, provideMockStore} from "@ngrx/store/testing";
+import {AppStateInterface} from "../../../interfaces/appState.interface";
 import {of} from "rxjs";
+import {MatInputModule} from "@angular/material/input";
 
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
+describe('RegisterComponent', () => {
+  let component: RegisterComponent
   let store: MockStore<AppStateInterface>
   let authService: AuthService
   let tokenStorage: TokenStorageService
-  let fixture: ComponentFixture<LoginComponent>
+  let fixture: ComponentFixture<RegisterComponent>
 
   const initialState = {
     isLoading: false,
@@ -33,7 +32,7 @@ describe('LoginComponent', () => {
     error: null
   }
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(waitForAsync (() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -48,7 +47,7 @@ describe('LoginComponent', () => {
         )
       ],
       declarations: [
-        LoginComponent
+        RegisterComponent
       ],
       providers: [
         AuthService,
@@ -65,7 +64,7 @@ describe('LoginComponent', () => {
     store = TestBed.inject(MockStore)
     authService = TestBed.inject(AuthService)
     tokenStorage = TestBed.inject(TokenStorageService)
-    fixture = TestBed.createComponent(LoginComponent)
+    fixture = TestBed.createComponent(RegisterComponent)
     component = fixture.componentInstance
   }))
 
@@ -73,25 +72,24 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy()
   })
 
-  it('should update logged status if response has not any errors', fakeAsync(() => {
+  it('should update loading status if response has not any errors', fakeAsync(() => {
     tokenStorage.signOut();
     const response:any = {}
-    spyOn(authService, 'login').and.returnValues(of(response))
+    spyOn(authService, 'register').and.returnValues(of(response))
     component.onSubmit()
     tick(2000)
-    expect(component.isLoggedIn).toEqual(true)
+    expect(component.isSuccessful).toEqual(true)
   }))
 
   it('should return error if response has error', fakeAsync(() => {
     tokenStorage.signOut();
-    component.isLoggedIn = false
+    component.isSuccessful = false
     const response:any = {
       error: 'error'
     }
-    spyOn(authService, 'login').and.returnValues(of(response))
+    spyOn(authService, 'register').and.returnValues(of(response))
     component.onSubmit()
     tick(2000)
-    expect(component.isLoggedIn).toEqual(false)
+    expect(component.isSuccessful).toEqual(false)
   }))
-
 })

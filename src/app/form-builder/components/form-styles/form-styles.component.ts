@@ -41,25 +41,21 @@ export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
 
   constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>) {
     super(snackBar)
-    this.formStylesSelect$ = this.store.pipe(select(formStylesSelector))
-  }
-
-  ngOnInit(): void {
-    this.formStylesSelect$
+    this.store.pipe(select(formStylesSelector))
       .pipe(takeUntil(this.isDestroyed$))
-      .subscribe(
-      data => {
-        this.formStylesSelect = data
-        this.label.setValue(data.label ? data.label : '')
-        let currentColor:any = hexToRgb(data.color)
-        this.color.setValue(currentColor ? new Color(currentColor.r, currentColor.g, currentColor.b, 1) : "")
-        let currentBackground = hexToRgb(data.background)
-        this.background.setValue(currentColor ? new Color(currentBackground.r, currentBackground.g, currentBackground.b, 1) : "")
-        this.borderStyle.setValue(data.borderStyle ? data.borderStyle : '')
-        let currentBorderColor = hexToRgb(data.borderColor)
-        this.borderColor.setValue(data.borderColor ? new Color(currentBorderColor.r, currentBorderColor.g, currentBorderColor.b, 1) : '')
-      }
-    )
+      .subscribe(data => {
+      this.formStylesSelect = data
+      this.label.setValue(data.label ? data.label : '')
+      let currentColor:any = hexToRgb(data.color)
+      this.color.setValue(currentColor ? new Color(currentColor.r, currentColor.g, currentColor.b, 1) : "")
+      let currentBackground = hexToRgb(data.background)
+      this.background.setValue(currentColor ? new Color(currentBackground.r, currentBackground.g, currentBackground.b, 1) : "")
+      this.borderStyle.setValue(data.borderStyle ? data.borderStyle : '')
+      let currentBorderColor = hexToRgb(data.borderColor)
+      this.borderColor.setValue(data.borderColor ? new Color(currentBorderColor.r, currentBorderColor.g, currentBorderColor.b, 1) : '')
+    })
+  }
+  ngOnInit(): void {
   }
   submitFormStyles():void{
     this.store.dispatch(updateFormStyles({formStyles: {
@@ -70,7 +66,6 @@ export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
         borderColor: this.borderColor.value ? '#' + this.borderColor.value.hex: ''
     }}))
   }
-
   ngOnDestroy() {
     this.isDestroyed$.next(true)
     this.isDestroyed$.unsubscribe()

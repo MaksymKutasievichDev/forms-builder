@@ -7,15 +7,15 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {HttpClientModule} from "@angular/common/http";
-import {TokenStorageService} from "../../../services/token-storage.service";
-import {AuthService} from "../../../services/auth.service";
-import {FormStylesComponent} from "../form-styles/form-styles.component";
+import {TokenStorageService} from "../services/token-storage.service";
+import {AuthService} from "../authentication/services/auth.service";
+import {FormStylesComponent} from "./components/form-styles/form-styles.component";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MAT_COLOR_FORMATS, NgxMatColorPickerModule} from "@angular-material-components/color-picker";
 import {MatSelectModule} from "@angular/material/select";
-import {FieldStylesComponent} from "../field-styles/field-styles.component";
+import {FieldStylesComponent} from "./components/field-styles/field-styles.component";
 import {MatIconModule} from "@angular/material/icon";
 
 

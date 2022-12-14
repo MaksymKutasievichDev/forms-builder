@@ -5,11 +5,10 @@ import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { RegisterComponent } from "./components/register/register.component";
 import { PasswordStrengthDirective } from "./directives/password-strength.directive";
 import { AuthRoutingModule } from "./auth-routing.module";
-
-
 
 @NgModule({
   declarations: [
@@ -23,7 +22,8 @@ import { AuthRoutingModule } from "./auth-routing.module";
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    MatSnackBarModule
   ],
   bootstrap: [LoginComponent]
 })

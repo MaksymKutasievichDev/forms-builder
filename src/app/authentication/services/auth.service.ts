@@ -25,18 +25,6 @@ export class AuthService {
     })
   }
 
-  saveTemplateMap(templateMap: string[] | undefined, formStyles: {}, elementStyles: string, token: string | null):Observable<any>{
-    return this.http.post('http://localhost:4000/save_template',{
-      templatemap: templateMap,
-      formstyles: formStyles,
-      elementstyles: elementStyles
-    }, {
-      headers: new HttpHeaders({
-        'authorization': `Bearer ${token}`
-      })
-    })
-  }
-
   getUserDataByToken(token:any):Observable<any>{
     return this.http.get('http://localhost:4000/get_user_data', {
       headers: new HttpHeaders({

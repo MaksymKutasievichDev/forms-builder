@@ -10,14 +10,14 @@
   <div class="form_template__wrapper">
     <div class="form_template"
          style="border-radius: 5px"
-         [ngStyle]="formStylesSelect$ | async">
+         [ngStyle]="formStylesSelectorObs">
       <p>{{formStylesSelectorObs.hasOwnProperty('label') ? formStylesSelectorObs.label : 'Form label'}}</p>
       <app-template
         class="form_template__elements"
         cdkDropList
-        [cdkDropListData]="formTemplateMap$ | async"
+        [cdkDropListData]="formTemplateMapSelector"
         (cdkDropListDropped)="drop($event)"
-        [formTemplateElements]="formTemplateMap$ | async"
+        [formTemplateElements]="formTemplateMapSelector"
         (clickedElementIndex)="getClickedElementIndex($event)"
         [activeElementIndex]="clickedElementIndex"
         [fieldsStyles]="formElementsStylesSelector"

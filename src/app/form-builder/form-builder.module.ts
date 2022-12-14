@@ -11,7 +11,7 @@ import { MAT_COLOR_FORMATS, NgxMatColorPickerModule } from "@angular-material-co
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
-import { FormBuilderComponent } from "./components/form-builder/form-builder.component";
+import { FormBuilderComponent } from "./form-builder.component";
 import { BlocksComponent } from "./components/blocks/blocks.component";
 import { TemplateComponent } from "./components/template/template.component";
 import { FormStylesComponent } from "./components/form-styles/form-styles.component";

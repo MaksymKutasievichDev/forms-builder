@@ -13,9 +13,6 @@ import { AppComponent } from './app.component';
 import { RemoveQuotationMarksPipe } from './pipes/remove-quotation-marks.pipe';
 import { authInterceptorProviders } from "./_helpers/auth.interceptor";
 import { reducers } from "./store/reducers";
-import { FormBuilderModule } from "./FormBuilderModule/form-builder-module.module";
-import { AuthModule } from "./AuthModule/auth-module.module";
-import { SharedModule } from "./shared-module/shared-module.module";
 
 @NgModule({
   declarations: [
@@ -32,9 +29,6 @@ import { SharedModule } from "./shared-module/shared-module.module";
     StoreModule.forRoot({formState: reducers}),
     EffectsModule.forRoot([FormDataEffects]),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
-    FormBuilderModule,
-    AuthModule,
-    SharedModule
   ],
   providers: [
     authInterceptorProviders,
