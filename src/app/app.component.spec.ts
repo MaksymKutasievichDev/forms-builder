@@ -2,15 +2,18 @@ import {ComponentFixture, fakeAsync, getTestBed, TestBed} from '@angular/core/te
 import { RouterTestingModule } from "@angular/router/testing";
 import { provideMockStore } from "@ngrx/store/testing";
 import { MatIconModule } from "@angular/material/icon";
+import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import { of } from "rxjs";
 import { AppComponent } from './app.component';
 import { RemoveQuotationMarksPipe } from "./pipes/remove-quotation-marks.pipe";
 import { TokenStorageService } from "./services/token-storage.service";
 import { AppRoutingModule } from "./app-routing.module";
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 describe('AppComponent', () => {
   let injector: TestBed;
   let component: AppComponent;
+  let reactiveForms: ReactiveFormsModule
   let fixture: ComponentFixture<AppComponent>
   let tokenService: TokenStorageService
 
@@ -23,6 +26,8 @@ describe('AppComponent', () => {
       imports: [
         MatIconModule,
         AppRoutingModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
         RouterTestingModule.withRoutes(
           [
             {path:'home',redirectTo:''},
@@ -37,6 +42,7 @@ describe('AppComponent', () => {
     }).compileComponents()
     injector = getTestBed();
     tokenService = injector.inject(TokenStorageService)
+    reactiveForms = TestBed.inject(ReactiveFormsModule)
   }))
 
   beforeEach(() => {
@@ -54,9 +60,7 @@ describe('AppComponent', () => {
     expect(component.checkIfLoggedIn()).toBeFalsy()
   })
   it('Should return true if there is authKey', () => {
-    console.log(tokenService.getToken())
     tokenService.saveToken('dumbToken')
-    console.log(tokenService.getToken())
     expect(component.checkIfLoggedIn()).toBeTruthy()
   })
 
@@ -72,5 +76,20 @@ describe('AppComponent', () => {
     component.ngOnInit()
     expect(component.username).toEqual('"dumbUser"')
     expect(component.isLoading).toEqual(false)
+  })
+
+  it('should set DarkMode if its set to true in session storage', () => {
+    spyOn(component.isLoading$, 'pipe').and.returnValue(of(false))
+    tokenService.setDarkMode(true)
+    component.ngOnInit()
+    expect(component.className).toEqual('darkMode')
+  })
+
+  it('should not set DarkMode if its set to false in session storage', () => {
+    spyOn(component.isLoading$, 'pipe').and.returnValue(of(false))
+    component.toggleDarkMode.setValue(false)
+    tokenService.setDarkMode(false)
+    component.ngOnInit()
+    expect(component.toggleDarkMode.value).toEqual(false)
   })
 });

@@ -9,7 +9,18 @@
     cdkDrag
     [cdkDragData]="element"
   >
-    <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+    <div class="example-custom-placeholder" *cdkDragPlaceholder>
+      <input placeholder="Your input" class="isFullWidth" *ngIf="element == 'Input'" type="text">
+      <textarea placeholder="Your textarea" class="isFullWidth" *ngIf="element == 'Textarea'"></textarea>
+      <button *ngIf="element == 'Button'">Button</button>
+      <div class="placeholder_checkbox isFullWidth" *ngIf="element == 'Checkbox'">
+        <input id="placeholder_checkbox" type="checkbox">
+        <label for="placeholder_checkbox">checkbox label</label>
+      </div>
+      <select class="isFullWidth" *ngIf="element == 'Select'">
+        <option value="option1">Option 1</option>
+      </select>
+    </div>
     {{element}}
   </div>
 </div>

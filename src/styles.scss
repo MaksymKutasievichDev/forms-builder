@@ -112,7 +112,9 @@ body { margin: 0; font-family: $font_montserat }
     }
   }
   .fields_styles_form{
-    background: $dark-theme_background_darker !important;
+    @media (max-width: 620px) {
+      background: $dark-theme_background_darker !important;
+    }
   }
 }
 .active_check{
@@ -171,4 +173,12 @@ app-field-styles .input_group > *{
   border: dotted 3px #999;
   min-height: 60px;
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $secondary_darkblue;
+}
+app-blocks .example-custom-placeholder *{
+  display: none !important;
 }
