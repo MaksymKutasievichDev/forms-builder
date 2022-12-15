@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {select, Store} from "@ngrx/store";
 import {Router} from "@angular/router";
 import {Observable} from "rxjs";
@@ -6,6 +6,7 @@ import {TokenStorageService} from "./services/token-storage.service";
 import {AppStateInterface} from "./interfaces/app-state.interface";
 import {deleteDataFromState} from "./store/actions";
 import {changeIsLoading} from "./store/selectors";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,9 @@ export class AppComponent implements OnInit{
   isLoading$: Observable<any>
   isLoading: boolean
 
+  toggleDarkMode = new FormControl(false)
+  @HostBinding('class') className = ''
+
   constructor(
     private tokenStorageService: TokenStorageService,
     private router: Router,
@@ -30,6 +34,19 @@ export class AppComponent implements OnInit{
   ngOnInit():void {
     if(!!this.tokenStorageService.getToken()) {
       this.username = this.tokenStorageService.getUser();
+    }
+    this.toggleDarkMode.valueChanges.subscribe((darkMode) => {
+      const darkClassName = 'darkMode'
+      if(darkMode){
+        this.className = darkClassName
+        this.tokenStorageService.setDarkMode(true)
+      } else {
+        this.className = ''
+        this.tokenStorageService.setDarkMode(false)
+      }
+    })
+    if(this.tokenStorageService.getDarkModeStatus() === 'true'){
+      this.toggleDarkMode.setValue(true)
     }
     this.isLoading$.pipe().subscribe(data => this.isLoading = data)
   }

@@ -1,5 +1,43 @@
+@use '@angular/material' as mat;
+
+@import "@angular/material/theming";
+
+@include mat.core();
+
+$angular-primary: mat.define-palette(mat.$blue-gray-palette, 500, 100, 900);
+$angular-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+
+$angular-warn: mat.define-palette(mat.$red-palette);
+
+$angular-default-theme: mat.define-light-theme(
+    (
+      color: (
+        primary: $angular-primary,
+        accent: $angular-accent,
+        warn: $angular-warn,
+      ),
+    )
+);
+
+@include mat.all-component-themes($angular-default-theme);
+
+$angular-dark-theme: mat.define-dark-theme(
+    (
+      color: (
+        primary: $angular-primary,
+        accent: $angular-accent,
+        warn: $angular-warn,
+      ),
+    )
+);
+
+.darkMode {
+  @include mat.all-component-colors($angular-dark-theme);
+}
+
 /* You can add global styles to this file, and also import other style files */
 @import "variables";
+
 
 html, body { height: 100%; }
 body { margin: 0; font-family: $font_montserat }
@@ -12,6 +50,9 @@ body { margin: 0; font-family: $font_montserat }
 #app{
   min-height: 100vh;
   padding-top: 4rem;
+  .darkMode &{
+    background: $dark-theme_background_darker;
+  }
 }
 .isFullWidth{
   width: 100%;
@@ -50,7 +91,30 @@ body { margin: 0; font-family: $font_montserat }
 .form_template input[type="text"], select{
   height: 40px;
 }
-
+.darkMode{
+  .form_element {
+    background: $dark-theme_background_lighter !important;
+    color: $dark-theme_text_color;
+  }
+  .load_data_form p{
+    color: $dark-theme_text_color !important;
+  }
+  nav{
+    background: $dark-theme_background !important;
+    .app_user{
+      color: $dark-theme_text_color !important;
+    }
+    .app_title{
+      color: $dark-theme_text_color !important;
+    }
+    a{
+      color: $dark-theme_text_color !important
+    }
+  }
+  .fields_styles_form{
+    background: $dark-theme_background_darker !important;
+  }
+}
 .active_check{
   transition: all 0.4s ease;
   opacity: 1;
@@ -60,7 +124,9 @@ body { margin: 0; font-family: $font_montserat }
   opacity: 0.5;
   pointer-events: none;
 }
-
+.darkMode .form_wrapp p{
+  color: $dark-theme_text_color !important;
+}
 .mat-form-field-infix{
   width: unset !important;
 }

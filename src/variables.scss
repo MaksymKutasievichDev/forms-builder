@@ -5,6 +5,11 @@ $main_lightblue: #c2d6e1;
 $font_helvetica: Roboto, "Helvetica Neue", sans-serif;
 $font_montserat: 'Montserrat', sans-serif;
 
+$dark-theme_text_color: #fffffc;
+$dark-theme_background_darker: #262626;
+$dark-theme_background: #313131;
+$dark-theme_background_lighter: #494949;
+
 @mixin login-register-form {
   width: 400px;
   max-width: 100%;

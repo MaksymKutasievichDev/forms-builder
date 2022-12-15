@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
+const DARK_MODE_STATUS = 'dark-mode-status'
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class TokenStorageService {
   }
 
   public signOut():void {
-    window.sessionStorage.clear()
+    window.sessionStorage.removeItem(TOKEN_KEY)
+    window.sessionStorage.removeItem(USER_KEY)
   }
 
   public saveUser(user:any): void {
@@ -30,5 +32,12 @@ export class TokenStorageService {
 
   public getUser(): any{
     return sessionStorage.getItem(USER_KEY)
+  }
+
+  public setDarkMode(darkModeStatus:boolean):void{
+    sessionStorage.setItem(DARK_MODE_STATUS, `${darkModeStatus}`)
+  }
+  public getDarkModeStatus():any{
+    return sessionStorage.getItem(DARK_MODE_STATUS)
   }
 }

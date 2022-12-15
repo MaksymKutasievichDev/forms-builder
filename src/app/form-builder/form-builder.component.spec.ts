@@ -82,5 +82,18 @@ describe('FormBuilderComponent', () => {
     expect(component.clickedElementIndex).toEqual(5)
   })
 
+  /*it('should set data on component creation', () => {
+    let initState = {
+      formStyles: {
+        label: 'test'
+      },
+      templateMap: ['Input', 'Select'],
+      elementStyles: '{}{}'
+    }
+    spyOn((component as any).store, 'pipe').and.returnValue(initState)
+    fixture = TestBed.createComponent(FormBuilderComponent)
+    component = fixture.componentInstance
+    expect(component.formStylesSelectorObs).toEqual({label: 'test'})
+  })*/
 
 })

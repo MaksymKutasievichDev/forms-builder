@@ -5,7 +5,7 @@ import {select, Store} from "@ngrx/store";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Observable} from "rxjs";
 import {SnackBar} from "../../../shared/directives/snack-bar";
-import {formDataForDownload, formElementsSelector, formElementsStyles} from "../../../store/selectors";
+import {formDataForDownload} from "../../../store/selectors";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {FormControl} from "@angular/forms";
 import {updateElementsStyles} from "../../../store/actions";
@@ -52,8 +52,6 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
 
   constructor(snackBar: MatSnackBar, private store: Store<AppStateInterface>, private dataMutation: FormDataMutation) {
     super(snackBar)
-    this.formElementsStyles$ = this.store.pipe(select(formElementsStyles))
-    this.formTemplateMap$ = this.store.pipe(select(formElementsSelector))
     this.store.pipe(select(formDataForDownload)).subscribe(data => {
       this.formElementsStyles = data.elementStyles ? JSON.parse(data.elementStyles) : ''
       this.formTemplateMapSelector = data.templateMap
