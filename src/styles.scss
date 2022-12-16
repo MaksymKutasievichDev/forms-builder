@@ -48,7 +48,7 @@ body { margin: 0; font-family: $font_montserat }
 }
 
 #app{
-  min-height: 100vh;
+  min-height: calc(100vh - 40px);
   padding-top: 4rem;
   .darkMode &{
     background: $dark-theme_background_darker;
@@ -114,6 +114,12 @@ body { margin: 0; font-family: $font_montserat }
   .fields_styles_form{
     @media (max-width: 620px) {
       background: $dark-theme_background_darker !important;
+    }
+  }
+  footer{
+    background: $dark-theme_background_darker !important;
+    *{
+      color: $dark-theme_text_color !important;
     }
   }
 }

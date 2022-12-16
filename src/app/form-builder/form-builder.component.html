@@ -10,17 +10,17 @@
   <div class="form_template__wrapper">
     <div class="form_template"
          style="border-radius: 5px"
-         [ngStyle]="formStylesSelectorObs">
-      <p>{{formStylesSelectorObs.hasOwnProperty('label') ? formStylesSelectorObs.label : 'Form label'}}</p>
+         [ngStyle]="formStyles">
+      <p>{{formStyles.hasOwnProperty('label') ? formStyles.label : 'Form label'}}</p>
       <app-template
         class="form_template__elements"
         cdkDropList
-        [cdkDropListData]="formTemplateMapSelector"
+        [cdkDropListData]="formTemplateElements"
         (cdkDropListDropped)="drop($event)"
-        [formTemplateElements]="formTemplateMapSelector"
+        [formTemplateElements]="formTemplateElements"
         (clickedElementIndex)="getClickedElementIndex($event)"
         [activeElementIndex]="clickedElementIndex"
-        [fieldsStyles]="formElementsStylesSelector"
+        [fieldsStyles]="formElementsStyles"
         [id]="'cdk-drop-list-0'"
       ></app-template>
     </div>
@@ -51,9 +51,9 @@
     cdkDropList
     [cdkDropListData]="formElementsList"
     [formElementsList]="formElementsList"
-    (cdkDropListExited)="exited($event)"
-    (cdkDropListEntered)="entered($event)"
-    [cdkDropListEnterPredicate]="block"
+    (cdkDropListExited)="containerExitedOnDrag($event)"
+    (cdkDropListEntered)="containerEnteredOnDrag($event)"
+    [cdkDropListEnterPredicate]="blockDropping"
     (cdkDropListDropped)="drop($event)"
     [id]="'cdk-drop-list-1'"
   ></app-blocks>

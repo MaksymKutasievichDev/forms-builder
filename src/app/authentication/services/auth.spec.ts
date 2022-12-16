@@ -23,14 +23,14 @@ describe('AuthService', () => {
     httpMock.verify();
   });
 
-  describe('#login', () => {
+  describe('#checkIfUserExists', () => {
     it('should return an auth keys', () => {
       const dummyResponse = {
         "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFrc3ltIiwicGFzc3dvcmQiOiIxMTExIiwiaWF0IjoxNjcwNjAwNjM3LCJleHAiOjE2NzA2MDQyMzd9.5aCtL3AtnBpy50j6JqRt-QvmxlGMyBGj1frhxChmndM",
         "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFrc3ltIiwicGFzc3dvcmQiOiIxMTExIiwiaWF0IjoxNjcwNjAwNjM3fQ.EafL_8ZRNKlB5lK4U-d9CIY-Z13ViGCRtYpY7QS5jwI"
       };
 
-      service.login({
+      service.checkIfUserExists({
         username: 'Maksym',
         password: '1111'
       }).subscribe(data => {

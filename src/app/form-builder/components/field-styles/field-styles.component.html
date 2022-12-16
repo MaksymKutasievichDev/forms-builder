@@ -8,41 +8,41 @@
       {{panelOpenState ? 'close' : 'open'}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <form  class="fields_styles_form active_check {{isActive ? '' : 'is_active_false'}}">
+  <form [formGroup]="myForm"  class="fields_styles_form active_check {{isActive ? '' : 'is_active_false'}}">
     <div class="close_modal" (click)="closeModal()">
       <mat-icon>close</mat-icon>
     </div>
     <div class="input_group isFlex">
       <mat-form-field *ngIf="elementTag=='Checkbox'" class="isFullWidth" appearance="fill">
         <mat-label>Title</mat-label>
-        <input name="title" [formControl]="title" id="title" matInput>
+        <input name="title" formControlName="title" id="title" matInput>
       </mat-form-field>
       <mat-form-field class="isFullWidth" appearance="fill">
         <mat-label>Label</mat-label>
-        <input name="label" [formControl]="label" id="label" matInput>
+        <input name="label" formControlName="label" id="label" matInput>
       </mat-form-field>
       <mat-form-field *ngIf="elementTag=='Input' || elementTag=='Textarea'" class="isFullWidth" appearance="fill">
         <mat-label>Placeholder</mat-label>
-        <input name="placeholder" [formControl]="placeholder" id="placeholder" matInput>
+        <input name="placeholder" formControlName="placeholder" id="placeholder" matInput>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Width</mat-label>
-        <input name="width" [formControl]="width" id="width" matInput>
+        <input name="width" formControlName="width" id="width" matInput>
         <div class="mat_input_desc" matSuffix>px</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Height</mat-label>
-        <input name="height" [formControl]="height" id="height" matInput>
+        <input name="height" formControlName="height" id="height" matInput>
         <div class="mat_input_desc" matSuffix>px</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Font size</mat-label>
-        <input name="fontSize" [formControl]="fontSize" id="fontSize" matInput>
+        <input name="fontSize" formControlName="fontSize" id="fontSize" matInput>
         <div class="mat_input_desc" matSuffix>px</div>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Font Weight</mat-label>
-        <mat-select [formControl]="fontWeight" id="fontWeight">
+        <mat-select formControlName="fontWeight" id="fontWeight">
           <mat-option value="light">Light</mat-option>
           <mat-option value="400">Normal</mat-option>
           <mat-option value="bold">Bold</mat-option>
@@ -50,19 +50,19 @@
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Colour</mat-label>
-        <input matInput [ngxMatColorPicker]="pickerColor" [formControl]="color">
+        <input matInput [ngxMatColorPicker]="pickerColor" formControlName="color">
         <ngx-mat-color-toggle matSuffix [for]="pickerColor"></ngx-mat-color-toggle>
         <ngx-mat-color-picker #pickerColor [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill" *ngIf="elementTag!='Checkbox'">
         <mat-label>Border Colour</mat-label>
-        <input matInput [ngxMatColorPicker]="pickerBorderColor" [formControl]="borderColor">
+        <input matInput [ngxMatColorPicker]="pickerBorderColor" formControlName="borderColor">
         <ngx-mat-color-toggle matSuffix [for]="pickerBorderColor"></ngx-mat-color-toggle>
         <ngx-mat-color-picker #pickerBorderColor [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill" *ngIf="elementTag!='Checkbox'">
         <mat-label>Border type</mat-label>
-        <mat-select [formControl]="borderStyle" id="borderStyle">
+        <mat-select formControlName="borderStyle" id="borderStyle">
           <mat-option value="dotted">Dotted</mat-option>
           <mat-option value="dashed">Dashed</mat-option>
           <mat-option value="solid">Solid</mat-option>
@@ -83,7 +83,7 @@
         <div class="select_option isFlex gap">
           <mat-form-field class="flex-1" appearance="fill">
             <mat-label>Add field</mat-label>
-            <input [(ngModel)]="addOptionText" [ngModelOptions]="{standalone: true}" #additionalOption matInput>
+            <input [(ngModel)]="newSelectOptionText" [ngModelOptions]="{standalone: true}" #additionalOption matInput>
           </mat-form-field>
           <button (click)="addOption()" mat-raised-button color="primary">Add</button>
         </div>

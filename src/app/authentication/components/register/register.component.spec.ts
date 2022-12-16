@@ -78,18 +78,18 @@ describe('RegisterComponent', () => {
     spyOn(authService, 'register').and.returnValues(of(response))
     component.onSubmit()
     tick(2000)
-    expect(component.isSuccessful).toEqual(true)
+    expect(component.isLoggedIn).toEqual(true)
   }))
 
   it('should return error if response has error', fakeAsync(() => {
     tokenStorage.signOut();
-    component.isSuccessful = false
+    component.isLoggedIn = false
     const response:any = {
       error: 'error'
     }
     spyOn(authService, 'register').and.returnValues(of(response))
     component.onSubmit()
     tick(2000)
-    expect(component.isSuccessful).toEqual(false)
+    expect(component.isLoggedIn).toEqual(false)
   }))
 })

@@ -11,7 +11,7 @@ import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {changeLoadingState} from "../../../store/actions";
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-checkIfUserExists',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -19,20 +19,18 @@ export class LoginComponent extends SnackBar implements OnInit {
   form:any = {};
   isLoggedIn = false;
   isLoggedIn$ : Subject<boolean> = new Subject<boolean>();
-  errorMessage = '';
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private tokenStorage:TokenStorageService,
-    snackBar:MatSnackBar,
-    private store:Store<AppStateInterface>
+    private store:Store<AppStateInterface>,
+    snackBar:MatSnackBar
   ) {
     super(snackBar)
   }
 
   ngOnInit(): void {
-    /*Redirect if logged in*/
     if(this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.router.navigate(['home'])
@@ -40,23 +38,21 @@ export class LoginComponent extends SnackBar implements OnInit {
     }
   }
 
-  onSubmit():void {
+  onSubmitLogin():void {
     this.store.dispatch(changeLoadingState({isLoading: true}))
-    /*Login user*/
     setTimeout(() => {
-      this.authService.login(this.form).pipe(takeUntil(this.isLoggedIn$)).pipe(first()).subscribe(
+      this.authService.checkIfUserExistsAndGetToken(this.form).pipe(takeUntil(this.isLoggedIn$)).pipe(first()).subscribe(
         data => {
           if('error' in data){
             this.errorShow(data.error)
             this.store.dispatch(changeLoadingState({isLoading: false}))
           } else {
-            this.tokenStorage.saveToken(data.accessToken)
-            this.tokenStorage.saveUser(this.form.username);
-            this.isLoggedIn = true;
-            this.router.navigate(['home'])
+            this.isLoggedIn = this.authService.loginUserToApplication(
+              data.accessToken,
+              this.form.username,
+              this.isLoggedIn$
+            );
             this.successShow('Logged in successfully')
-            this.isLoggedIn$.next(true)
-            this.isLoggedIn$.unsubscribe()
             this.store.dispatch(changeLoadingState({isLoading: false}))
           }
         })

@@ -18,7 +18,6 @@ export class TemplateComponent implements OnInit {
   @Input() formTemplateElements:string[]
   @Input() fieldsStyles:any = {}
 
-
   @Output() clickedElementIndex = new EventEmitter<number>()
 
   constructor() { }

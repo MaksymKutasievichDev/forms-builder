@@ -7,7 +7,7 @@ import {Color} from "@angular-material-components/color-picker";
 import {Observable, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {SnackBar} from "../../../shared/directives/snack-bar";
-import {IFormStyles} from "../../../interfaces/fields-styles.interface";
+import {IFormStyles} from "../../../interfaces/form-data.interface";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {formStylesSelector} from "../../../store/selectors";
 import {updateFormStyles} from "../../../store/actions";

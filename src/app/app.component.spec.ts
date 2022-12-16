@@ -31,7 +31,7 @@ describe('AppComponent', () => {
         RouterTestingModule.withRoutes(
           [
             {path:'home',redirectTo:''},
-            {path:'auth/login', redirectTo: ''}
+            {path:'auth/checkIfUserExists', redirectTo: ''}
           ]
         )
       ],

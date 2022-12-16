@@ -1,7 +1,7 @@
 <div class="form_wrapp">
   <p>Registration Form</p>
-  <form *ngIf="!isSuccessful"
-    name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate
+  <form *ngIf="!isLoggedIn"
+    name="form" (ngSubmit)="f.form.valid && onSubmitRegister()" #f="ngForm" novalidate
   >
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>

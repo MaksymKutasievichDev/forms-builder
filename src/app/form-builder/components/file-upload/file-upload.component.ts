@@ -3,7 +3,7 @@ import {Store} from "@ngrx/store";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Observable} from "rxjs";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
-import {updateElementsStyles, updateFormMapData, updateFormStyles} from "../../../store/actions";
+import {setFormData, updateElementsStyles, updateFormMapData, updateFormStyles} from "../../../store/actions";
 
 @Component({
   selector: 'app-file-upload',
@@ -27,9 +27,7 @@ export class FileUploadComponent implements ControlValueAccessor{
 
   constructor(
     public store: Store<AppStateInterface>
-  ) {
-
-  }
+  ) {}
 
   onClick(fileUpload: HTMLInputElement){
     this.onTouched()

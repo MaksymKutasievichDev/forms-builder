@@ -1,67 +1,78 @@
-import {Component, HostBinding, OnInit} from '@angular/core';
+import {Component, HostBinding, OnInit, OnDestroy} from '@angular/core';
 import {select, Store} from "@ngrx/store";
 import {Router} from "@angular/router";
-import {Observable} from "rxjs";
+import {FormControl} from "@angular/forms";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 import {TokenStorageService} from "./services/token-storage.service";
 import {AppStateInterface} from "./interfaces/app-state.interface";
 import {deleteDataFromState} from "./store/actions";
 import {changeIsLoading} from "./store/selectors";
-import {FormControl} from "@angular/forms";
+import {DarkThemeService} from "./services/dark-theme.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
-  title="forms-builder"
+export class AppComponent implements OnInit, OnDestroy{
+  @HostBinding('class') className = ''
+
+  title="Form Builder"
   username: string = 'default';
 
-  isLoading$: Observable<any>
   isLoading: boolean
 
-  toggleDarkMode = new FormControl(false)
-  @HostBinding('class') className = ''
+  darkThemeToggler = new FormControl(false)
+
+  isDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private tokenStorageService: TokenStorageService,
     private router: Router,
+    private darkThemeService: DarkThemeService,
     private store: Store<AppStateInterface>
   ) {
-    this.isLoading$ = this.store.pipe(select(changeIsLoading))
+    this.store
+      .pipe(select(changeIsLoading))
+      .pipe(takeUntil(this.isDestroyed$))
+      .subscribe(data => {
+        this.isLoading = data
+      }
+    )
+
+    this.darkThemeToggler.valueChanges
+      .subscribe((darkMode) => {
+        darkMode ? this.className = 'darkMode' : this.className = ''
+        this.darkThemeService.setStatus(this.darkThemeToggler.value)
+      }
+    )
+    this.darkThemeToggler.setValue(this.darkThemeService.getStatus() === 'true')
   }
 
   ngOnInit():void {
     if(!!this.tokenStorageService.getToken()) {
       this.username = this.tokenStorageService.getUser();
     }
-    this.toggleDarkMode.valueChanges.subscribe((darkMode) => {
-      const darkClassName = 'darkMode'
-      if(darkMode){
-        this.className = darkClassName
-        this.tokenStorageService.setDarkMode(true)
-      } else {
-        this.className = ''
-        this.tokenStorageService.setDarkMode(false)
-      }
-    })
-    if(this.tokenStorageService.getDarkModeStatus() === 'true'){
-      this.toggleDarkMode.setValue(true)
-    }
-    this.isLoading$.pipe().subscribe(data => this.isLoading = data)
   }
 
-
-  checkIfLoggedIn():boolean{
+  //Returns true if user is loggedIn, and false if he is not
+  loggedIn():boolean{
     if(!!this.tokenStorageService.getToken()){
       this.username = this.tokenStorageService.getUser();
       return true;
-    } else return false
+    }
+    return false
   }
 
   logout():void {
     this.tokenStorageService.signOut();
     this.router.navigate(['auth/login'])
     this.store.dispatch(deleteDataFromState())
+  }
+
+  ngOnDestroy() {
+    this.isDestroyed$.next(true)
+    this.isDestroyed$.unsubscribe()
   }
 }

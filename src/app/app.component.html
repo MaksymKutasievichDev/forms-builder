@@ -1,21 +1,21 @@
 <div id="app">
   <nav>
     <div class="container">
-      <div *ngIf="checkIfLoggedIn()" class="app_user">
+      <div *ngIf="loggedIn()" class="app_user">
         Hi, <i>{{username | removeQuotationMarks}}</i>
       </div>
       <div class="app_title">
-        Form Builder
+        {{title}}
       </div>
       <div class="navbar_menu">
         <mat-toolbar>
           <div class="flex-stretch"></div>
           <mat-icon class="mr-8">brightness_5</mat-icon>
-          <mat-slide-toggle ngDefaultControl [formControl]="toggleDarkMode" class="mr-8">
+          <mat-slide-toggle ngDefaultControl [formControl]="darkThemeToggler" class="mr-8">
           </mat-slide-toggle>
           <mat-icon>bedtime</mat-icon>
         </mat-toolbar>
-        <div class="" *ngIf="!checkIfLoggedIn()">
+        <div class="" *ngIf="!loggedIn()">
           <ul>
             <li>
               <a href="auth/login" routerLink="auth/login">Login</a>
@@ -25,7 +25,7 @@
             </li>
           </ul>
         </div>
-        <div *ngIf="checkIfLoggedIn()" class="exit_ico isFlex flex-center">
+        <div *ngIf="loggedIn()" class="exit_ico isFlex flex-center">
           <mat-icon (click)="logout()">exit_to_app</mat-icon>
         </div>
       </div>
@@ -35,6 +35,16 @@
     <router-outlet></router-outlet>
   </div>
 </div>
+<footer>
+  <div class="container">
+    <div class="footer_left">
+      <a href="https://www.linkedin.com/company/itop1000/mycompany/" target="_blank">ITOP1000 - Web&Mobile Developers</a>
+    </div>
+    <div class="footer_right">
+      Created by <a href="https://www.linkedin.com/company/itop1000/mycompany/" target="_blank">Maksym Kutasievich</a>
+    </div>
+  </div>
+</footer>
 <div *ngIf="isLoading" class="loader_wrapp">
   <app-loader ></app-loader>
 </div>

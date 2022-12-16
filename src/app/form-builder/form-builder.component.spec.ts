@@ -93,7 +93,7 @@ describe('FormBuilderComponent', () => {
     spyOn((component as any).store, 'pipe').and.returnValue(initState)
     fixture = TestBed.createComponent(FormBuilderComponent)
     component = fixture.componentInstance
-    expect(component.formStylesSelectorObs).toEqual({label: 'test'})
+    expect(component.formStyles).toEqual({label: 'test'})
   })*/
 
 })

@@ -37,17 +37,21 @@ export class FormDataMutation {
 
   moveElementInsideForm(
     formTemplateMap:any,
-    formElementsStyles: any,
     prevIndex: number,
     currentIndex: number,
     elName: string
   ){
-    /*Mapping*/
     let newFormMap = JSON.parse(JSON.stringify(formTemplateMap));
     newFormMap.splice(prevIndex, 1)
     newFormMap.splice(currentIndex, 0, elName)
     this.store.dispatch(updateFormMapData({mapData: newFormMap}))
-    /*Styles*/
+  }
+
+  moveElementsStyles(
+    formElementsStyles: any,
+    prevIndex: number,
+    currentIndex:number
+  ){
     let newFormElementsStyles = JSON.parse(JSON.stringify(formElementsStyles));
     let dataForMove = newFormElementsStyles[prevIndex]
     newFormElementsStyles.splice(prevIndex, 1)

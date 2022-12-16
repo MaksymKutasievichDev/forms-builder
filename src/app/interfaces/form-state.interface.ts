@@ -1,4 +1,4 @@
-import {IAllFormData} from "./fields-styles.interface";
+import {IAllFormData} from "./form-data.interface";
 
 export interface formStateInterface {
   isLoading: boolean,

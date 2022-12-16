@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
-import { HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable, Subject} from "rxjs";
+import {TokenStorageService} from "../../services/token-storage.service";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +10,14 @@ import {Observable} from "rxjs";
 
 export class AuthService {
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private tokenStorage: TokenStorageService,
+    private router: Router,
+  ) {
   }
 
-  login(user:any): Observable<any>{
+  checkIfUserExistsAndGetToken(user:any): Observable<any>{
     return this.http.post('http://localhost:4000/login',{
       username: user.username,
       password: user.password
@@ -23,6 +29,22 @@ export class AuthService {
       username: user.username,
       password: user.password
     })
+  }
+
+  loginUserToApplication(
+    token: string,
+    username: string,
+    unsubscribeTrigger: Subject<boolean>
+  ): boolean{
+    this.tokenStorage.saveToken(token)
+    this.tokenStorage.saveUser(username)
+
+    unsubscribeTrigger.next(true)
+    unsubscribeTrigger.unsubscribe()
+
+    this.router.navigate(['home'])
+
+    return true
   }
 
   getUserDataByToken(token:any):Observable<any>{

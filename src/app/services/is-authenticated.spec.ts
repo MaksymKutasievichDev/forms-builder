@@ -20,10 +20,10 @@ describe('IsAuthenticatedGuard', () => {
     expect(guard.canActivate('home', '')).toBe(true)
   })
 
-  it('should navigate to the login page when the token storage service does not have a valid token', () => {
+  it('should navigate to the checkIfUserExists page when the token storage service does not have a valid token', () => {
     tokenStorageService.signOut();
     // @ts-ignore
     guard.canActivate('home', '');
-    expect(router.navigate).toHaveBeenCalledWith(['auth/login']);
+    expect(router.navigate).toHaveBeenCalledWith(['auth/checkIfUserExists']);
   });
 })
