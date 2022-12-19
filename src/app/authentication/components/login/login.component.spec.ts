@@ -74,9 +74,8 @@ describe('LoginComponent', () => {
 
   it('should update logged status if response has not any errors', fakeAsync(() => {
     tokenStorage.signOut();
-    const response:any = {}
-    spyOn(authService, 'login').and.returnValues(of(response))
-    component.onSubmit()
+    spyOn(authService, 'checkIfUserExistsAndGetToken').and.returnValues(of({}))
+    component.onSubmitLogin()
     tick(2000)
     expect(component.isLoggedIn).toEqual(true)
   }))
@@ -84,11 +83,8 @@ describe('LoginComponent', () => {
   it('should return error if response has error', fakeAsync(() => {
     tokenStorage.signOut();
     component.isLoggedIn = false
-    const response:any = {
-      error: 'error'
-    }
-    spyOn(authService, 'login').and.returnValues(of(response))
-    component.onSubmit()
+    spyOn(authService, 'checkIfUserExistsAndGetToken').and.returnValues(of({error: 'yes'}))
+    component.onSubmitLogin()
     tick(2000)
     expect(component.isLoggedIn).toEqual(false)
   }))

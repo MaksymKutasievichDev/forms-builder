@@ -10,24 +10,24 @@
       {{panelOpenState ? 'close' : 'open'}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <form (ngSubmit)="submitFormStyles()">
+  <form [formGroup]="myForm" (ngSubmit)="submitFormStyles()">
     <div class="input_group">
       <mat-form-field class="isFullWidth" appearance="fill">
         <mat-label>Form Label</mat-label>
-        <input id="label" [formControl]="label" matInput>
+        <input id="label" formControlName="label" matInput>
       </mat-form-field>
     </div>
 
     <div class="input_group isFlex" style="gap: 1rem">
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Text Color</mat-label>
-        <input matInput [ngxMatColorPicker]="pickerText" [formControl]="color">
+        <input matInput [ngxMatColorPicker]="pickerText" formControlName="color">
         <ngx-mat-color-toggle matSuffix [for]="pickerText"></ngx-mat-color-toggle>
         <ngx-mat-color-picker #pickerText [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Background</mat-label>
-        <input matInput [ngxMatColorPicker]="pickerBackground" [formControl]="background">
+        <input matInput [ngxMatColorPicker]="pickerBackground" formControlName="background">
         <ngx-mat-color-toggle matSuffix [for]="pickerBackground"></ngx-mat-color-toggle>
         <ngx-mat-color-picker #pickerBackground [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
@@ -36,19 +36,16 @@
     <div class="input_group isFlex" style="gap: 1rem">
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Border type</mat-label>
-        <mat-select [formControl]="borderStyle" id="borderStyle">
+        <mat-select formControlName="borderStyle" id="borderStyle">
           <mat-option value="dotted">Dotted</mat-option>
           <mat-option value="dashed">Dashed</mat-option>
           <mat-option value="solid">Solid</mat-option>
-          <mat-option value="double">Double</mat-option>
-          <mat-option value="groove">Groove</mat-option>
-          <mat-option value="ridge">Ridge</mat-option>
           <mat-option value="none">None</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Border Color</mat-label>
-        <input matInput [ngxMatColorPicker]="pickerBorderColor" [formControl]="borderColor">
+        <input matInput [ngxMatColorPicker]="pickerBorderColor" formControlName="borderColor">
         <ngx-mat-color-toggle matSuffix [for]="pickerBorderColor"></ngx-mat-color-toggle>
         <ngx-mat-color-picker #pickerBorderColor [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>

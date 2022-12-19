@@ -1,15 +1,13 @@
 import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {ThemePalette} from "@angular/material/core";
-import {Color} from "@angular-material-components/color-picker";
 import {select, Store} from "@ngrx/store";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs";
 import {SnackBar} from "../../../shared/directives/snack-bar";
 import {formDataForDownload} from "../../../store/selectors";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {updateElementsStyles} from "../../../store/actions";
-import {hexToRgb} from "../../../_helpers/helpers";
 import {FormDataMutation} from "../../services/form-data-mutations.service";
 import {DataChangingService} from "../../services/data-changing.service";
 

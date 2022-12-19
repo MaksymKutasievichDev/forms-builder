@@ -3,7 +3,7 @@ import {Store} from "@ngrx/store";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Observable} from "rxjs";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
-import {setFormData, updateElementsStyles, updateFormMapData, updateFormStyles} from "../../../store/actions";
+import {setFormData} from "../../../store/actions";
 
 @Component({
   selector: 'app-file-upload',
@@ -44,7 +44,6 @@ export class FileUploadComponent implements ControlValueAccessor{
       reader.onload = function(event) {
         //@ts-ignore
         let data = JSON.parse(event.target.result);
-
         subscriber.next(data)
         subscriber.complete();
       }
@@ -59,9 +58,13 @@ export class FileUploadComponent implements ControlValueAccessor{
   }
 
   setDataFromJson(){
-    this.store.dispatch(updateElementsStyles({elementsStyles: this.JsonData.elementStyles}))
-    this.store.dispatch(updateFormMapData({mapData: this.JsonData.templateMap}))
-    this.store.dispatch(updateFormStyles({formStyles: this.JsonData.formStyles}))
+    this.store.dispatch(setFormData({
+      formData: {
+        templatemap: this.JsonData.templateMap,
+        formstyles: this.JsonData.formStyles,
+        elementstyles: this.JsonData.elementStyles
+      }
+    }))
   }
 
   writeValue(value: any) {

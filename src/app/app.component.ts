@@ -56,7 +56,6 @@ export class AppComponent implements OnInit, OnDestroy{
     }
   }
 
-  //Returns true if user is loggedIn, and false if he is not
   loggedIn():boolean{
     if(!!this.tokenStorageService.getToken()){
       this.username = this.tokenStorageService.getUser();

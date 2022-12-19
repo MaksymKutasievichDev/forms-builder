@@ -9,6 +9,7 @@ import { RemoveQuotationMarksPipe } from "./pipes/remove-quotation-marks.pipe";
 import { TokenStorageService } from "./services/token-storage.service";
 import { AppRoutingModule } from "./app-routing.module";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {DarkThemeService} from "./services/dark-theme.service";
 
 describe('AppComponent', () => {
   let injector: TestBed;
@@ -16,6 +17,7 @@ describe('AppComponent', () => {
   let reactiveForms: ReactiveFormsModule
   let fixture: ComponentFixture<AppComponent>
   let tokenService: TokenStorageService
+  let darkThemeService: DarkThemeService
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -37,12 +39,14 @@ describe('AppComponent', () => {
       ],
       providers: [
         provideMockStore({}),
-        TokenStorageService
+        TokenStorageService,
+        DarkThemeService
       ]
     }).compileComponents()
     injector = getTestBed();
     tokenService = injector.inject(TokenStorageService)
     reactiveForms = TestBed.inject(ReactiveFormsModule)
+    darkThemeService = TestBed.inject(DarkThemeService)
   }))
 
   beforeEach(() => {
@@ -57,39 +61,31 @@ describe('AppComponent', () => {
 
   it('Should return false if there is no authKey', () => {
     tokenService.signOut()
-    expect(component.checkIfLoggedIn()).toBeFalsy()
+    expect(component.loggedIn()).toBeFalsy()
   })
   it('Should return true if there is authKey', () => {
     tokenService.saveToken('dumbToken')
-    expect(component.checkIfLoggedIn()).toBeTruthy()
-  })
-
-  it('should signOut', () => {
-    tokenService.signOut()
-    expect(component.checkIfLoggedIn()).toBeFalsy()
+    expect(component.loggedIn()).toBeTruthy()
   })
 
   it('should upgrade username onInit', () => {
-    spyOn(component.isLoading$, 'pipe').and.returnValue(of(false))
+    spyOn(component.isDestroyed$, 'pipe').and.returnValue(of(false))
     tokenService.saveToken('dumbToken')
     tokenService.saveUser('dumbUser')
     component.ngOnInit()
     expect(component.username).toEqual('"dumbUser"')
-    expect(component.isLoading).toEqual(false)
   })
 
   it('should set DarkMode if its set to true in session storage', () => {
-    spyOn(component.isLoading$, 'pipe').and.returnValue(of(false))
-    tokenService.setDarkMode(true)
+    spyOn(component.isDestroyed$, 'pipe').and.returnValue(of(false))
+    component.darkThemeToggler.setValue(true)
     component.ngOnInit()
     expect(component.className).toEqual('darkMode')
   })
 
   it('should not set DarkMode if its set to false in session storage', () => {
-    spyOn(component.isLoading$, 'pipe').and.returnValue(of(false))
-    component.toggleDarkMode.setValue(false)
-    tokenService.setDarkMode(false)
-    component.ngOnInit()
-    expect(component.toggleDarkMode.value).toEqual(false)
+    spyOn(component.isDestroyed$, 'pipe').and.returnValue(of(false))
+    component.darkThemeToggler.setValue(false)
+    expect(darkThemeService.getStatus()).toEqual('false')
   })
 });

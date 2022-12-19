@@ -30,7 +30,7 @@ describe('AuthService', () => {
         "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFrc3ltIiwicGFzc3dvcmQiOiIxMTExIiwiaWF0IjoxNjcwNjAwNjM3fQ.EafL_8ZRNKlB5lK4U-d9CIY-Z13ViGCRtYpY7QS5jwI"
       };
 
-      service.checkIfUserExists({
+      service.checkIfUserExistsAndGetToken({
         username: 'Maksym',
         password: '1111'
       }).subscribe(data => {

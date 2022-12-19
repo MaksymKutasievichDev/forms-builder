@@ -11,36 +11,39 @@ export class DataChangingService {
 
   changeDataBeforeFieldsUpdate(data:any){
     let color:any
-    if(data['width'])
-      data['width'] = data['width'].replace(/\D/g, '')
-    if(data['height'])
-      data['height'] = data['height'].replace(/\D/g, '')
-    if(data['fontSize'])
-      data['fontSize'] = data['fontSize'].replace(/\D/g, '')
+    let dataCopy = JSON.parse(JSON.stringify(data));
+    if(dataCopy['width'])
+      dataCopy['width'] = dataCopy['width'].replace(/\D/g, '')
+    if(dataCopy['height'])
+      dataCopy['height'] = dataCopy['height'].replace(/\D/g, '')
+    if(dataCopy['fontSize'])
+      dataCopy['fontSize'] = dataCopy['fontSize'].replace(/\D/g, '')
 
-    color = hexToRgb(data['color'])
+    color = hexToRgb(dataCopy['color'])
     if(color)
-      data['color'] = new Color(color.r, color.g, color.b, 1)
+      dataCopy['color'] = new Color(color.r, color.g, color.b, 1)
 
-    color = hexToRgb(data['borderColor'])
+    color = hexToRgb(dataCopy['borderColor'])
     if(color)
-      data['borderColor'] = new Color(color.r, color.g, color.b, 1)
+      dataCopy['borderColor'] = new Color(color.r, color.g, color.b, 1)
 
-    return data
+    return dataCopy
   }
 
   changeFieldsDataBeforeSave(data: any){
-    if(data.width)
-      data.width = data.width + 'px'
-    if(data.height)
-      data.height = data.height + 'px'
-    if(data.fontSize)
-      data.fontSize = data.fontSize + 'px'
-    if(data.color.hex)
-      data.color = '#' + data.color.hex
-    if(data.borderColor.hex)
-      data.borderColor = '#' + data.borderColor.hex
-
-    return data
+    let dataCopy = JSON.parse(JSON.stringify(data));
+    if(dataCopy.width)
+      dataCopy.width = dataCopy.width + 'px'
+    if(dataCopy.height)
+      dataCopy.height = dataCopy.height + 'px'
+    if(dataCopy.fontSize)
+      dataCopy.fontSize = dataCopy.fontSize + 'px'
+    if(dataCopy.color.hex)
+      dataCopy.color = '#' + dataCopy.color.hex
+    if(dataCopy.borderColor.hex)
+      dataCopy.borderColor = '#' + dataCopy.borderColor.hex
+    if(dataCopy.background.hex)
+      dataCopy.background = '#' + dataCopy.background.hex
+    return dataCopy
   }
 }

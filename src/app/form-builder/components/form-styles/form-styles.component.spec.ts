@@ -4,10 +4,10 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {DragDropModule} from "@angular/cdk/drag-drop";
-import {MAT_COLOR_FORMATS, NgxMatColorPickerModule} from "@angular-material-components/color-picker";
+import {Color, MAT_COLOR_FORMATS, NgxMatColorPickerModule} from "@angular-material-components/color-picker";
 import {MatSelectModule} from "@angular/material/select";
 import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {ComponentFixture, fakeAsync, TestBed, waitForAsync} from "@angular/core/testing";
+import {ComponentFixture, fakeAsync, TestBed} from "@angular/core/testing";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {of} from 'rxjs'
 import {FormStylesComponent} from "./form-styles.component";
@@ -72,11 +72,13 @@ describe('FormStylesComponents', () => {
     spyOn((component as any).store, 'pipe').and.returnValue(of(response))
     fixture = TestBed.createComponent(FormStylesComponent)
     component = fixture.componentInstance
-    expect(component.label.value).toEqual('new')
-    expect(component.color.value.hex).toEqual('000000')
-    expect(component.background.value.hex).toEqual('000000')
-    expect(component.borderStyle.value).toEqual('dashed')
-    expect(component.borderColor.value.hex).toEqual('000000')
+    expect(component.myForm.value).toEqual({
+      label: 'new',
+      color: new Color(0, 0, 0, 1),
+      background: '#000000',
+      borderStyle: 'dashed',
+      borderColor: new Color(0, 0, 0, 1)
+    })
   }));
 
   it('should update store values', () => {
@@ -107,11 +109,14 @@ describe('FormStylesComponents', () => {
     store = TestBed.inject(MockStore)
     fixture = TestBed.createComponent(FormStylesComponent)
     component = fixture.componentInstance
-    expect(component.label.value).toEqual('new')
-    expect(component.color.value.hex).toEqual('000000')
-    expect(component.background.value.hex).toEqual('000000')
-    expect(component.borderStyle.value).toEqual('dashed')
-    expect(component.borderColor.value.hex).toEqual('000000')
+    console.log(component.myForm.value)
+    expect(component.myForm.value).toEqual({
+      label: 'new',
+      color: new Color(0, 0, 0, 1),
+      background: '#000000',
+      borderStyle: 'dashed',
+      borderColor: new Color(0, 0, 0, 1)
+    })
   })
 
 })
