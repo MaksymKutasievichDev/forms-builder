@@ -27,7 +27,6 @@ export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
 
   panelOpenState:boolean = false;
 
-  formStylesSelect$: Observable<any>
   formStylesSelect: IFormStyles
 
   constructor(

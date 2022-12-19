@@ -13,14 +13,14 @@ import {MatIconModule} from "@angular/material/icon";
 import {HttpClient, HttpHandler} from "@angular/common/http";
 import {of} from 'rxjs'
 import {FieldStylesComponent} from "./field-styles.component";
-import {FormDataMutation} from "../../services/form-data-mutations.service";
+import {FormDataMutationService} from "../../services/form-data-mutations.service";
 import {TokenStorageService} from "../../../services/token-storage.service";
 
 
 describe('FieldStylesComponent', () => {
   let component: FieldStylesComponent
   let store: MockStore<any>
-  let formDataMutations: FormDataMutation
+  let formDataMutations: FormDataMutationService
   let fixture: ComponentFixture<FieldStylesComponent>
   let http: HttpClient
 
@@ -55,7 +55,7 @@ describe('FieldStylesComponent', () => {
       ],
       providers: [
         provideMockStore({initialState}),
-        FormDataMutation,
+        FormDataMutationService,
         TokenStorageService,
         HttpClient,
         HttpHandler,
@@ -65,7 +65,7 @@ describe('FieldStylesComponent', () => {
 
     store = TestBed.inject(MockStore)
     http = TestBed.inject(HttpClient)
-    formDataMutations = TestBed.inject(FormDataMutation)
+    formDataMutations = TestBed.inject(FormDataMutationService)
     fixture = TestBed.createComponent(FieldStylesComponent)
     component = fixture.componentInstance
   })

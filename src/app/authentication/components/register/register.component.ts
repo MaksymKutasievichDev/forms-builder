@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {AuthService} from "../../services/auth.service";
@@ -16,15 +17,15 @@ import {changeLoadingState} from "../../../store/actions";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent extends SnackBar implements OnInit {
-
-  form: any = {}
+  form: FormGroup
   isLoggedIn = false;
   isLoggedIn$ : Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private router: Router,
     private authService: AuthService,
-    private tokenStorage:TokenStorageService,
+    private tokenStorageService:TokenStorageService,
+    private formBuilder:FormBuilder,
     private store: Store<AppStateInterface>,
     snackBar: MatSnackBar,
   ) {
@@ -32,7 +33,11 @@ export class RegisterComponent extends SnackBar implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.tokenStorage.getToken()){
+    this.form = this.formBuilder.group({
+      username: '',
+      password: ''
+    })
+    if(this.tokenStorageService.getToken()){
       this.isLoggedIn = true;
       this.router.navigate(['home']).then()
       this.infoShow('You are already logged in')
@@ -41,22 +46,20 @@ export class RegisterComponent extends SnackBar implements OnInit {
 
   onSubmitRegister(): void {
     this.store.dispatch(changeLoadingState({isLoading: true}))
-    setTimeout(() => {
-      this.authService.register(this.form).pipe(takeUntil(this.isLoggedIn$)).subscribe(
-        data => {
-        if('error' in data){
-          this.errorShow(data.error)
-          this.store.dispatch(changeLoadingState({isLoading: false}))
-        } else {
-          this.isLoggedIn = this.authService.loginUserToApplication(
-            data.accessToken,
-            this.form.username,
-            this.isLoggedIn$
-          );
-          this.successShow('Registered successfully')
-          this.store.dispatch(changeLoadingState({isLoading: false}))
-        }
-      })
-    }, 1000)
+    this.authService.register(this.form.value).pipe(takeUntil(this.isLoggedIn$)).subscribe(
+      data => {
+      if('error' in data){
+        this.errorShow(data.error)
+        this.store.dispatch(changeLoadingState({isLoading: false}))
+      } else {
+        this.isLoggedIn = this.authService.loginUserToApplication(
+          data.accessToken,
+          this.form.value.username,
+          this.isLoggedIn$
+        );
+        this.successShow('Registered successfully')
+        this.store.dispatch(changeLoadingState({isLoading: false}))
+      }
+    })
   }
 }

@@ -5,6 +5,15 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import {IFormElementStyles} from "../../../interfaces/form-data.interface";
+
+enum ElementsTags {
+  Input = "Input",
+  Textarea = "Textarea",
+  Select = "Select",
+  Checkbox = "Checkbox",
+  Button = "Button"
+}
 
 @Component({
   selector: 'app-template',
@@ -15,9 +24,11 @@ export class TemplateComponent implements OnInit {
 
   @Input() activeElementIndex: number;
   @Input() formTemplateElements:string[]
-  @Input() fieldsStyles:any = {}
+  @Input() fieldsStyles:IFormElementStyles[] = []
 
   @Output() clickedElementIndex = new EventEmitter<number>()
+
+  ElementTags: typeof ElementsTags = ElementsTags
 
   constructor() { }
 

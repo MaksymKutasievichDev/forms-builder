@@ -8,7 +8,7 @@ export interface IAllFormData {
     borderColor?: string
   }
   elementStyles?: string | undefined
-  token: string | null
+  token?: string | null
 }
 
 export interface IFormStyles {
@@ -17,4 +17,18 @@ export interface IFormStyles {
   background?: string
   borderStyle?: string
   borderColor?: string
+}
+
+export interface IFormElementStyles {
+  title?: string
+  label?: string
+  placeholder?: string
+  width?: string
+  height?: string
+  fontSize?: string
+  fontWeight?: string
+  color?: string
+  borderColor?: string
+  borderStyle?: string
+  options?: string[]
 }

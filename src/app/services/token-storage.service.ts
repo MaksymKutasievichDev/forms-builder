@@ -18,10 +18,10 @@ export class TokenStorageService {
     window.sessionStorage.setItem(TOKEN_KEY, token)
   }
 
-  public getUser(): any{
+  public getUser(): string | null {
     return sessionStorage.getItem(USER_KEY)
   }
-  public saveUser(user:any): void {
+  public saveUser(user: string): void {
     window.sessionStorage.removeItem(USER_KEY)
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user))
   }

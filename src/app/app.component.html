@@ -2,7 +2,7 @@
   <nav>
     <div class="container">
       <div *ngIf="loggedIn()" class="app_user">
-        Hi, <i>{{username | removeQuotationMarks}}</i>
+        Hi, <i>{{username ? (username | removeQuotationMarks) : ''}}</i>
       </div>
       <div class="app_title">
         {{title}}

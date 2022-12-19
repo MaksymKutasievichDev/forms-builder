@@ -10,36 +10,36 @@
 >
   <div
     class="input_group"
-    *ngIf="element === 'Textarea'"
+    *ngIf="element === ElementTags.Textarea"
     [attr.data-index]="index"
   >
-    <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
+    <label>{{fieldsStyles[index].label}}</label>
     <textarea
       [attr.data-index]="index"
       [ngStyle]="fieldsStyles[index]"
       class="isFullWidth"
-      placeholder="{{fieldsStyles[index]?.hasOwnProperty('placeholder') ? fieldsStyles[index].placeholder : 'Your textarea'}}"></textarea>
+      placeholder="{{fieldsStyles[index].hasOwnProperty('placeholder') ? fieldsStyles[index].placeholder : 'Your textarea'}}"></textarea>
   </div>
   <div
     class="input_group"
-    *ngIf="element === 'Input'"
+    *ngIf="element === ElementTags.Input"
     [attr.data-index]="index"
   >
-    <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
+    <label>{{fieldsStyles[index].label}}</label>
     <input
       [attr.data-index]="index"
       type="text"
       [ngStyle]="fieldsStyles[index]"
-      placeholder="{{fieldsStyles[index]?.hasOwnProperty('placeholder') ? fieldsStyles[index].placeholder : 'Your input'}}"
+      placeholder="{{fieldsStyles[index].hasOwnProperty('placeholder') ? fieldsStyles[index].placeholder : 'Your input'}}"
       class="isFullWidth"
     >
   </div>
   <div
     class="input_group"
-    *ngIf="element === 'Select'"
+    *ngIf="element === ElementTags.Select"
     [attr.data-index]="index"
   >
-    <label>{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : ''}}</label>
+    <label>{{fieldsStyles[index].label}}</label>
     <select
       [attr.data-index]="index"
       class="isFullWidth"
@@ -50,17 +50,17 @@
   </div>
   <div
     class="input_group"
-    *ngIf="element === 'Checkbox'"
+    *ngIf="element === ElementTags.Checkbox"
     [attr.data-index]="index"
   >
     <p class="text_center"
        style="
-        {{fieldsStyles[index]?.hasOwnProperty('title') ? '' : 'display: none;'}}
-        {{fieldsStyles[index]?.hasOwnProperty('color') ? 'color: ' + fieldsStyles[index].color + ';' : ''}}
-        {{fieldsStyles[index]?.hasOwnProperty('fontSize') ? 'font-size: ' + fieldsStyles[index].fontSize + ';' : ''}}
-        {{fieldsStyles[index]?.hasOwnProperty('fontWeight') ? 'font-weight: ' + fieldsStyles[index].fontWeight + ';' : ''}}
+        {{fieldsStyles[index].hasOwnProperty('title') ? '' : 'display: none;'}}
+        {{fieldsStyles[index].hasOwnProperty('color') ? 'color: ' + fieldsStyles[index].color + ';' : ''}}
+        {{fieldsStyles[index].hasOwnProperty('fontSize') ? 'font-size: ' + fieldsStyles[index].fontSize + ';' : ''}}
+        {{fieldsStyles[index].hasOwnProperty('fontWeight') ? 'font-weight: ' + fieldsStyles[index].fontWeight + ';' : ''}}
        "
-    >{{fieldsStyles[index]?.hasOwnProperty('title') ? fieldsStyles[index].title : ''}}</p>
+    >{{fieldsStyles[index].title}}</p>
     <input
       name="checkbox_{{index}}"
       [attr.data-index]="index"
@@ -71,21 +71,21 @@
       class="checkbox_label"
       for="checkbox_{{index}}"
       style="
-        {{fieldsStyles[index]?.hasOwnProperty('color') ? 'color: ' + fieldsStyles[index].color + ';' : ''}}
-        {{fieldsStyles[index]?.hasOwnProperty('fontSize') ? 'font-size: ' + fieldsStyles[index].fontSize + ';' : ''}}
-        {{fieldsStyles[index]?.hasOwnProperty('fontWeight') ? 'font-weight: ' + fieldsStyles[index].fontWeight + ';' : ''}}
+        {{fieldsStyles[index].hasOwnProperty('color') ? 'color: ' + fieldsStyles[index].color + ';' : ''}}
+        {{fieldsStyles[index].hasOwnProperty('fontSize') ? 'font-size: ' + fieldsStyles[index].fontSize + ';' : ''}}
+        {{fieldsStyles[index].hasOwnProperty('fontWeight') ? 'font-weight: ' + fieldsStyles[index].fontWeight + ';' : ''}}
        "
-    >{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : 'checkbox label'}}</label>
+    >{{fieldsStyles[index].hasOwnProperty('label') ? fieldsStyles[index].label : 'checkbox label'}}</label>
   </div>
   <div
     class="input_group isFlex flex-center"
-    *ngIf="element === 'Button'"
+    *ngIf="element === ElementTags.Button"
     [attr.data-index]="index"
   >
     <button
       [attr.data-index]="index"
       [ngStyle]="fieldsStyles[index]"
-    >{{fieldsStyles[index]?.hasOwnProperty('label') ? fieldsStyles[index].label : 'Button'}}</button>
+    >{{fieldsStyles[index].hasOwnProperty('label') ? fieldsStyles[index].label : 'Button'}}</button>
   </div>
 
 </div>

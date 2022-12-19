@@ -2,30 +2,24 @@ import {Injectable} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {AppStateInterface} from "../../interfaces/app-state.interface";
 import {updateElementsStyles, updateFormMapData} from "../../store/actions";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {TokenStorageService} from "../../services/token-storage.service";
-import {Observable} from "rxjs";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class FormDataMutation {
+export class FormDataMutationService {
 
   constructor(
-    private store: Store<AppStateInterface>,
-    private http: HttpClient,
-    private token: TokenStorageService
-  ) {
-  }
+    private store: Store<AppStateInterface>
+  ) {}
 
-  addElementToForm(formTemplateMap:any, currentIndex: number, newItem:any):void {
+  addElementToForm(formTemplateMap:string[], currentIndex: number, newItem:string):void {
     let newFormMap = JSON.parse(JSON.stringify(formTemplateMap));
     newFormMap.splice(currentIndex, 0, newItem)
     this.store.dispatch(updateFormMapData({mapData: newFormMap}))
   }
 
-  addStylesForNewElement(formElementsStyles:any, elName: string, currentIndex:number):void{
+  addStylesForNewElement(formElementsStyles:object[], elName: string, currentIndex:number):void{
     let newFormElementsStyles = JSON.parse(JSON.stringify(formElementsStyles));
     if(elName=="Select"){
       newFormElementsStyles.splice(currentIndex, 0, {options:['option1', 'option2']})
@@ -36,7 +30,7 @@ export class FormDataMutation {
   }
 
   moveElementInsideForm(
-    formTemplateMap:any,
+    formTemplateMap:string[],
     prevIndex: number,
     currentIndex: number,
     elName: string
@@ -48,7 +42,7 @@ export class FormDataMutation {
   }
 
   moveElementsStyles(
-    formElementsStyles: any,
+    formElementsStyles: object[],
     prevIndex: number,
     currentIndex:number
   ){
@@ -59,7 +53,7 @@ export class FormDataMutation {
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(newFormElementsStyles)}))
   }
 
-  deleteElement(formTemplateMap:any, formElementsStyles:any, elIndex:number){
+  deleteElement(formTemplateMap:string[] | undefined, formElementsStyles:object[], elIndex:number){
     /*DELETE FROM ELEMENTS*/
     let formTemplateMapSelectorCopy = JSON.parse(JSON.stringify(formTemplateMap));
     formTemplateMapSelectorCopy.splice(elIndex,1)
@@ -70,27 +64,15 @@ export class FormDataMutation {
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
   }
 
-  addOption(formElementsStyles:any, elIndex:number, optionText: string) {
+  addOption(formElementsStyles:object[], elIndex:number, optionText: string) {
     let formElementStylesCopy = JSON.parse(JSON.stringify(formElementsStyles));
     formElementStylesCopy[elIndex].options.push(optionText)
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
   }
 
-  removeOption(formElementsStyles:any, optionIndex:number, elIndex:number){
+  removeOption(formElementsStyles: object[], optionIndex:number, elIndex:number){
     let formElementStylesCopy = JSON.parse(JSON.stringify(formElementsStyles));
     formElementStylesCopy[elIndex].options.splice(optionIndex,1)
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
-  }
-
-  saveFormToDb(formData:any):Observable<any>{
-    return this.http.post('http://localhost:4000/save_template',{
-      templatemap: formData.templateMap,
-      formstyles: formData.formStyles,
-      elementstyles: formData.elementStyles
-    }, {
-      headers: new HttpHeaders({
-        'authorization': `Bearer ${this.token.getToken()}`
-      })
-    })
   }
 }

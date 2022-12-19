@@ -8,7 +8,7 @@ import {SnackBar} from "../../../shared/directives/snack-bar";
 import {formDataForDownload} from "../../../store/selectors";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {updateElementsStyles} from "../../../store/actions";
-import {FormDataMutation} from "../../services/form-data-mutations.service";
+import {FormDataMutationService} from "../../services/form-data-mutations.service";
 import {DataChangingService} from "../../services/data-changing.service";
 
 @Component({
@@ -30,19 +30,15 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
 
   isActive:boolean = false
 
-  formElementsStyles: [{
-    [key: string]: string
-  }]
-
-  formTemplateMap$: Observable<any>
+  formElementsStyles: [{ [key: string]: string }]
   formTemplateMapSelector: string[] | undefined = [];
 
-  innerWidth: any
+  innerWidth: number
 
   constructor(
     snackBar: MatSnackBar,
     private store: Store<AppStateInterface>,
-    private dataMutation: FormDataMutation,
+    private formDataMutationService: FormDataMutationService,
     private formBuilder: FormBuilder,
     private dataChangingService: DataChangingService
   ) {
@@ -87,24 +83,27 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
 
   saveFieldStyles(){
     let formElementStylesCopy = JSON.parse(JSON.stringify(this.formElementsStyles));
+    let options = formElementStylesCopy[this.elementIndex].options
     formElementStylesCopy[this.elementIndex] = this.dataChangingService.changeFieldsDataBeforeSave(this.myForm.value)
+    if(typeof options != undefined) formElementStylesCopy[this.elementIndex].options = options
+
     this.innerWidth <= 768 ? this.panelOpenState = false : ''
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Styles added successfully')
   }
 
-  sendDeleteCall(){
-    this.dataMutation.deleteElement(this.formTemplateMapSelector, this.formElementsStyles, this.elementIndex)
+  deleteElement(){
+    this.formDataMutationService.deleteElement(this.formTemplateMapSelector, this.formElementsStyles, this.elementIndex)
     this.successShow('Element deleted successfully')
   }
 
   addOption(){
-    this.dataMutation.addOption(this.formElementsStyles, this.elementIndex, this.newSelectOptionText)
+    this.formDataMutationService.addOption(this.formElementsStyles, this.elementIndex, this.newSelectOptionText)
     this.newSelectOptionText = ''
     this.successShow('Option added')
   }
   removeOption(index:number){
-    this.dataMutation.removeOption(this.formElementsStyles, index, this.elementIndex)
+    this.formDataMutationService.removeOption(this.formElementsStyles, index, this.elementIndex)
     this.successShow('Option removed')
   }
 }

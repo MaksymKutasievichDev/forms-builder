@@ -1,19 +1,15 @@
-import {FormDataMutation} from "./form-data-mutations.service";
+import {FormDataMutationService} from "./form-data-mutations.service";
 import {TestBed} from "@angular/core/testing";
 import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {TokenStorageService} from "../../services/token-storage.service";
 import {AppStateInterface} from "../../interfaces/app-state.interface";
-import {HttpClient} from "@angular/common/http";
 
 
 describe('FormDataMutations', () => {
-  let service: FormDataMutation
-  let http: HttpClient
-  let token: TokenStorageService
+  let service: FormDataMutationService
   let mockStore: MockStore<AppStateInterface>
 
   beforeEach(() => {
-    service = new FormDataMutation(mockStore, http, token)
+    service = new FormDataMutationService(mockStore)
     TestBed.configureTestingModule({
       providers: [
         provideMockStore({

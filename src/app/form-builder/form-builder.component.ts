@@ -1,16 +1,22 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {moveItemInArray} from "@angular/cdk/drag-drop";
+import {CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray} from "@angular/cdk/drag-drop";
 import {select, Store} from "@ngrx/store";
 import {DomSanitizer} from "@angular/platform-browser";
 import {first, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {SnackBar} from "../shared/directives/snack-bar";
-import {IFormStyles} from "../interfaces/form-data.interface";
+import {IAllFormData, IFormStyles} from "../interfaces/form-data.interface";
 import {formDataForDownload} from "../store/selectors";
 import {AppStateInterface} from "../interfaces/app-state.interface";
-import {FormDataMutation} from "./services/form-data-mutations.service";
+import {FormDataMutationService} from "./services/form-data-mutations.service";
+import {AuthService} from "../authentication/services/auth.service";
+
+enum DragAndDropContainersIds {
+  ChooseBlockContainerID='cdk-drop-list-1',
+  FormTemplateContainerId='cdk-drop-list-0'
+}
 
 @Component({
   selector: 'app-form-builder',
@@ -35,14 +41,15 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
   formTemplateElements: string[] = [];
   formStyles: IFormStyles
   formElementsStyles: object[] = []
-  formAllData: any
+  formAllData: IAllFormData
 
-  downloadJsonHref: any
+  downloadJsonHref: object
 
   constructor(
     private store: Store<AppStateInterface>,
-    private sanitizer: DomSanitizer,
-    private dataMutation: FormDataMutation,
+    private domSanitizer: DomSanitizer,
+    private formDataMutationService: FormDataMutationService,
+    private authService: AuthService,
     snackBar: MatSnackBar
   ) {
     super(snackBar)
@@ -58,7 +65,7 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
       this.formElementsStyles = data.elementStyles ? JSON.parse(data.elementStyles) : []
       this.formAllData = data;
       let theJSON = JSON.stringify(data);
-      let uri = this.sanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
+      let uri = this.domSanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
       this.downloadJsonHref = uri;
     })
   }
@@ -66,12 +73,12 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
   ngOnInit(): void {
   }
 
-  getClickedElementIndex(event:any){
+  getClickedElementIndex(event:number){
     this.clickedElementIndex = event
   }
 
   saveMap():void{
-    this.dataMutation.saveFormToDb(this.formAllData)
+    this.authService.saveFormToDb(this.formAllData)
       .pipe(first()).subscribe(
       data => {
         data.success == true ? this.successShow('Form saved') : this.errorShow('Something is wrong :(')
@@ -79,30 +86,30 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
     )
   }
 
-  drop(event: any) {
-    if (event.previousContainer !== event.container && event.previousContainer.id === 'cdk-drop-list-1') {
-      this.dataMutation.addElementToForm(this.formTemplateElements, event.currentIndex, event.previousContainer.data[event.previousIndex])
-      this.dataMutation.addStylesForNewElement(this.formElementsStyles, event.item.data, event.currentIndex)
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer !== event.container && event.previousContainer.id === DragAndDropContainersIds.ChooseBlockContainerID) {
+      this.formDataMutationService.addElementToForm(this.formTemplateElements, event.currentIndex, event.previousContainer.data[event.previousIndex])
+      this.formDataMutationService.addStylesForNewElement(this.formElementsStyles, event.item.data, event.currentIndex)
       this.formElementsList.splice(event.previousIndex, 1)
     } else {
-      if(event.container.id=='cdk-drop-list-0'){
-        this.dataMutation.moveElementInsideForm(this.formTemplateElements, event.previousIndex, event.currentIndex, event.container.data[event.previousIndex])
-        this.dataMutation.moveElementsStyles(this.formElementsStyles, event.previousIndex, event.currentIndex)
+      if(event.container.id==DragAndDropContainersIds.FormTemplateContainerId){
+        this.formDataMutationService.moveElementInsideForm(this.formTemplateElements, event.previousIndex, event.currentIndex, event.container.data[event.previousIndex])
+        this.formDataMutationService.moveElementsStyles(this.formElementsStyles, event.previousIndex, event.currentIndex)
         this.clickedElementIndex = event.currentIndex
       } else {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       }
     }
   }
-  containerExitedOnDrag(event: any) {
+  containerExitedOnDrag(event: CdkDragExit) {
     const currentIdx = event.container.data.findIndex(
-      (f: any) => f === event.item.data
+      (f: string) => f === event.item.data
     );
     this.formElementsList.splice(currentIdx + 1, 0, event.item.data)
   }
-  containerEnteredOnDrag(event: any) {
+  containerEnteredOnDrag(event: CdkDragEnter) {
     const currentIdx = event.container.data.findIndex(
-      (f: any) => f === event.item.data
+      (f: string) => f === event.item.data
     );
     this.formElementsList.splice(currentIdx + 1, 1)
   }

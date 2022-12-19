@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy{
   @HostBinding('class') className = ''
 
   title="Form Builder"
-  username: string = 'default';
+  username: string | null = 'default';
 
   isLoading: boolean
 

@@ -1,19 +1,16 @@
 <div class="form_wrapp">
   <p>Registration Form</p>
   <form *ngIf="!isLoggedIn"
-    name="form" (ngSubmit)="f.form.valid && onSubmitRegister()" #f="ngForm" novalidate
+    name="form" (ngSubmit)="f.form.valid && onSubmitRegister()" #f="ngForm" [formGroup]="form" novalidate
   >
     <mat-form-field appearance="fill">
       <mat-label>Username</mat-label>
-      <input name="username" [(ngModel)]="form.username" required #username="ngModel" matInput>
+      <input name="username" formControlName="username" required matInput>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Password</mat-label>
-      <input name="password" type="password" [(ngModel)]="form.password" required #password="ngModel" passwordStrength matInput>
-      <mat-error *ngIf="!!password.errors?.['required']">
-        The password is mandatory.
-      </mat-error>
-      <mat-error *ngIf="password.errors?.['passwordStrength']">
+      <input name="password" type="password" formControlName="password" #password required passwordStrength matInput>
+      <mat-error *ngIf="!form.valid">
         Your password must have lower case, upper case and numeric character.
       </mat-error>
     </mat-form-field>

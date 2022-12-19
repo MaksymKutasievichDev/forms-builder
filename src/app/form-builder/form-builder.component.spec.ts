@@ -15,7 +15,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {FormBuilderComponent} from "./form-builder.component";
 import {FormStylesComponent} from "./components/form-styles/form-styles.component";
 import {FieldStylesComponent} from "./components/field-styles/field-styles.component";
-import {FormDataMutation} from "./services/form-data-mutations.service";
+import {FormDataMutationService} from "./services/form-data-mutations.service";
 
 
 describe('FormBuilderComponent', () => {
@@ -61,7 +61,7 @@ describe('FormBuilderComponent', () => {
         FieldStylesComponent
       ],
       providers: [
-        FormDataMutation,
+        FormDataMutationService,
         DomSanitizer,
         provideMockStore({initialState}),
         { provide: MAT_COLOR_FORMATS, useValue: {display: { colorInput: 'hex'}} }

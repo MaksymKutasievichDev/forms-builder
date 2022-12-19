@@ -4,6 +4,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Observable} from "rxjs";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {setFormData} from "../../../store/actions";
+import {IAllFormData} from "../../../interfaces/form-data.interface";
 
 @Component({
   selector: 'app-file-upload',
@@ -19,7 +20,7 @@ export class FileUploadComponent implements ControlValueAccessor{
 
   fileName: string = ''
   btnDisable: boolean = true
-  JsonData: any
+  JsonData: IAllFormData
 
   onChange = (fileName:string) => {};
   onTouched = () => {}
@@ -35,6 +36,7 @@ export class FileUploadComponent implements ControlValueAccessor{
   }
 
   fileReaderObs(event:any){
+    console.log(event)
     const file = event.target.files[0];
     this.fileName = event.target.files[0].name
     this.btnDisable = false
@@ -50,8 +52,9 @@ export class FileUploadComponent implements ControlValueAccessor{
     })
   }
 
-  onFileSelected(event:any){
+  onFileSelected(event:object){
     this.fileReaderObs(event).subscribe(result=>{
+      // @ts-ignore
       this.JsonData = result
       this.onChange(this.fileName)
     })

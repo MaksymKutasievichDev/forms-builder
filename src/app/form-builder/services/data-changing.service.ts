@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {hexToRgb} from "../../_helpers/helpers";
 import {Color} from "@angular-material-components/color-picker";
+import {rgbColorInterface} from "../interfaces/color.interface";
 
 
 @Injectable({
@@ -9,8 +10,8 @@ import {Color} from "@angular-material-components/color-picker";
 export class DataChangingService {
   constructor() {}
 
-  changeDataBeforeFieldsUpdate(data:any){
-    let color:any
+  changeDataBeforeFieldsUpdate(data:object){
+    let color:rgbColorInterface | null
     let dataCopy = JSON.parse(JSON.stringify(data));
     if(dataCopy['width'])
       dataCopy['width'] = dataCopy['width'].replace(/\D/g, '')
@@ -30,8 +31,9 @@ export class DataChangingService {
     return dataCopy
   }
 
-  changeFieldsDataBeforeSave(data: any){
+  changeFieldsDataBeforeSave(data: object){
     let dataCopy = JSON.parse(JSON.stringify(data));
+    console.log(dataCopy)
     if(dataCopy.width)
       dataCopy.width = dataCopy.width + 'px'
     if(dataCopy.height)
@@ -42,7 +44,7 @@ export class DataChangingService {
       dataCopy.color = '#' + dataCopy.color.hex
     if(dataCopy.borderColor.hex)
       dataCopy.borderColor = '#' + dataCopy.borderColor.hex
-    if(dataCopy.background.hex)
+    if(dataCopy.background?.hex)
       dataCopy.background = '#' + dataCopy.background.hex
     return dataCopy
   }
