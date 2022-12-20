@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class BlocksComponent implements OnInit {
 
-  @Input() formElementsList:string[] = [
+  @Input() formElementsList: string[] = [
     'Input',
     'Textarea',
     'Button',

@@ -35,9 +35,11 @@ export class FileUploadComponent implements ControlValueAccessor{
     fileUpload.click()
   }
 
-  fileReaderObs(event:any){
+  fileReaderObs(event:Event){
     console.log(event)
+    // @ts-ignore
     const file = event.target.files[0];
+    // @ts-ignore
     this.fileName = event.target.files[0].name
     this.btnDisable = false
     let reader = new FileReader();
@@ -52,7 +54,7 @@ export class FileUploadComponent implements ControlValueAccessor{
     })
   }
 
-  onFileSelected(event:object){
+  onFileSelected(event:Event){
     this.fileReaderObs(event).subscribe(result=>{
       // @ts-ignore
       this.JsonData = result
@@ -70,7 +72,7 @@ export class FileUploadComponent implements ControlValueAccessor{
     }))
   }
 
-  writeValue(value: any) {
+  writeValue(value: string) {
     this.fileName = value
   }
   registerOnChange(onChange: any):void {

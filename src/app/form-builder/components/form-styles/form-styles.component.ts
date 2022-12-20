@@ -3,7 +3,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {select, Store} from "@ngrx/store";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ThemePalette} from "@angular/material/core";
-import {Observable, Subject} from "rxjs";
+import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {SnackBar} from "../../../shared/directives/snack-bar";
 import {IFormStyles} from "../../../interfaces/form-data.interface";

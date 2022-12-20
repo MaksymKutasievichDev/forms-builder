@@ -79,11 +79,15 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
 
   saveMap():void{
     this.authService.saveFormToDb(this.formAllData)
-      .pipe(first()).subscribe(
-      data => {
-        data.success == true ? this.successShow('Form saved') : this.errorShow('Something is wrong :(')
-      }
-    )
+      .pipe(first())
+      .subscribe({
+        next: () => {
+          this.successShow('Form saved')
+        },
+        error: (error) => {
+          typeof error.error == 'string' ? this.errorShow(error.error) : this.errorShow("Can't connect to the server")
+        }
+      })
   }
 
   drop(event: CdkDragDrop<string[]>) {

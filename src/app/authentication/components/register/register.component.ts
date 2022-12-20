@@ -18,7 +18,6 @@ import {changeLoadingState} from "../../../store/actions";
 })
 export class RegisterComponent extends SnackBar implements OnInit {
   form: FormGroup
-  isLoggedIn = false;
   isLoggedIn$ : Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -38,7 +37,6 @@ export class RegisterComponent extends SnackBar implements OnInit {
       password: ''
     })
     if(this.tokenStorageService.getToken()){
-      this.isLoggedIn = true;
       this.router.navigate(['home']).then()
       this.infoShow('You are already logged in')
     }
@@ -46,20 +44,22 @@ export class RegisterComponent extends SnackBar implements OnInit {
 
   onSubmitRegister(): void {
     this.store.dispatch(changeLoadingState({isLoading: true}))
-    this.authService.register(this.form.value).pipe(takeUntil(this.isLoggedIn$)).subscribe(
-      data => {
-      if('error' in data){
-        this.errorShow(data.error)
-        this.store.dispatch(changeLoadingState({isLoading: false}))
-      } else {
-        this.isLoggedIn = this.authService.loginUserToApplication(
-          data.accessToken,
-          this.form.value.username,
-          this.isLoggedIn$
-        );
-        this.successShow('Registered successfully')
-        this.store.dispatch(changeLoadingState({isLoading: false}))
-      }
-    })
+    this.authService.register(this.form.value)
+      .pipe(takeUntil(this.isLoggedIn$))
+      .subscribe({
+        next: (data) => {
+          this.authService.loginUserToApplication(
+            data.accessToken,
+            this.form.value.username,
+            this.isLoggedIn$
+          );
+          this.successShow('Registered successfully')
+          this.store.dispatch(changeLoadingState({isLoading: false}))
+        },
+        error: (error) => {
+          typeof error.error == 'string' ? this.errorShow(error.error) : this.errorShow("Can't connect to the server")
+          this.store.dispatch(changeLoadingState({isLoading: false}))
+        }
+      })
   }
 }

@@ -11,6 +11,19 @@ export interface IAllFormData {
   token?: string | null
 }
 
+export interface IAllFormDataLowercase {
+  templatemap: string[]
+  formstyles: {
+    label?: string
+    color?: string
+    background?: string
+    borderStyle?: string
+    borderColor?: string
+  }
+  elementstyles?: string | undefined
+  token?: string | null
+}
+
 export interface IFormStyles {
   label?: string
   color?: string

@@ -115,7 +115,6 @@ app.post("/save_template", authenticateToken, (req, res) => {
   updateUserDataMongoDb(user, newData)
     .catch(console.dir)
     .then((dbResponse) => {
-      console.log(dbResponse);
       res.json({ success: true });
     });
 });
@@ -141,7 +140,6 @@ app.post("/login", (req, res) => {
   findUserDataMongoDb(user)
     .catch(console.dir)
     .then((dbReq) => {
-      console.log(dbReq);
       if (dbReq) {
         if (dbReq.password == user.password) {
           const accessToken = generateAccessToken(user);
@@ -149,10 +147,10 @@ app.post("/login", (req, res) => {
           refreshTokens.push(refreshToken);
           res.json({ accessToken: accessToken, refreshToken: refreshToken });
         } else {
-          res.json({ success: false, error: "Wrong password" });
+          res.status(500).send("Wrong password");
         }
       } else {
-        res.json({ success: false, error: "The user does not exist." });
+        res.status(500).send("The user does not exist.");
       }
     });
 });
@@ -175,7 +173,7 @@ app.post("/register", (req, res) => {
     .catch(console.dir)
     .then((dbReq) => {
       if (dbReq) {
-        res.json({ success: false, error: "The user is already registered" });
+        res.status(500).send("The user is already registered.");
       } else {
         registerUserMongoDb(newUserData).catch(console.dir);
         const accessToken = generateAccessToken(user);

@@ -18,8 +18,6 @@ import {changeLoadingState} from "../../../store/actions";
 })
 export class LoginComponent extends SnackBar implements OnInit {
   form: FormGroup
-  errors: any = {}
-  isLoggedIn = false;
   isLoggedIn$ : Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -39,7 +37,6 @@ export class LoginComponent extends SnackBar implements OnInit {
       password: ''
     })
     if(this.tokenStorageService.getToken()) {
-      this.isLoggedIn = true;
       this.router.navigate(['home'])
       this.infoShow('You are already logged in')
     }
@@ -47,20 +44,23 @@ export class LoginComponent extends SnackBar implements OnInit {
 
   onSubmitLogin():void {
     this.store.dispatch(changeLoadingState({isLoading: true}))
-    this.authService.checkIfUserExistsAndGetToken(this.form.value).pipe(takeUntil(this.isLoggedIn$)).pipe(first()).subscribe(
-    data => {
-      if('error' in data){
-        this.errorShow(data.error)
-        this.store.dispatch(changeLoadingState({isLoading: false}))
-      } else {
-        this.isLoggedIn = this.authService.loginUserToApplication(
-          data.accessToken,
-          this.form.value.username,
-          this.isLoggedIn$
-        );
-        this.successShow('Logged in successfully')
-        this.store.dispatch(changeLoadingState({isLoading: false}))
-      }
-    })
+    this.authService.checkIfUserExistsAndGetToken(this.form.value)
+      .pipe(takeUntil(this.isLoggedIn$))
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          this.authService.loginUserToApplication(
+            data.accessToken,
+            this.form.value.username,
+            this.isLoggedIn$
+          );
+          this.successShow('Logged in successfully')
+          this.store.dispatch(changeLoadingState({isLoading: false}))
+        },
+        error: (error) => {
+          typeof error.error == 'string' ? this.errorShow(error.error) : this.errorShow("Can't connect to the server")
+          this.store.dispatch(changeLoadingState({isLoading: false}))
+        }
+      })
   }
 }

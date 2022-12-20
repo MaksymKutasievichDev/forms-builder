@@ -1,8 +1,8 @@
 import {createAction, props} from "@ngrx/store";
-import {IFormStyles} from "../interfaces/form-data.interface";
+import {IAllFormDataLowercase, IFormStyles} from "../interfaces/form-data.interface";
 
 export const getFormData = createAction('[FormData] Get Form Data')
-export const setFormData = createAction('[FormData] Set Form Data after API call', props<{formData: any}>())
+export const setFormData = createAction('[FormData] Set Form Data after API call', props<{formData: IAllFormDataLowercase}>())
 export const getAllFormDataForSave = createAction('[FormData] Get Form Data for save')
 export const updateFormMapData = createAction('[FormData] Update Form Map Data', props<{mapData: string[]}>())
 export const updateFormStyles = createAction('[FormData] Update Form styles', props<{formStyles: IFormStyles}>())

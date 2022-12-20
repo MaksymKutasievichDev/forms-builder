@@ -23,8 +23,8 @@ enum ElementsTags {
 export class TemplateComponent implements OnInit {
 
   @Input() activeElementIndex: number;
-  @Input() formTemplateElements:string[]
-  @Input() fieldsStyles:IFormElementStyles[] = []
+  @Input() formTemplateElements: string[]
+  @Input() fieldsStyles: IFormElementStyles[] = []
 
   @Output() clickedElementIndex = new EventEmitter<number>()
 
@@ -35,7 +35,8 @@ export class TemplateComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getFormElementIndex(event:any):void{
-    this.clickedElementIndex.emit(event.target.dataset.index)
+  getFormElementIndex(event: Event):void{
+    // @ts-ignore
+    this.clickedElementIndex.emit(parseInt((event.target as HTMLElement).dataset['index']))
   }
 }

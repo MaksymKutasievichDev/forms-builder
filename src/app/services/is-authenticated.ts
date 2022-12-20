@@ -7,12 +7,12 @@ import {TokenStorageService} from "./token-storage.service";
   providedIn: 'root'
 })
 export class IsAuthenticatedGuard implements CanActivate {
-  constructor(private token: TokenStorageService, private router: Router) {
+  constructor(private tokenStorageService: TokenStorageService, private router: Router) {
   }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if(!this.token.getToken() || this.token.getToken() == "undefined" ){
+    if(!this.tokenStorageService.getToken() || this.tokenStorageService.getToken() == "undefined" ){
       this.router.navigate(['auth/checkIfUserExists'])
     }
     return true

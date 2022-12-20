@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {catchError, Observable, of, retry, Subject} from "rxjs";
-import {TokenStorageService} from "../../services/token-storage.service";
 import {Router} from "@angular/router";
+import {catchError, Observable, Subject} from "rxjs";
+import {TokenStorageService} from "../../services/token-storage.service";
 import {IAllFormData} from "../../interfaces/form-data.interface";
 import {UserDataInterface} from "../interfaces/user-data.interface";
 import {environment} from "../../../environments/environment";
@@ -24,8 +24,7 @@ export class AuthService {
       username: user.username,
       password: user.password
     }).pipe(
-      retry(1),
-      catchError(error => of({error: "Can't connect to the server"}))
+      catchError(err => {throw err})
     )
   }
 
@@ -34,8 +33,7 @@ export class AuthService {
       username: user.username,
       password: user.password
     }).pipe(
-      retry(1),
-      catchError(error => of({error: "Can't connect to the server"}))
+      catchError(err => {throw err})
     )
   }
 
@@ -55,6 +53,16 @@ export class AuthService {
     return true
   }
 
+  getUserDataByToken(token:string | null):Observable<any>{
+    return this.http.get(environment.baseUrl + 'get_user_data', {
+      headers: new HttpHeaders({
+        'authorization': `Bearer ${token}`
+      })
+    }).pipe(
+      catchError(err => {throw err})
+    )
+  }
+
   saveFormToDb(formData:IAllFormData):Observable<any>{
     return this.http.post(environment.baseUrl + 'save_template',{
       templatemap: formData.templateMap,
@@ -64,14 +72,8 @@ export class AuthService {
       headers: new HttpHeaders({
         'authorization': `Bearer ${this.tokenStorageService.getToken()}`
       })
-    })
-  }
-
-  getUserDataByToken(token:any):Observable<any>{
-    return this.http.get(environment.baseUrl + 'get_user_data', {
-      headers: new HttpHeaders({
-        'authorization': `Bearer ${token}`
-      })
-    })
+    }).pipe(
+      catchError(err => {throw err})
+    )
   }
 }

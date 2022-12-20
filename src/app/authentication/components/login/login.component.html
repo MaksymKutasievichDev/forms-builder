@@ -1,6 +1,6 @@
 <div class="form_wrapp">
   <p>Login Form</p>
-  <form *ngIf="!isLoggedIn"
+  <form *ngIf="!(isLoggedIn$ | async)"
         name="form" (ngSubmit)="f.form.valid && onSubmitLogin()" #f="ngForm" [formGroup]="form" novalidate
   >
     <mat-form-field appearance="fill">
