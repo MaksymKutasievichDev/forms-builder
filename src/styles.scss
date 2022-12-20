@@ -188,3 +188,20 @@ app-field-styles .input_group > *{
 app-blocks .example-custom-placeholder *{
   display: none !important;
 }
+.form_template__element{
+  position: relative;
+  .drag-handle-for-mobiles{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px 10px;
+    background: rgba(84, 84, 84, 0.65);
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+  }
+}
+.cdk-overlay-container{
+  z-index: 100000 !important
+}

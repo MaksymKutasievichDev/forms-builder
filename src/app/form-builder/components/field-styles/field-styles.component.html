@@ -52,13 +52,13 @@
         <mat-label>Colour</mat-label>
         <input matInput [ngxMatColorPicker]="pickerColor" formControlName="color">
         <ngx-mat-color-toggle matSuffix [for]="pickerColor"></ngx-mat-color-toggle>
-        <ngx-mat-color-picker #pickerColor [color]="colorPick"></ngx-mat-color-picker>
+        <ngx-mat-color-picker #pickerColor [touchUi]="touchUi" [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill" *ngIf="elementTag!='Checkbox'">
         <mat-label>Border Colour</mat-label>
         <input matInput [ngxMatColorPicker]="pickerBorderColor" formControlName="borderColor">
         <ngx-mat-color-toggle matSuffix [for]="pickerBorderColor"></ngx-mat-color-toggle>
-        <ngx-mat-color-picker #pickerBorderColor [color]="colorPick"></ngx-mat-color-picker>
+        <ngx-mat-color-picker #pickerBorderColor [touchUi]="touchUi" [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill" *ngIf="elementTag!='Checkbox'">
         <mat-label>Border type</mat-label>

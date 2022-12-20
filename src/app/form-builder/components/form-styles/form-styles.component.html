@@ -23,13 +23,13 @@
         <mat-label>Text Color</mat-label>
         <input matInput [ngxMatColorPicker]="pickerText" formControlName="color">
         <ngx-mat-color-toggle matSuffix [for]="pickerText"></ngx-mat-color-toggle>
-        <ngx-mat-color-picker #pickerText [color]="colorPick"></ngx-mat-color-picker>
+        <ngx-mat-color-picker [touchUi]="touchUi" #pickerText [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
       <mat-form-field class="flex-1" appearance="fill">
         <mat-label>Background</mat-label>
         <input matInput [ngxMatColorPicker]="pickerBackground" formControlName="background">
         <ngx-mat-color-toggle matSuffix [for]="pickerBackground"></ngx-mat-color-toggle>
-        <ngx-mat-color-picker #pickerBackground [color]="colorPick"></ngx-mat-color-picker>
+        <ngx-mat-color-picker [touchUi]="touchUi" #pickerBackground [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
     </div>
 
@@ -47,7 +47,7 @@
         <mat-label>Border Color</mat-label>
         <input matInput [ngxMatColorPicker]="pickerBorderColor" formControlName="borderColor">
         <ngx-mat-color-toggle matSuffix [for]="pickerBorderColor"></ngx-mat-color-toggle>
-        <ngx-mat-color-picker #pickerBorderColor [color]="colorPick"></ngx-mat-color-picker>
+        <ngx-mat-color-picker [touchUi]="touchUi" #pickerBorderColor [color]="colorPick"></ngx-mat-color-picker>
       </mat-form-field>
     </div>
     <div class="input_group isFullWidth isFlex flex-center">

@@ -29,6 +29,8 @@ export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
 
   formStylesSelect: IFormStyles
 
+  touchUi: boolean = false
+
   constructor(
     snackBar: MatSnackBar,
     private store: Store<AppStateInterface>,
@@ -53,6 +55,9 @@ export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if(window.innerWidth < 768){
+      this.touchUi = true
+    }
   }
 
   submitFormStyles():void{

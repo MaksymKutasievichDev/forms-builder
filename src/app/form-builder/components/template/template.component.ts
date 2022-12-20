@@ -30,9 +30,12 @@ export class TemplateComponent implements OnInit {
 
   ElementTags: typeof ElementsTags = ElementsTags
 
+  innerWidth: number
+
   constructor() { }
 
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth
   }
 
   getFormElementIndex(event: Event):void{

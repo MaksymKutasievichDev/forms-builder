@@ -3,7 +3,6 @@ import {ThemePalette} from "@angular/material/core";
 import {select, Store} from "@ngrx/store";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Observable} from "rxjs";
 import {SnackBar} from "../../../shared/directives/snack-bar";
 import {formDataForDownload} from "../../../store/selectors";
 import {AppStateInterface} from "../../../interfaces/app-state.interface";
@@ -34,6 +33,7 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
   formTemplateMapSelector: string[] | undefined = [];
 
   innerWidth: number
+  touchUi: boolean = false
 
   constructor(
     snackBar: MatSnackBar,
@@ -63,6 +63,9 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
       borderStyle: ''
     })
     this.innerWidth = window.innerWidth
+    if(this.innerWidth < 768){
+      this.touchUi = true
+    }
   }
 
   closeModal(){
