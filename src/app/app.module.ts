@@ -31,7 +31,7 @@ import { SharedModule } from "./shared/shared.module";
     MatSlideToggleModule,
     StoreModule.forRoot({formState: reducers}),
     EffectsModule.forRoot([FormDataEffects]),
-    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
+    StoreDevtoolsModule.instrument({maxAge: 25}),
     SharedModule
   ],
   providers: [
