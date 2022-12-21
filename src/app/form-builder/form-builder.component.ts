@@ -113,9 +113,7 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
         this.justDropped = true
         this.formDataMutationService.moveElementInsideForm(this.formTemplateElements, event.previousIndex, event.currentIndex, event.container.data[event.previousIndex])
         this.formDataMutationService.moveElementsStyles(this.formElementsStyles, event.previousIndex, event.currentIndex)
-        if(!this.mobileView) {
-          this.clickedElementIndex = event.currentIndex
-        }
+        this.clickedElementIndex = event.currentIndex
         setTimeout(() => {
           this.justDropped = false
         },500)
