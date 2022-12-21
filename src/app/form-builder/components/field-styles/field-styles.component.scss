@@ -66,6 +66,8 @@
     transition: opacity 0.2s ease;
     opacity: 0;
     border: 2px solid $main_lightblue;
+    max-height: 90vh;
+    overflow-y: scroll;
     .mat-expanded &{
       opacity: 1;
     }

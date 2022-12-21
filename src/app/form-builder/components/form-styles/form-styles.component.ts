@@ -55,9 +55,13 @@ export class FormStylesComponent extends SnackBar implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if(window.innerWidth < 768){
+    if(this.getInnerWidth() < 768){
       this.touchUi = true
     }
+  }
+
+  getInnerWidth():number{
+    return window.innerWidth
   }
 
   submitFormStyles():void{

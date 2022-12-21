@@ -97,20 +97,20 @@ describe('FieldStylesComponent', () => {
     component.formTemplateMapSelector = ['input', 'select', 'checkbox', 'button']
     let formTemplateMapSelectorCopy = JSON.parse(JSON.stringify(component.formTemplateMapSelector));
     component.elementIndex = 2
-    spyOn(component, 'sendDeleteCall').and.callFake(() => {
+    spyOn(component, 'deleteElement').and.callFake(() => {
       formTemplateMapSelectorCopy.splice(component.elementIndex,1)
     })
-    component.sendDeleteCall()
+    component.deleteElement()
     expect(formTemplateMapSelectorCopy).toEqual(['input', 'select', 'button'])
   })
 
   it('should delete element styles from form', () => {
     let formElementStylesCopy = [{label: '1'},{label: '2'},{label: '3'},{label: '4'}];
     component.elementIndex = 2
-    spyOn(component, 'sendDeleteCall').and.callFake(() => {
+    spyOn(component, 'deleteElement').and.callFake(() => {
       formElementStylesCopy.splice(component.elementIndex,1)
     })
-    component.sendDeleteCall()
+    component.deleteElement()
     expect(formElementStylesCopy).toEqual([{label: '1'},{label: '2'},{label: '4'}])
   })
 

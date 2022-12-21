@@ -37,7 +37,7 @@ export class RegisterComponent extends SnackBar implements OnInit {
       password: ''
     })
     if(this.tokenStorageService.getToken()){
-      this.router.navigate(['home']).then()
+      this.router.navigate(['home'])
       this.infoShow('You are already logged in')
     }
   }

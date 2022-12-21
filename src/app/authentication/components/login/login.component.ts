@@ -46,7 +46,6 @@ export class LoginComponent extends SnackBar implements OnInit {
     this.store.dispatch(changeLoadingState({isLoading: true}))
     this.authService.checkIfUserExistsAndGetToken(this.form.value)
       .pipe(takeUntil(this.isLoggedIn$))
-      .pipe(first())
       .subscribe({
         next: (data) => {
           this.authService.loginUserToApplication(
@@ -58,6 +57,7 @@ export class LoginComponent extends SnackBar implements OnInit {
           this.store.dispatch(changeLoadingState({isLoading: false}))
         },
         error: (error) => {
+          console.log(typeof error.error)
           typeof error.error == 'string' ? this.errorShow(error.error) : this.errorShow("Can't connect to the server")
           this.store.dispatch(changeLoadingState({isLoading: false}))
         }

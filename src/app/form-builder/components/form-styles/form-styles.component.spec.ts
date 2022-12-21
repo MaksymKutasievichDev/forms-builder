@@ -119,4 +119,19 @@ describe('FormStylesComponents', () => {
     })
   })
 
+  it('should set touch ui if inner width lower then 768px',  () => {
+    spyOn(component, 'getInnerWidth').and.returnValue(500)
+    component.ngOnInit()
+    expect(component.touchUi).toEqual(true)
+  });
+
+  it('should get window innerWidth', () => {
+    expect(component.getInnerWidth()).toEqual(window.innerWidth)
+  })
+
+  it('should send data to db', () => {
+    spyOn((component as any).store, 'dispatch')
+    component.submitFormStyles()
+    expect((component as any).store.dispatch).toHaveBeenCalled()
+  })
 })

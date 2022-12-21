@@ -1,4 +1,4 @@
-import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {ComponentFixture, fakeAsync, TestBed, tick} from "@angular/core/testing";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatExpansionModule} from "@angular/material/expansion";
@@ -16,11 +16,14 @@ import {FormBuilderComponent} from "./form-builder.component";
 import {FormStylesComponent} from "./components/form-styles/form-styles.component";
 import {FieldStylesComponent} from "./components/field-styles/field-styles.component";
 import {FormDataMutationService} from "./services/form-data-mutations.service";
+import {AuthService} from "../authentication/services/auth.service";
+import {of, throwError} from "rxjs";
 
 
 describe('FormBuilderComponent', () => {
   let component: FormBuilderComponent
   let store: MockStore<any>
+  let authService: AuthService
   let fixture: ComponentFixture<FormBuilderComponent>
 
   const initialState = {
@@ -61,6 +64,7 @@ describe('FormBuilderComponent', () => {
         FieldStylesComponent
       ],
       providers: [
+        AuthService,
         FormDataMutationService,
         DomSanitizer,
         provideMockStore({initialState}),
@@ -68,12 +72,14 @@ describe('FormBuilderComponent', () => {
       ]
     }).compileComponents()
 
+    authService = TestBed.inject(AuthService)
     store = TestBed.inject(MockStore)
     fixture = TestBed.createComponent(FormBuilderComponent)
     component = fixture.componentInstance
   })
 
   it('should create', () => {
+    component.ngOnInit()
     expect(component).toBeTruthy()
   })
 
@@ -82,18 +88,25 @@ describe('FormBuilderComponent', () => {
     expect(component.clickedElementIndex).toEqual(5)
   })
 
-  /*it('should set data on component creation', () => {
-    let initState = {
-      formStyles: {
-        label: 'test'
-      },
-      templateMap: ['Input', 'Select'],
-      elementStyles: '{}{}'
-    }
-    spyOn((component as any).store, 'pipe').and.returnValue(initState)
-    fixture = TestBed.createComponent(FormBuilderComponent)
-    component = fixture.componentInstance
-    expect(component.formStyles).toEqual({label: 'test'})
-  })*/
+  it('should block', () => {
+    expect(component.blockDropping()).toBeFalsy()
+  })
 
+  it('should through error on save', () => {
+    spyOn(authService, 'saveFormToDb').and.returnValues(throwError(() => new Error()))
+    component.saveMap()
+    expect(authService.saveFormToDb).toHaveBeenCalled()
+  })
+  it('should through error string on save', () => {
+    spyOn(authService, 'saveFormToDb').and.returnValues(throwError(() => ({error: 'error'})))
+    component.saveMap()
+    expect(authService.saveFormToDb).toHaveBeenCalled()
+  })
+
+  it('should through error string on save', fakeAsync(() => {
+    spyOn(authService, 'saveFormToDb').and.returnValues(of({}))
+    component.saveMap()
+    tick(2000)
+    expect(authService.saveFormToDb).toHaveBeenCalled()
+  }))
 })

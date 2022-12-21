@@ -31,4 +31,9 @@ describe('BlocksComponent',() => {
   it('should be created', () => {
     expect(component).toBeTruthy()
   })
+
+  it('should change open small status', () => {
+    component.changeOpenOnSmallScreenStatus()
+    expect(component.openedOnSmallScreen).toEqual(true)
+  })
 })

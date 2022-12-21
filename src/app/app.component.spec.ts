@@ -2,14 +2,16 @@ import {ComponentFixture, fakeAsync, getTestBed, TestBed} from '@angular/core/te
 import { RouterTestingModule } from "@angular/router/testing";
 import { provideMockStore } from "@ngrx/store/testing";
 import { MatIconModule } from "@angular/material/icon";
-import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import { of } from "rxjs";
+import { ReactiveFormsModule} from "@angular/forms";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import * as rxjs from 'rxjs'
+import {fromEvent, of, Subject, take} from "rxjs";
 import { AppComponent } from './app.component';
 import { RemoveQuotationMarksPipe } from "./pipes/remove-quotation-marks.pipe";
 import { TokenStorageService } from "./services/token-storage.service";
 import { AppRoutingModule } from "./app-routing.module";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {DarkThemeService} from "./services/dark-theme.service";
+import { DarkThemeService } from "./services/dark-theme.service";
+import {Router} from "@angular/router";
 
 describe('AppComponent', () => {
   let injector: TestBed;
@@ -88,4 +90,26 @@ describe('AppComponent', () => {
     component.darkThemeToggler.setValue(false)
     expect(darkThemeService.getStatus()).toEqual('false')
   })
+
+  it('should log out', () => {
+    const router: Router = TestBed.inject(Router)
+    spyOn(router, 'navigate')
+    component.logout()
+    expect(component.loggedIn()).toBeFalsy()
+    expect(router.navigate).toHaveBeenCalled()
+  })
+
+  it('should update mobileView when window is resized', fakeAsync(() => {
+    const subject = new Subject<Event>();
+    const eventObservable = fromEvent(window, 'resize').pipe(take(1));
+    // @ts-ignore
+    subject.subscribe(eventObservable);
+    spyOnProperty(window, 'innerWidth').and.returnValue(475);
+    subject.next(new Event('resize'));
+    eventObservable.subscribe((done) => {
+      expect(component.mobileView).toBe(true);
+      // @ts-ignore
+      done()
+    });
+  }));
 });
