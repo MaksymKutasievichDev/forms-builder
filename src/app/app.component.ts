@@ -2,7 +2,7 @@ import {Component, HostBinding, OnInit, OnDestroy} from '@angular/core';
 import {select, Store} from "@ngrx/store";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
-import {Subject} from "rxjs";
+import {fromEvent, of, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {TokenStorageService} from "./services/token-storage.service";
 import {AppStateInterface} from "./interfaces/app-state.interface";
@@ -26,6 +26,9 @@ export class AppComponent implements OnInit, OnDestroy{
   darkThemeToggler = new FormControl(false)
 
   isDestroyed$: Subject<boolean> = new Subject<boolean>();
+
+  innerWidth: number
+  mobileView: boolean = false
 
   constructor(
     private tokenStorageService: TokenStorageService,
@@ -54,6 +57,10 @@ export class AppComponent implements OnInit, OnDestroy{
     if(!!this.tokenStorageService.getToken()) {
       this.username = this.tokenStorageService.getUser();
     }
+    this.mobileView = window.innerWidth <= 475
+    fromEvent(window, 'resize').subscribe(width => {
+      this.mobileView = window.innerWidth <= 475
+    })
   }
 
   loggedIn():boolean{

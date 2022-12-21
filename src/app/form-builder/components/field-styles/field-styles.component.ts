@@ -9,6 +9,7 @@ import {AppStateInterface} from "../../../interfaces/app-state.interface";
 import {updateElementsStyles} from "../../../store/actions";
 import {FormDataMutationService} from "../../services/form-data-mutations.service";
 import {DataChangingService} from "../../services/data-changing.service";
+import {fromEvent} from "rxjs";
 
 @Component({
   selector: 'app-field-styles',
@@ -24,6 +25,8 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
 
   elementTag:string | null;
   @Input() elementIndex:number = 0;
+  @Input() elJustDropped: boolean
+  @Input() elementClickedFlag: boolean
 
   newSelectOptionText: string
 
@@ -32,8 +35,8 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
   formElementsStyles: [{ [key: string]: string }]
   formTemplateMapSelector: string[] | undefined = [];
 
-  innerWidth: number
-  touchUi: boolean = false
+  touchUiColorPicket: boolean = false
+  mobileView: boolean = false
 
   constructor(
     snackBar: MatSnackBar,
@@ -62,10 +65,12 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
       borderColor: '',
       borderStyle: ''
     })
-    this.innerWidth = window.innerWidth
-    if(this.innerWidth < 768){
-      this.touchUi = true
-    }
+    this.touchUiColorPicket = window.innerWidth < 768
+    this.mobileView = window.innerWidth <= 620
+    fromEvent(window, 'resize').subscribe(() => {
+      this.touchUiColorPicket = window.innerWidth < 768
+      this.mobileView = window.innerWidth <= 620
+    })
   }
 
   closeModal(){
@@ -73,27 +78,41 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges){
-    if (typeof changes['elementIndex'] != 'undefined') {
-      this.elementTag = this.formTemplateMapSelector ? this.formTemplateMapSelector[this.elementIndex] : '';
-      if(typeof this.elementIndex != 'undefined' && this.formElementsStyles[this.elementIndex] !== null){
-        this.isActive = true
-        this.panelOpenState = true
-        this.myForm.setValue({
-          title: '',
-          label: '',
-          placeholder: '',
-          width: '',
-          height: '',
-          fontSize: '',
-          fontWeight: '',
-          color: '',
-          borderColor: '',
-          borderStyle: ''
-        })
-        let preparedData = this.dataChangingService.changeDataBeforeFieldsUpdate(this.formElementsStyles[this.elementIndex])
-        this.myForm.patchValue(preparedData)
+    if (typeof changes['elementClickedFlag'] != 'undefined') {
+      if(!this.elJustDropped) {
+        this.elementTag = this.formTemplateMapSelector ? this.formTemplateMapSelector[this.elementIndex] : '';
+        if (typeof this.elementIndex != 'undefined' && this.formElementsStyles[this.elementIndex] !== null) {
+          this.isActive = true
+          this.panelOpenState = true
+          this.myForm.setValue({
+            title: '',
+            label: '',
+            placeholder: '',
+            width: '',
+            height: '',
+            fontSize: '',
+            fontWeight: '',
+            color: '',
+            borderColor: '',
+            borderStyle: ''
+          })
+          let preparedData = this.dataChangingService.changeDataBeforeFieldsUpdate(this.formElementsStyles[this.elementIndex])
+          this.myForm.patchValue(preparedData)
+        }
       }
     }
+  }
+
+
+  onPanelOpen(){
+    this.panelOpenState = true
+    // @ts-ignore
+    this.mobileView ? document.querySelector('body').classList.add('block_scrolling') : ''
+  }
+  onPanelClose(){
+    this.panelOpenState = false
+    // @ts-ignore
+    this.mobileView ? document.querySelector('body').classList.remove('block_scrolling') : ''
   }
 
   saveFieldStyles(){
@@ -102,7 +121,7 @@ export class FieldStylesComponent extends SnackBar implements OnInit {
     formElementStylesCopy[this.elementIndex] = this.dataChangingService.changeFieldsDataBeforeSave(this.myForm.value)
     if(typeof options != undefined) formElementStylesCopy[this.elementIndex].options = options
 
-    this.innerWidth <= 768 ? this.panelOpenState = false : ''
+    window.innerWidth <= 768 ? this.panelOpenState = false : ''
     this.store.dispatch(updateElementsStyles({elementsStyles: JSON.stringify(formElementStylesCopy)}))
     this.successShow('Styles added successfully')
   }

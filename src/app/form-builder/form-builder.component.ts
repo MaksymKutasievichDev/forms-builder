@@ -4,7 +4,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {CdkDragDrop, CdkDragEnter, CdkDragExit, moveItemInArray} from "@angular/cdk/drag-drop";
 import {select, Store} from "@ngrx/store";
 import {DomSanitizer} from "@angular/platform-browser";
-import {first, Subject} from "rxjs";
+import {first, fromEvent, Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {SnackBar} from "../shared/directives/snack-bar";
 import {IAllFormData, IFormStyles} from "../interfaces/form-data.interface";
@@ -45,6 +45,11 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
 
   downloadJsonHref: object
 
+  mobileView: boolean
+  //Do not open modal field edit when element is dropped
+  justDropped: boolean = false
+  elementClickedFlag: boolean = false
+
   constructor(
     private store: Store<AppStateInterface>,
     private domSanitizer: DomSanitizer,
@@ -68,6 +73,9 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
       let uri = this.domSanitizer.bypassSecurityTrustUrl("data:text/json;charset=UTF-8," + encodeURIComponent(theJSON));
       this.downloadJsonHref = uri;
     })
+    fromEvent(window, 'resize').subscribe(() => {
+      this.mobileView = window.innerWidth <= 620
+    })
   }
 
   ngOnInit(): void {
@@ -75,6 +83,7 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
 
   getClickedElementIndex(event:number){
     this.clickedElementIndex = event
+    this.elementClickedFlag = !this.elementClickedFlag
   }
 
   saveMap():void{
@@ -92,14 +101,24 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer !== event.container && event.previousContainer.id === DragAndDropContainersIds.ChooseBlockContainerID) {
+      this.justDropped = true
       this.formDataMutationService.addElementToForm(this.formTemplateElements, event.currentIndex, event.previousContainer.data[event.previousIndex])
       this.formDataMutationService.addStylesForNewElement(this.formElementsStyles, event.item.data, event.currentIndex)
       this.formElementsList.splice(event.previousIndex, 1)
+      setTimeout(() => {
+        this.justDropped = false
+      },500)
     } else {
       if(event.container.id==DragAndDropContainersIds.FormTemplateContainerId){
+        this.justDropped = true
         this.formDataMutationService.moveElementInsideForm(this.formTemplateElements, event.previousIndex, event.currentIndex, event.container.data[event.previousIndex])
         this.formDataMutationService.moveElementsStyles(this.formElementsStyles, event.previousIndex, event.currentIndex)
-        this.clickedElementIndex = event.currentIndex
+        if(!this.mobileView) {
+          this.clickedElementIndex = event.currentIndex
+        }
+        setTimeout(() => {
+          this.justDropped = false
+        },500)
       } else {
         moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       }

@@ -46,7 +46,9 @@ body { margin: 0; font-family: $font_montserat }
   font-family: $font_montserat;
   font-weight: 400;
 }
-
+body.block_scrolling{
+  overflow: hidden;
+}
 #app{
   min-height: calc(100vh - 40px);
   padding-top: 4rem;

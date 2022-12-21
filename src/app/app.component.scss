@@ -31,9 +31,18 @@ nav {
     background: none;
     @media (max-width: 475px) {
       padding: 0;
+      margin-right: 10px;
+      .mat-icon{
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+      }
     }
     .mat-slide-toggle{
       margin: 0 10px;
+      @media (max-width: 475px) {
+        margin: 0 5px;
+      }
     }
   }
   .exit_ico{
@@ -43,6 +52,11 @@ nav {
       width: 28px;
       height: 28px;
       color: $main_lightblue;
+      @media (max-width: 475px) {
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+      }
     }
   }
   .app_title{
@@ -75,7 +89,9 @@ nav {
     @media (max-width: 475px) {
       flex-direction: column;
       align-items: center;
-      gap: 0
+      gap: 0;
+      padding: 0;
+      text-transform: unset;
     }
     text-transform: uppercase;
     mat-icon{
