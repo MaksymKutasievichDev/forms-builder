@@ -1,5 +1,5 @@
 import {MockStore, provideMockStore} from "@ngrx/store/testing";
-import {ComponentFixture, fakeAsync, TestBed} from "@angular/core/testing";
+import {ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick} from "@angular/core/testing";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -11,7 +11,7 @@ import {MAT_COLOR_FORMATS, NgxMatColorPickerModule} from "@angular-material-comp
 import {MatSelectModule} from "@angular/material/select";
 import {MatIconModule} from "@angular/material/icon";
 import {HttpClient, HttpHandler} from "@angular/common/http";
-import {of} from 'rxjs'
+import {first, fromEvent, of} from 'rxjs'
 import {FieldStylesComponent} from "./field-styles.component";
 import {FormDataMutationService} from "../../services/form-data-mutations.service";
 import {TokenStorageService} from "../../../services/token-storage.service";
@@ -87,6 +87,19 @@ describe('FieldStylesComponent', () => {
     expect(component.formTemplateMapSelector).toEqual(['input', 'select'])
   }));
 
+  it('should set data from store (empty styles)', fakeAsync(() => {
+    const response:any = {
+      elementStyles: "",
+      templateMap: ['input', 'select']
+    }
+    spyOn((component as any).store, 'pipe').and.returnValue(of(response))
+    fixture = TestBed.createComponent(FieldStylesComponent)
+    component = fixture.componentInstance
+    // @ts-ignore
+    expect(component.formElementsStyles.length).toEqual(0)
+    expect(component.formTemplateMapSelector).toEqual(['input', 'select'])
+  }));
+
   it('should close the modal', () => {
     component.panelOpenState = true;
     component.closeModal()
@@ -134,4 +147,136 @@ describe('FieldStylesComponent', () => {
     component.addOption()
     expect(formElementStylesCopy).toEqual([{label: '1', options: ['option1']},{label: '2', options: ['option1']},{label: '3', options: []},{label: '4', options: ['option1']}])
   })
+
+  it('should open panel', () => {
+    component.panelOpenState = false
+    component.onPanelOpen()
+    expect(component.panelOpenState).toEqual(true)
+  })
+  it('should close panel', () => {
+    component.panelOpenState = true
+    component.onPanelClose()
+    expect(component.panelOpenState).toEqual(false)
+  })
+
+  it('should add class on panel open', () => {
+    component.panelOpenState = false
+    component.mobileView = true
+    component.onPanelOpen()
+    // @ts-ignore
+    expect(document.querySelector('body').classList.contains('block_scrolling')).toEqual(true)
+  })
+  it('should remove class on panel close', () => {
+    component.panelOpenState = false
+    component.mobileView = true
+    // @ts-ignore
+    document.querySelector('body').classList.add('block_scrolling')
+    component.onPanelClose()
+    // @ts-ignore
+    expect(document.querySelector('body').classList.contains('block_scrolling')).toEqual(false)
+  })
+
+  it('should properly set values on init', () => {
+    component.ngOnInit()
+    expect(component.myForm.value).toEqual({
+      title: '',
+      label: '',
+      placeholder: '',
+      width: '',
+      height: '',
+      fontSize: '',
+      fontWeight: '',
+      color: '',
+      borderColor: '',
+      borderStyle: ''
+    })
+  })
+
+  it('should update values on clicked index change', () => {
+    component.elJustDropped = false
+    component.formTemplateMapSelector = ['Input']
+    component.formElementsStyles = [{}]
+    component.elementIndex = 0
+    component.ngOnInit()
+    component.ngOnChanges({
+      elementClickedFlag: {
+        currentValue: true,
+        firstChange: true,
+        previousValue: undefined,
+        isFirstChange(): boolean {
+          return true
+        }
+      },
+    })
+    expect(component.isActive).toBeTruthy()
+    expect(component.panelOpenState).toBeTruthy()
+  })
+  it('should update values on clicked index change (empty element tag)', () => {
+    component.elJustDropped = false
+    component.formTemplateMapSelector = undefined
+    component.formElementsStyles = [{}]
+    component.elementIndex = 0
+    component.ngOnInit()
+    component.ngOnChanges({
+      elementClickedFlag: {
+        currentValue: true,
+        firstChange: true,
+        previousValue: undefined,
+        isFirstChange(): boolean {
+          return true
+        }
+      },
+    })
+    expect(component.isActive).toBeTruthy()
+    expect(component.panelOpenState).toBeTruthy()
+  })
+
+  it('should save fields (innerWidth <= 768)', () => {
+    component.ngOnInit()
+    component.formElementsStyles = JSON.parse("[{}, {}]")
+    component.elementIndex = 0
+    spyOn((component as any).store, 'dispatch')
+    spyOnProperty(window, 'innerWidth').and.returnValue(500)
+    component.saveFieldStyles()
+    expect((component as any).store.dispatch).toHaveBeenCalled()
+  })
+  it('should save fields (innerWidth > 768)', () => {
+    component.ngOnInit()
+    component.formElementsStyles = JSON.parse("[{}, {}]")
+    component.elementIndex = 0
+    spyOn((component as any).store, 'dispatch')
+    spyOnProperty(window, 'innerWidth').and.returnValue(770)
+    component.saveFieldStyles()
+    expect((component as any).store.dispatch).toHaveBeenCalled()
+  })
+
+  it('should add option', () => {
+    spyOn(formDataMutations, 'addOption')
+    component.addOption()
+    expect(formDataMutations.addOption).toHaveBeenCalled()
+  })
+  it('should delete option', () => {
+    spyOn(formDataMutations, 'removeOption')
+    component.removeOption(1)
+    expect(formDataMutations.removeOption).toHaveBeenCalled()
+  })
+  it('should delete element', () => {
+    spyOn(formDataMutations, 'deleteElement')
+    component.deleteElement()
+    expect(formDataMutations.deleteElement).toHaveBeenCalled()
+  })
+
+  it('should update mobileView when window is resized', fakeAsync(() => {
+    const eventObservable = fromEvent(window, 'resize').pipe(first());
+    spyOnProperty(window, 'innerWidth').and.returnValue(475);
+    eventObservable.subscribe(() => {
+      expect(component.mobileView).toBe(true);
+      expect(component.touchUiColorPicket).toBe(true);
+      tick()
+      discardPeriodicTasks()
+    });
+    component.ngOnInit()
+    window.dispatchEvent(new Event('resize'));
+  }));
+
 })

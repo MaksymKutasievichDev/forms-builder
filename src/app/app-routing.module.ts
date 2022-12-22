@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IsAuthenticatedGuard } from "./services/is-authenticated";
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./form-builder/form-builder.module')

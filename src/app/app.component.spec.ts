@@ -1,17 +1,18 @@
-import {ComponentFixture, fakeAsync, getTestBed, TestBed} from '@angular/core/testing';
+import {ComponentFixture, discardPeriodicTasks, fakeAsync, getTestBed, TestBed, tick} from '@angular/core/testing';
 import { RouterTestingModule } from "@angular/router/testing";
 import { provideMockStore } from "@ngrx/store/testing";
 import { MatIconModule } from "@angular/material/icon";
 import { ReactiveFormsModule} from "@angular/forms";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import * as rxjs from 'rxjs'
-import {fromEvent, of, Subject, take} from "rxjs";
+import {first, fromEvent, of, Subject, take} from "rxjs";
 import { AppComponent } from './app.component';
 import { RemoveQuotationMarksPipe } from "./pipes/remove-quotation-marks.pipe";
 import { TokenStorageService } from "./services/token-storage.service";
 import { AppRoutingModule } from "./app-routing.module";
 import { DarkThemeService } from "./services/dark-theme.service";
 import {Router} from "@angular/router";
+import {FieldStylesComponent} from "./form-builder/components/field-styles/field-styles.component";
 
 describe('AppComponent', () => {
   let injector: TestBed;
@@ -100,16 +101,20 @@ describe('AppComponent', () => {
   })
 
   it('should update mobileView when window is resized', fakeAsync(() => {
-    const subject = new Subject<Event>();
-    const eventObservable = fromEvent(window, 'resize').pipe(take(1));
-    // @ts-ignore
-    subject.subscribe(eventObservable);
+    const eventObservable = fromEvent(window, 'resize').pipe(first());
     spyOnProperty(window, 'innerWidth').and.returnValue(475);
-    subject.next(new Event('resize'));
-    eventObservable.subscribe((done) => {
+    eventObservable.subscribe(() => {
       expect(component.mobileView).toBe(true);
-      // @ts-ignore
-      done()
+      tick()
     });
+    component.ngOnInit()
+    window.dispatchEvent(new Event('resize'));
   }));
+
+  it('should set isLoading from store data', () => {
+    spyOn((component as any).store, 'pipe').and.returnValue(of(true))
+    fixture = TestBed.createComponent(AppComponent)
+    component = fixture.componentInstance
+    expect(component.isLoading).toEqual(true)
+  })
 });

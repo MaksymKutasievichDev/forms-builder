@@ -132,6 +132,7 @@ export class FormBuilderComponent extends SnackBar implements OnInit, OnDestroy 
     const currentIdx = event.container.data.findIndex(
       (f: string) => f === event.item.data
     );
+    console.log(currentIdx)
     this.formElementsList.splice(currentIdx + 1, 1)
   }
 
